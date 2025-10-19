@@ -1,6 +1,4 @@
 {
-  description = "A collection of Nix flake templates";
-
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
@@ -18,19 +16,6 @@
 
       imports = [ inputs.treefmt-nix.flakeModule ];
 
-      flake = {
-        templates = {
-          flake-parts = {
-            path = ./flake-parts;
-            description = "Modular flake with flake-parts";
-          };
-          rust = {
-            path = ./rust;
-            description = "Rust template, using rustup";
-          };
-        };
-      };
-
       perSystem =
         {
           pkgs,
@@ -38,18 +23,36 @@
           ...
         }:
         let
+          ciPackages = with pkgs; [
+            rustup
+          ];
+
+          devPackages =
+            ciPackages
+            ++ (with pkgs; [
+              # Additional development tools can be added here
+            ]);
+
           mcpConfig = inputs.mcp-servers-nix.lib.mkConfig pkgs {
             programs = {
+              serena.enable = true;
               nixos.enable = true;
             };
           };
         in
         {
           packages = {
+            ci = pkgs.buildEnv {
+              name = "ci";
+              paths = ciPackages;
+            };
+
             mcp-config = mcpConfig;
           };
 
           devShells.default = pkgs.mkShell {
+            buildInputs = devPackages;
+
             shellHook = ''
               cat ${mcpConfig} > .mcp.json
               echo "Generated .mcp.json"
@@ -59,6 +62,7 @@
           treefmt = {
             programs = {
               nixfmt.enable = true;
+              rustfmt.enable = true;
             };
           };
         };

@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        template: [flake-parts]
+        template: [flake-parts, rust]
     steps:
       - uses: actions/checkout@v5
 
