@@ -19,3 +19,24 @@ jobs:
 
       - name: Flake check
         run: nix flake check
+
+  test-templates:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        template: [flake-parts]
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ secrets.GH_TOKEN }}
+
+      - name: Test ${{ matrix.template }} template
+        run: |
+          TEST_DIR=$(mktemp -d)
+          cd $TEST_DIR
+          nix flake init -t $GITHUB_WORKSPACE#${{ matrix.template }}
+          nix flake check
+          cd -
+          rm -rf $TEST_DIR
