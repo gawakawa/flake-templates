@@ -37,25 +37,12 @@ Templates follow a consistent pattern:
 ```bash
 # Format all Nix files
 nix fmt
-
-# Check formatting (CI mode)
-nix fmt -- --ci
 ```
 
 ### Building
 ```bash
 # Build default packages
 nix build
-
-# Build specific package
-nix build .#mcp-config
-nix build .#ci
-```
-
-### Development
-```bash
-# Enter development shell (auto-generates .mcp.json)
-nix develop
 ```
 
 ### Testing Templates
@@ -65,7 +52,7 @@ nix flake check
 
 # Test template initialization in a temporary directory
 mkdir /tmp/test-template && cd /tmp/test-template
-nix flake init -t github:gawakawa/flake-templates#flake-parts
+nix flake init -t "github:gawakawa/flake-templates#flake-parts"
 ```
 
 ## Adding New Templates

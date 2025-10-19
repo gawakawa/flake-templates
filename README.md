@@ -24,7 +24,7 @@ Modular Nix flake template using flake-parts with the following features:
 - Automatic `.mcp.json` generation in development shell
 
 ```bash
-nix flake init -t github:gawakawa/flake-templates#flake-parts
+nix flake init -t "github:gawakawa/flake-templates#flake-parts"
 ```
 
 #### Features
