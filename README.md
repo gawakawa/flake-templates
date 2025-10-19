@@ -14,27 +14,19 @@ nix flake init -t github:gawakawa/flake-templates#flake-parts
 
 ### flake-parts
 
-Modular Nix flake template using flake-parts with the following features:
-
-- **flake-parts**: Modular flake configuration system
-- **treefmt-nix**: Automatic code formatting with nixfmt
-- **mcp-servers-nix**: MCP (Model Context Protocol) server configuration
-- Multi-system support (x86_64-linux, aarch64-darwin)
-- Separate CI and development package sets
-- Automatic `.mcp.json` generation in development shell
+Modular flake template with flake-parts, treefmt-nix, and mcp-servers-nix integration.
 
 ```bash
 nix flake init -t "github:gawakawa/flake-templates#flake-parts"
 ```
 
-#### Features
+### rust
 
-The template includes:
+Rust development template with rustup, treefmt (nixfmt + rustfmt), and mcp-servers-nix (serena + nixos).
 
-- `packages.ci`: CI environment package bundle
-- `packages.mcp-config`: MCP server configuration
-- `devShells.default`: Development shell with MCP config auto-generation
-- `treefmt`: Code formatting with nixfmt enabled
+```bash
+nix flake init -t "github:gawakawa/flake-templates#rust"
+```
 
 ## Development
 

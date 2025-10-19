@@ -11,9 +11,14 @@ This is a Nix flake templates repository that provides reusable project template
 The repository has a two-level structure:
 
 1. **Root flake** (`flake.nix`) - Defines the template registry and serves as the distribution mechanism
-2. **Template directories** (e.g., `flake-parts/`) - Individual template implementations that users can initialize
+2. **Template directories** (e.g., `flake-parts/`, `rust/`) - Individual template implementations that users can initialize
 
 Each template is self-contained in its own directory with a complete `flake.nix` and any supporting files. The root flake's `flake.templates` attribute exposes these directories as initializable templates.
+
+### Available Templates
+
+- **flake-parts**: Basic modular flake template with treefmt-nix and mcp-servers-nix integration
+- **rust**: Rust development template using rustup with treefmt (nixfmt + rustfmt) and mcp-servers-nix (serena + nixos)
 
 ### Key Integration Points
 
@@ -53,6 +58,13 @@ nix flake check
 # Test template initialization in a temporary directory
 mkdir /tmp/test-template && cd /tmp/test-template
 nix flake init -t "github:gawakawa/flake-templates#flake-parts"
+
+# Or test the rust template
+mkdir /tmp/test-rust && cd /tmp/test-rust
+nix flake init -t "github:gawakawa/flake-templates#rust"
+
+# If testing immediately after pushing changes, use --refresh to update the cache
+nix flake init -t "github:gawakawa/flake-templates#rust" --refresh
 ```
 
 ## Adding New Templates
