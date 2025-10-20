@@ -6,7 +6,10 @@ on:
 
 jobs:
   tests:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v5
 
@@ -21,10 +24,11 @@ jobs:
         run: nix flake check
 
   test-templates:
-    runs-on: ubuntu-latest
     strategy:
       matrix:
+        os: [ubuntu-latest, macos-latest]
         template: [flake-parts, rust]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v5
 
