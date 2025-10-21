@@ -44,6 +44,14 @@ Python development template with uv, treefmt (nixfmt + ruff), and mcp-servers-ni
 nix flake init -t "github:gawakawa/flake-templates#python"
 ```
 
+### deno
+
+Deno development template with treefmt (nixfmt + deno) and mcp-servers-nix (serena + nixos).
+
+```bash
+nix flake init -t "github:gawakawa/flake-templates#deno"
+```
+
 ## Development
 
 To add a new template:
