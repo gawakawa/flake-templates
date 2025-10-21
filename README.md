@@ -28,6 +28,14 @@ Rust development template with rustup, treefmt (nixfmt + rustfmt), and mcp-serve
 nix flake init -t "github:gawakawa/flake-templates#rust"
 ```
 
+### purs-nix
+
+PureScript development template with purs-nix, treefmt (nixfmt + purs-tidy), and mcp-servers-nix (nixos + pursuit).
+
+```bash
+nix flake init -t "github:gawakawa/flake-templates#purs-nix"
+```
+
 ## Development
 
 To add a new template:

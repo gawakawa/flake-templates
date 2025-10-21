@@ -27,7 +27,10 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        template: [flake-parts, rust]
+        template: [flake-parts, rust, purs-nix]
+        exclude:
+          - os: macos-latest
+            template: purs-nix
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v5

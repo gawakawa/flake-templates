@@ -19,6 +19,7 @@ Each template is self-contained in its own directory with a complete `flake.nix`
 
 - **flake-parts**: Basic modular flake template with treefmt-nix and mcp-servers-nix integration
 - **rust**: Rust development template using rustup with treefmt (nixfmt + rustfmt) and mcp-servers-nix (serena + nixos)
+- **purs-nix**: PureScript development template using purs-nix with treefmt (nixfmt + purs-tidy) and mcp-servers-nix (nixos + pursuit)
 
 ### Key Integration Points
 
@@ -62,6 +63,10 @@ nix flake init -t "github:gawakawa/flake-templates#flake-parts"
 # Or test the rust template
 mkdir /tmp/test-rust && cd /tmp/test-rust
 nix flake init -t "github:gawakawa/flake-templates#rust"
+
+# Or test the purs-nix template
+mkdir /tmp/test-purs-nix && cd /tmp/test-purs-nix
+nix flake init -t "github:gawakawa/flake-templates#purs-nix"
 
 # If testing immediately after pushing changes, use --refresh to update the cache
 nix flake init -t "github:gawakawa/flake-templates#rust" --refresh

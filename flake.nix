@@ -28,6 +28,10 @@
             path = ./rust;
             description = "Rust template, using rustup";
           };
+          purs-nix = {
+            path = ./purs-nix;
+            description = "PureScript template, using purs-nix";
+          };
         };
       };
 
