@@ -36,6 +36,14 @@ PureScript development template with purs-nix, treefmt (nixfmt + purs-tidy), and
 nix flake init -t "github:gawakawa/flake-templates#purs-nix"
 ```
 
+### python
+
+Python development template with uv, treefmt (nixfmt + ruff), and mcp-servers-nix (serena + nixos).
+
+```bash
+nix flake init -t "github:gawakawa/flake-templates#python"
+```
+
 ## Development
 
 To add a new template:
