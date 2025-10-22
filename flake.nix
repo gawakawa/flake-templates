@@ -28,6 +28,10 @@
             path = ./rustup;
             description = "Rust template, using rustup";
           };
+          rust-overlay = {
+            path = ./rust-overlay;
+            description = "Rust template, using rust-overlay";
+          };
           purs-nix = {
             path = ./purs-nix;
             description = "PureScript template, using purs-nix";

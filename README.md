@@ -28,6 +28,14 @@ Rust development template with rustup, treefmt (nixfmt + rustfmt), and mcp-serve
 nix flake init -t "github:gawakawa/flake-templates#rustup"
 ```
 
+### rust-overlay
+
+Rust development template with rust-overlay, treefmt (nixfmt + rustfmt), and mcp-servers-nix (serena + nixos).
+
+```bash
+nix flake init -t "github:gawakawa/flake-templates#rust-overlay"
+```
+
 ### purs-nix
 
 PureScript development template with purs-nix, treefmt (nixfmt + purs-tidy), and mcp-servers-nix (nixos + pursuit).

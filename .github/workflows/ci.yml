@@ -27,7 +27,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        template: [flake-parts, rust, purs-nix, python, deno]
+        template: [flake-parts, rustup, rust-overlay, purs-nix, python, deno]
         exclude:
           - os: macos-latest
             template: purs-nix
