@@ -20,12 +20,12 @@ Modular flake template with flake-parts, treefmt-nix, and mcp-servers-nix integr
 nix flake init -t "github:gawakawa/flake-templates#flake-parts"
 ```
 
-### rust
+### rustup
 
 Rust development template with rustup, treefmt (nixfmt + rustfmt), and mcp-servers-nix (serena + nixos).
 
 ```bash
-nix flake init -t "github:gawakawa/flake-templates#rust"
+nix flake init -t "github:gawakawa/flake-templates#rustup"
 ```
 
 ### purs-nix

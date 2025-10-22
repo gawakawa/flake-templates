@@ -24,8 +24,8 @@
             path = ./flake-parts;
             description = "Modular flake with flake-parts";
           };
-          rust = {
-            path = ./rust;
+          rustup = {
+            path = ./rustup;
             description = "Rust template, using rustup";
           };
           purs-nix = {
