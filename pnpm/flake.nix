@@ -1,6 +1,4 @@
 {
-  description = "A collection of Nix flake templates";
-
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
@@ -18,39 +16,6 @@
 
       imports = [ inputs.treefmt-nix.flakeModule ];
 
-      flake = {
-        templates = {
-          flake-parts = {
-            path = ./flake-parts;
-            description = "Modular flake with flake-parts";
-          };
-          rustup = {
-            path = ./rustup;
-            description = "Rust template, using rustup";
-          };
-          rust-overlay = {
-            path = ./rust-overlay;
-            description = "Rust template, using rust-overlay";
-          };
-          purs-nix = {
-            path = ./purs-nix;
-            description = "PureScript template, using purs-nix";
-          };
-          python = {
-            path = ./python;
-            description = "Python template, using uv";
-          };
-          deno = {
-            path = ./deno;
-            description = "Deno template";
-          };
-          pnpm = {
-            path = ./pnpm;
-            description = "Node.js template, using pnpm";
-          };
-        };
-      };
-
       perSystem =
         {
           pkgs,
@@ -58,18 +23,37 @@
           ...
         }:
         let
+          ciPackages = with pkgs; [
+            pnpm
+            nodejs_22
+          ];
+
+          devPackages =
+            ciPackages
+            ++ (with pkgs; [
+              # Additional development tools can be added here
+            ]);
+
           mcpConfig = inputs.mcp-servers-nix.lib.mkConfig pkgs {
             programs = {
               nixos.enable = true;
+              serena.enable = true;
             };
           };
         in
         {
           packages = {
+            ci = pkgs.buildEnv {
+              name = "ci";
+              paths = ciPackages;
+            };
+
             mcp-config = mcpConfig;
           };
 
           devShells.default = pkgs.mkShell {
+            buildInputs = devPackages;
+
             shellHook = ''
               cat ${mcpConfig} > .mcp.json
               echo "Generated .mcp.json"
@@ -79,6 +63,7 @@
           treefmt = {
             programs = {
               nixfmt.enable = true;
+              biome.enable = true;
             };
           };
         };

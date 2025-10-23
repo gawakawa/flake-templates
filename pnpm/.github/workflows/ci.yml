@@ -1,0 +1,35 @@
+name: "CI"
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  ci:
+    name: CI
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ secrets.GH_TOKEN }}
+
+      - name: Format check
+        run: nix fmt -- --ci
+
+      - name: Install dependencies
+        run: | 
+          nix profile add .#ci
+          pnpm install
+
+      - name: Lint check
+        run: pnpm lint
+
+      - name: Type check
+        run: pnpm type-check
+
+      - name: Run tests
+        run: pnpm test

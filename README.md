@@ -60,6 +60,14 @@ Deno development template with treefmt (nixfmt + deno) and mcp-servers-nix (sere
 nix flake init -t "github:gawakawa/flake-templates#deno"
 ```
 
+### pnpm
+
+Node.js development template with pnpm, treefmt (nixfmt + biome), and mcp-servers-nix (serena + nixos).
+
+```bash
+nix flake init -t "github:gawakawa/flake-templates#pnpm"
+```
+
 ## Development
 
 To add a new template:

@@ -23,6 +23,7 @@ Each template is self-contained in its own directory with a complete `flake.nix`
 - **purs-nix**: PureScript development template using purs-nix with treefmt (nixfmt + purs-tidy) and mcp-servers-nix (nixos + pursuit)
 - **python**: Python development template using uv with treefmt (nixfmt + ruff) and mcp-servers-nix (serena + nixos)
 - **deno**: Deno development template with treefmt (nixfmt + deno) and mcp-servers-nix (serena + nixos)
+- **pnpm**: Node.js development template using pnpm with treefmt (nixfmt + biome) and mcp-servers-nix (serena + nixos)
 
 ### Key Integration Points
 
@@ -82,6 +83,10 @@ nix flake init -t "github:gawakawa/flake-templates#python"
 # Or test the deno template
 mkdir /tmp/test-deno && cd /tmp/test-deno
 nix flake init -t "github:gawakawa/flake-templates#deno"
+
+# Or test the pnpm template
+mkdir /tmp/test-pnpm && cd /tmp/test-pnpm
+nix flake init -t "github:gawakawa/flake-templates#pnpm"
 
 # If testing immediately after pushing changes, use --refresh to update the cache
 nix flake init -t "github:gawakawa/flake-templates#rustup" --refresh
