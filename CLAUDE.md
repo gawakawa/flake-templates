@@ -24,6 +24,7 @@ Each template is self-contained in its own directory with a complete `flake.nix`
 - **python**: Python development template using uv with treefmt (nixfmt + ruff) and mcp-servers-nix (serena + nixos)
 - **deno**: Deno development template with treefmt (nixfmt + deno) and mcp-servers-nix (serena + nixos)
 - **pnpm**: Node.js development template using pnpm with treefmt (nixfmt + biome) and mcp-servers-nix (serena + nixos)
+- **haskell**: Haskell development template using haskell.nix and hix
 
 ### Key Integration Points
 
@@ -87,6 +88,10 @@ nix flake init -t "github:gawakawa/flake-templates#deno"
 # Or test the pnpm template
 mkdir /tmp/test-pnpm && cd /tmp/test-pnpm
 nix flake init -t "github:gawakawa/flake-templates#pnpm"
+
+# Or test the haskell template
+mkdir /tmp/test-haskell && cd /tmp/test-haskell
+nix flake init -t "github:gawakawa/flake-templates#haskell"
 
 # If testing immediately after pushing changes, use --refresh to update the cache
 nix flake init -t "github:gawakawa/flake-templates#rustup" --refresh

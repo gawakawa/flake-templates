@@ -68,6 +68,14 @@ Node.js development template with pnpm, treefmt (nixfmt + biome), and mcp-server
 nix flake init -t "github:gawakawa/flake-templates#pnpm"
 ```
 
+### haskell
+
+Haskell development template with haskell.nix and hix.
+
+```bash
+nix flake init -t "github:gawakawa/flake-templates#haskell"
+```
+
 ## Development
 
 To add a new template:

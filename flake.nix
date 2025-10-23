@@ -48,6 +48,10 @@
             path = ./pnpm;
             description = "Node.js template, using pnpm";
           };
+          haskell = {
+            path = ./haskell;
+            description = "Haskell template, using haskell.nix and hix";
+          };
         };
       };
 
