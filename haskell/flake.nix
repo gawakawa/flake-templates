@@ -5,6 +5,7 @@
     flake-utils.url = "github:numtide/flake-utils";
     treefmt-nix.url = "github:numtide/treefmt-nix";
     systems.url = "github:nix-systems/default";
+    mcp-servers-nix.url = "github:natsukium/mcp-servers-nix";
   };
 
   outputs =
@@ -15,6 +16,7 @@
       haskellNix,
       treefmt-nix,
       systems,
+      mcp-servers-nix,
     }:
     let
       supportedSystems = [
@@ -45,6 +47,11 @@
             nixfmt.enable = true;
           };
         };
+        mcpConfig = mcp-servers-nix.lib.mkConfig pkgs {
+          programs = {
+            nixos.enable = true;
+          };
+        };
       in
       flake
       // {
@@ -52,6 +59,16 @@
 
         packages = flake.packages // {
           default = flake.packages."hello:exe:hello";
+        };
+
+        devShells = flake.devShells // {
+          default = pkgs.mkShell {
+            inputsFrom = [ flake.devShells.default ];
+            shellHook = ''
+              cat ${mcpConfig} > .mcp.json
+              echo "Generated .mcp.json"
+            '';
+          };
         };
 
         formatter = treefmtEval.config.build.wrapper;
