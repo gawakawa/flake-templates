@@ -3,6 +3,8 @@
     haskellNix.url = "github:input-output-hk/haskell.nix";
     nixpkgs.follows = "haskellNix/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+    treefmt-nix.url = "github:numtide/treefmt-nix";
+    systems.url = "github:nix-systems/default";
   };
 
   outputs =
@@ -11,6 +13,8 @@
       nixpkgs,
       flake-utils,
       haskellNix,
+      treefmt-nix,
+      systems,
     }:
     let
       supportedSystems = [
@@ -34,6 +38,13 @@
           inherit (haskellNix) config;
         };
         flake = pkgs.hixProject.flake { };
+        treefmtEval = treefmt-nix.lib.evalModule pkgs {
+          programs = {
+            cabal-fmt.enable = true;
+            fourmolu.enable = true;
+            nixfmt.enable = true;
+          };
+        };
       in
       flake
       // {
@@ -41,6 +52,12 @@
 
         packages = flake.packages // {
           default = flake.packages."hello:exe:hello";
+        };
+
+        formatter = treefmtEval.config.build.wrapper;
+
+        checks = {
+          formatting = treefmtEval.config.build.check self;
         };
       }
     );
