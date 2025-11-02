@@ -54,10 +54,10 @@ jobs:
         working-directory: templates/${{ matrix.template }}
         run: nix flake check
 
-      - name: Check ${{ matrix.template }} template (with IFD)
+      - name: Check ${{ matrix.template }} template (with flake config)
         if: matrix.template == 'haskell'
         working-directory: templates/${{ matrix.template }}
-        run: nix flake check --option allow-import-from-derivation true
+        run: nix flake check --accept-flake-config
 
       - name: Test devShell for ${{ matrix.template }} template
         if: matrix.template != 'haskell'
