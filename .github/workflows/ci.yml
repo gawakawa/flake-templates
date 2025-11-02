@@ -23,11 +23,31 @@ jobs:
       - name: Flake check
         run: nix flake check
 
+  list-templates:
+    runs-on: ubuntu-latest
+    outputs:
+      templates: ${{ steps.set-templates.outputs.templates }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ secrets.GH_TOKEN }}
+
+      - name: List templates
+        id: set-templates
+        run: |
+          # Extract template names directly from the flake definition
+          # This ensures we test only templates that are actually defined in flake.nix
+          templates=$(nix eval --json .#templates --apply 'builtins.attrNames')
+          echo "templates=$templates" >> $GITHUB_OUTPUT
+
   test-templates:
+    needs: list-templates
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        template: [flake-parts, rustup, rust-overlay, purs-nix, python, deno, pnpm, haskell, go]
+        template: ${{ fromJSON(needs.list-templates.outputs.templates) }}
         exclude:
           - os: macos-latest
             template: purs-nix
@@ -43,14 +63,14 @@ jobs:
 
       - name: Check ${{ matrix.template }} template
         if: matrix.template != 'haskell'
-        working-directory: ${{ matrix.template }}
+        working-directory: templates/${{ matrix.template }}
         run: nix flake check
 
       - name: Check ${{ matrix.template }} template (with IFD)
         if: matrix.template == 'haskell'
-        working-directory: ${{ matrix.template }}
+        working-directory: templates/${{ matrix.template }}
         run: nix flake check --option allow-import-from-derivation true
 
       - name: Test devShell for ${{ matrix.template }} template
-        working-directory: ${{ matrix.template }}
+        working-directory: templates/${{ matrix.template }}
         run: nix develop -c echo "DevShell works"
