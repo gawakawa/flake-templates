@@ -61,4 +61,4 @@ jobs:
 
       - name: Test devShell for ${{ matrix.template }} template
         working-directory: templates/${{ matrix.template }}
-        run: nix develop -c echo "DevShell works"
+        run: nix develop --accept-flake-config -c echo "DevShell works"
