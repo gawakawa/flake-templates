@@ -11,9 +11,9 @@ This is a Nix flake templates repository that provides reusable project template
 The repository has a two-level structure:
 
 1. **Root flake** (`flake.nix`) - Defines the template registry and serves as the distribution mechanism
-2. **Template directories** (e.g., `flake-parts/`, `rust/`) - Individual template implementations that users can initialize
+2. **Template directories** (e.g., `templates/flake-parts/`, `templates/rust/`) - Individual template implementations that users can initialize
 
-Each template is self-contained in its own directory with a complete `flake.nix` and any supporting files. The root flake's `flake.templates` attribute exposes these directories as initializable templates.
+Each template is self-contained in its own directory under `templates/` with a complete `flake.nix` and any supporting files. The root flake's `flake.templates` attribute exposes these directories as initializable templates.
 
 ### Available Templates
 
@@ -104,13 +104,13 @@ nix flake init -t "github:gawakawa/flake-templates#rustup" --refresh
 
 ## Adding New Templates
 
-1. Create a new directory with the template name (e.g., `my-template/`)
+1. Create a new directory with the template name under `templates/` (e.g., `templates/my-template/`)
 2. Add a complete `flake.nix` and any supporting files to that directory
 3. Register the template in the root `flake.nix` under `flake.templates`:
    ```nix
    templates = {
      my-template = {
-       path = ./my-template;
+       path = ./templates/my-template;
        description = "Description of my template";
      };
    };

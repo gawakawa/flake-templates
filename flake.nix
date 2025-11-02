@@ -21,39 +21,39 @@
       flake = {
         templates = {
           flake-parts = {
-            path = ./flake-parts;
+            path = ./templates/flake-parts;
             description = "Modular flake with flake-parts";
           };
           rustup = {
-            path = ./rustup;
+            path = ./templates/rustup;
             description = "Rust template, using rustup";
           };
           rust-overlay = {
-            path = ./rust-overlay;
+            path = ./templates/rust-overlay;
             description = "Rust template, using rust-overlay";
           };
           purs-nix = {
-            path = ./purs-nix;
+            path = ./templates/purs-nix;
             description = "PureScript template, using purs-nix";
           };
           python = {
-            path = ./python;
+            path = ./templates/python;
             description = "Python template, using uv";
           };
           deno = {
-            path = ./deno;
+            path = ./templates/deno;
             description = "Deno template";
           };
           pnpm = {
-            path = ./pnpm;
+            path = ./templates/pnpm;
             description = "Node.js template, using pnpm";
           };
           haskell = {
-            path = ./haskell;
+            path = ./templates/haskell;
             description = "Haskell template, using haskell.nix and hix";
           };
           go = {
-            path = ./go;
+            path = ./templates/go;
             description = "Go template";
           };
         };
