@@ -60,5 +60,11 @@ jobs:
         run: nix flake check --option allow-import-from-derivation true
 
       - name: Test devShell for ${{ matrix.template }} template
+        if: matrix.template != 'haskell'
+        working-directory: templates/${{ matrix.template }}
+        run: nix develop -c echo "DevShell works"
+
+      - name: Test devShell for ${{ matrix.template }} template (with flake config)
+        if: matrix.template == 'haskell'
         working-directory: templates/${{ matrix.template }}
         run: nix develop --accept-flake-config -c echo "DevShell works"
