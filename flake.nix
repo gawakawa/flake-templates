@@ -52,6 +52,10 @@
             path = ./haskell;
             description = "Haskell template, using haskell.nix and hix";
           };
+          go = {
+            path = ./go;
+            description = "Go template";
+          };
         };
       };
 

@@ -76,6 +76,14 @@ Haskell development template with haskell.nix and hix.
 nix flake init -t "github:gawakawa/flake-templates#haskell"
 ```
 
+### go
+
+Go development template with treefmt (nixfmt + gofmt + goimports + golines) and mcp-servers-nix (serena + nixos).
+
+```bash
+nix flake init -t "github:gawakawa/flake-templates#go"
+```
+
 ## Development
 
 To add a new template:

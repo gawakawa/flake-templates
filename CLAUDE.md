@@ -25,6 +25,7 @@ Each template is self-contained in its own directory with a complete `flake.nix`
 - **deno**: Deno development template with treefmt (nixfmt + deno) and mcp-servers-nix (serena + nixos)
 - **pnpm**: Node.js development template using pnpm with treefmt (nixfmt + biome) and mcp-servers-nix (serena + nixos)
 - **haskell**: Haskell development template using haskell.nix and hix
+- **go**: Go development template with treefmt (nixfmt + gofmt + goimports + golines) and mcp-servers-nix (serena + nixos)
 
 ### Key Integration Points
 
@@ -92,6 +93,10 @@ nix flake init -t "github:gawakawa/flake-templates#pnpm"
 # Or test the haskell template
 mkdir /tmp/test-haskell && cd /tmp/test-haskell
 nix flake init -t "github:gawakawa/flake-templates#haskell"
+
+# Or test the go template
+mkdir /tmp/test-go && cd /tmp/test-go
+nix flake init -t "github:gawakawa/flake-templates#go"
 
 # If testing immediately after pushing changes, use --refresh to update the cache
 nix flake init -t "github:gawakawa/flake-templates#rustup" --refresh
