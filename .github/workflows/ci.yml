@@ -41,16 +41,16 @@ jobs:
         with:
           github_access_token: ${{ secrets.GH_TOKEN }}
 
-      - name: Check and build ${{ matrix.template }} template
+      - name: Check ${{ matrix.template }} template
         if: matrix.template != 'haskell'
         working-directory: ${{ matrix.template }}
-        run: |
-          nix flake check
-          nix build
+        run: nix flake check
 
-      - name: Check and build ${{ matrix.template }} template (with IFD)
+      - name: Check ${{ matrix.template }} template (with IFD)
         if: matrix.template == 'haskell'
         working-directory: ${{ matrix.template }}
-        run: |
-          nix flake check --option allow-import-from-derivation true
-          nix build --option allow-import-from-derivation true
+        run: nix flake check --option allow-import-from-derivation true
+
+      - name: Test devShell for ${{ matrix.template }} template
+        working-directory: ${{ matrix.template }}
+        run: nix develop -c echo "DevShell works"
