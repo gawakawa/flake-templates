@@ -6,10 +6,9 @@ on:
 
 jobs:
   tests:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
+    outputs:
+      templates: ${{ steps.set-templates.outputs.templates }}
     steps:
       - uses: actions/checkout@v5
 
@@ -23,31 +22,18 @@ jobs:
       - name: Flake check
         run: nix flake check
 
-  list-templates:
-    runs-on: ubuntu-latest
-    outputs:
-      templates: ${{ steps.set-templates.outputs.templates }}
-    steps:
-      - uses: actions/checkout@v5
-
-      - uses: cachix/install-nix-action@v31
-        with:
-          github_access_token: ${{ secrets.GH_TOKEN }}
-
       - name: List templates
         id: set-templates
         run: |
-          # Extract template names directly from the flake definition
-          # This ensures we test only templates that are actually defined in flake.nix
-          templates=$(nix eval --json .#templates --apply 'builtins.attrNames')
+          templates=$(nix eval --impure --expr '(builtins.getFlake (toString ./.)).outputs.templates' --apply 'x: builtins.attrNames x' --json)
           echo "templates=$templates" >> $GITHUB_OUTPUT
 
   test-templates:
-    needs: list-templates
+    needs: tests
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        template: ${{ fromJSON(needs.list-templates.outputs.templates) }}
+        template: ${{ fromJSON(needs.tests.outputs.templates) }}
         exclude:
           - os: macos-latest
             template: purs-nix
