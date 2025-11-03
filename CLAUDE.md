@@ -26,6 +26,7 @@ Each template is self-contained in its own directory under `templates/` with a c
 - **pnpm**: Node.js development template using pnpm with treefmt (nixfmt + biome) and mcp-servers-nix (serena + nixos)
 - **haskell**: Haskell development template using haskell.nix and hix
 - **go**: Go development template with treefmt (nixfmt + gofmt + goimports + golines) and mcp-servers-nix (serena + nixos)
+- **lean**: Lean theorem prover template using elan with treefmt (nixfmt) and mcp-servers-nix (nixos + lean-lsp)
 
 ### Key Integration Points
 
@@ -66,40 +67,8 @@ nix flake check
 mkdir /tmp/test-template && cd /tmp/test-template
 nix flake init -t "github:gawakawa/flake-templates#flake-parts"
 
-# Or test the rustup template
-mkdir /tmp/test-rustup && cd /tmp/test-rustup
-nix flake init -t "github:gawakawa/flake-templates#rustup"
-
-# Or test the rust-overlay template
-mkdir /tmp/test-rust-overlay && cd /tmp/test-rust-overlay
-nix flake init -t "github:gawakawa/flake-templates#rust-overlay"
-
-# Or test the purs-nix template
-mkdir /tmp/test-purs-nix && cd /tmp/test-purs-nix
-nix flake init -t "github:gawakawa/flake-templates#purs-nix"
-
-# Or test the python template
-mkdir /tmp/test-python && cd /tmp/test-python
-nix flake init -t "github:gawakawa/flake-templates#python"
-
-# Or test the deno template
-mkdir /tmp/test-deno && cd /tmp/test-deno
-nix flake init -t "github:gawakawa/flake-templates#deno"
-
-# Or test the pnpm template
-mkdir /tmp/test-pnpm && cd /tmp/test-pnpm
-nix flake init -t "github:gawakawa/flake-templates#pnpm"
-
-# Or test the haskell template
-mkdir /tmp/test-haskell && cd /tmp/test-haskell
-nix flake init -t "github:gawakawa/flake-templates#haskell"
-
-# Or test the go template
-mkdir /tmp/test-go && cd /tmp/test-go
-nix flake init -t "github:gawakawa/flake-templates#go"
-
 # If testing immediately after pushing changes, use --refresh to update the cache
-nix flake init -t "github:gawakawa/flake-templates#rustup" --refresh
+nix flake init -t "github:gawakawa/flake-templates#flake-parts" --refresh
 ```
 
 ## Adding New Templates

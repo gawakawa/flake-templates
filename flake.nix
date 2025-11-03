@@ -56,6 +56,10 @@
             path = ./templates/go;
             description = "Go template";
           };
+          lean = {
+            path = ./templates/lean;
+            description = "Lean theorem prover template, using elan";
+          };
         };
       };
 
