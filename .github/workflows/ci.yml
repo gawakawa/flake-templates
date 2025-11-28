@@ -8,8 +8,6 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    outputs:
-      templates: ${{ steps.set-templates.outputs.templates }}
     steps:
       - uses: actions/checkout@v5
 
@@ -23,17 +21,55 @@ jobs:
       - name: Flake check
         run: nix flake check
 
-      - name: List templates
-        id: set-templates
+  detect-changes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      templates: ${{ steps.set-templates.outputs.templates }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ secrets.GH_TOKEN }}
+
+      - name: List all templates
+        id: list-templates
         uses: ./.github/actions/list-templates
 
+      - name: Generate filters
+        run: |
+          {
+            echo "root:"
+            echo "  - 'flake.nix'"
+            echo "  - 'flake.lock'"
+            echo '${{ steps.list-templates.outputs.templates }}' | jq -r '.[] | "\(.):\n  - \"templates/\(.)/**\""'
+          } > filters.yml
+
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: filters.yml
+
+      - name: Set templates to test
+        id: set-templates
+        run: |
+          if [[ "${{ steps.filter.outputs.root }}" == "true" ]]; then
+            echo "templates=${{ steps.list-templates.outputs.templates }}" >> $GITHUB_OUTPUT
+          else
+            echo "templates=${{ toJSON(steps.filter.outputs.changes) }}" >> $GITHUB_OUTPUT
+          fi
+
   test-templates:
-    needs: tests
+    needs: detect-changes
     timeout-minutes: 10
+    if: needs.detect-changes.outputs.templates != '[]'
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        template: ${{ fromJSON(needs.tests.outputs.templates) }}
+        template: ${{ fromJSON(needs.detect-changes.outputs.templates) }}
         exclude:
           - os: macos-latest
             template: purs-nix
@@ -66,3 +102,20 @@ jobs:
         if: matrix.template == 'haskell'
         working-directory: templates/${{ matrix.template }}
         run: nix develop --accept-flake-config -c echo "DevShell works"
+
+  ci-success:
+    runs-on: ubuntu-latest
+    needs: [tests, test-templates]
+    if: always()
+    steps:
+      - name: Check all jobs succeeded
+        run: |
+          if [[ "${{ needs.tests.result }}" != "success" ]]; then
+            echo "tests job failed"
+            exit 1
+          fi
+          if [[ "${{ needs.test-templates.result }}" != "success" ]] && [[ "${{ needs.test-templates.result }}" != "skipped" ]]; then
+            echo "test-templates job failed"
+            exit 1
+          fi
+          echo "All jobs succeeded"
