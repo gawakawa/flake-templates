@@ -46,6 +46,18 @@ jobs:
         with:
           github_access_token: ${{ secrets.GH_TOKEN }}
 
+      - name: Generate branch name
+        id: branch
+        run: |
+          path="${{ inputs.path || '.' }}"
+          if [ "$path" = "." ]; then
+            echo "name=update_flake_lock_action" >> $GITHUB_OUTPUT
+          else
+            # Replace slashes with underscores for branch name
+            branch_suffix=$(echo "$path" | sed 's/\//_/g')
+            echo "name=update_flake_lock_action_${branch_suffix}" >> $GITHUB_OUTPUT
+          fi
+
       - name: Update flake.lock
         id: update
         uses: DeterminateSystems/update-flake-lock@main
@@ -53,6 +65,7 @@ jobs:
           token: ${{ secrets.GH_TOKEN }}
           path-to-flake-dir: ${{ inputs.path || '.' }}
           pr-title: ${{ inputs.pr-title-prefix }}⬆️ Update flake.lock
+          branch: ${{ steps.branch.outputs.name }}
 
       - name: Enable auto-merge
         if: ${{ steps.update.outputs.pull-request-number }}
