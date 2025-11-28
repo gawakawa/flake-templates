@@ -23,6 +23,9 @@ jobs:
 
   update-template-flake-lock:
     needs: list-templates
+    permissions:
+      contents: write
+      pull-requests: write
     strategy:
       matrix:
         template: ${{ fromJSON(needs.list-templates.outputs.templates) }}
@@ -31,5 +34,4 @@ jobs:
     with:
       path: templates/${{ matrix.template }}
       pr-title-prefix: "[${{ matrix.template }}] "
-    secrets:
-      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+    secrets: inherit
