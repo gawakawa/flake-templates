@@ -34,4 +34,5 @@ jobs:
     with:
       path: templates/${{ matrix.template }}
       pr-title-prefix: "[${{ matrix.template }}] "
-    secrets: inherit
+    secrets:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
