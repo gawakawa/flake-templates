@@ -25,9 +25,7 @@ jobs:
 
       - name: List templates
         id: set-templates
-        run: |
-          templates=$(nix eval --impure --expr '(builtins.getFlake (toString ./.)).outputs.templates' --apply 'x: builtins.attrNames x' --json)
-          echo "templates=$templates" >> $GITHUB_OUTPUT
+        uses: ./.github/actions/list-templates
 
   test-templates:
     needs: tests

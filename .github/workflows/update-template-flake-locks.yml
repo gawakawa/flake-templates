@@ -1,0 +1,35 @@
+name: "Update Template Flake Locks"
+
+on:
+  workflow_dispatch: # Allow manual trigger
+  schedule:
+    - cron: '0 15 * * 0' # Run every Sunday at 00:00 JST (Saturday 15:00 UTC)
+
+jobs:
+  list-templates:
+    runs-on: ubuntu-latest
+    outputs:
+      templates: ${{ steps.set-templates.outputs.templates }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ secrets.GH_TOKEN }}
+
+      - name: List templates
+        id: set-templates
+        uses: ./.github/actions/list-templates
+
+  update-template-flake-lock:
+    needs: list-templates
+    strategy:
+      matrix:
+        template: ${{ fromJSON(needs.list-templates.outputs.templates) }}
+      fail-fast: false # Continue even if one template fails
+    uses: ./.github/workflows/update-flake-lock.yml
+    with:
+      path: templates/${{ matrix.template }}
+      pr-title-prefix: "[${{ matrix.template }}] "
+    secrets:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}

@@ -1,0 +1,17 @@
+name: "List Templates"
+description: "List all templates from the flake.nix"
+
+outputs:
+  templates:
+    description: "JSON array of template names"
+    value: ${{ steps.list.outputs.templates }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: List templates
+      id: list
+      shell: bash
+      run: |
+        templates=$(nix eval --impure --expr '(builtins.getFlake (toString ./.)).outputs.templates' --apply 'x: builtins.attrNames x' --json)
+        echo "templates=$templates" >> $GITHUB_OUTPUT

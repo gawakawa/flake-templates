@@ -1,7 +1,33 @@
 name: "Update Flake Lock"
 
 on:
-  workflow_dispatch: # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      path:
+        description: 'Working directory path'
+        required: false
+        default: '.'
+        type: string
+      pr-title-prefix:
+        description: 'PR title prefix'
+        required: false
+        default: ''
+        type: string
+  workflow_call:
+    inputs:
+      path:
+        description: 'Working directory path'
+        required: false
+        default: '.'
+        type: string
+      pr-title-prefix:
+        description: 'PR title prefix'
+        required: false
+        default: ''
+        type: string
+    secrets:
+      GH_TOKEN:
+        required: true
   schedule:
     - cron: '0 15 * * 5' # Run every Saturday at 00:00 JST (Friday 15:00 UTC)
 
@@ -25,6 +51,8 @@ jobs:
         uses: DeterminateSystems/update-flake-lock@main
         with:
           token: ${{ secrets.GH_TOKEN }}
+          path-to-flake-dir: ${{ inputs.path || '.' }}
+          pr-title: ${{ inputs.pr-title-prefix }}⬆️ Update flake.lock
 
       - name: Enable auto-merge
         if: ${{ steps.update.outputs.pull-request-number }}
