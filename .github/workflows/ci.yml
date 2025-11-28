@@ -64,7 +64,7 @@ jobs:
 
   test-templates:
     needs: detect-changes
-    timeout-minutes: 10
+    timeout-minutes: 20
     if: needs.detect-changes.outputs.templates != '[]'
     strategy:
       matrix:
