@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   # name = "project-name";
-  compiler-nix-name = "ghc984"; # Version of GHC to use
+  compiler-nix-name = "ghc9103"; # Version of GHC to use
 
   # Tools to include in the development shell
   # shell.tools = {
