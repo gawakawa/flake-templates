@@ -16,7 +16,6 @@ jobs:
       - uses: cachix/install-nix-action@v31
         with:
           github_access_token: ${{ secrets.GH_TOKEN }}
-          set_as_trusted_user: true
 
       - name: Format check
         run: nix fmt -- --ci
@@ -37,7 +36,6 @@ jobs:
       - uses: cachix/install-nix-action@v31
         with:
           github_access_token: ${{ secrets.GH_TOKEN }}
-          set_as_trusted_user: true
 
       - name: List all templates
         id: list-templates
@@ -86,7 +84,6 @@ jobs:
       - uses: cachix/install-nix-action@v31
         with:
           github_access_token: ${{ secrets.GH_TOKEN }}
-          set_as_trusted_user: true
 
       - name: Check ${{ matrix.template }} template
         if: matrix.template != 'haskell'
