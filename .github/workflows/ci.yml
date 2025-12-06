@@ -59,9 +59,9 @@ jobs:
         id: set-templates
         run: |
           if [[ "${{ steps.filter.outputs.root }}" == "true" ]]; then
-            echo "templates=${{ steps.list-templates.outputs.templates }}" >> $GITHUB_OUTPUT
+            printf 'templates=%s\n' '${{ steps.list-templates.outputs.templates }}' >> $GITHUB_OUTPUT
           else
-            echo "templates=${{ toJSON(steps.filter.outputs.changes) }}" >> $GITHUB_OUTPUT
+            printf 'templates=%s\n' '${{ toJSON(steps.filter.outputs.changes) }}' >> $GITHUB_OUTPUT
           fi
 
   test-templates:
