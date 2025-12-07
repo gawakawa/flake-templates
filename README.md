@@ -7,10 +7,11 @@ A collection of Nix flake templates for various development environments.
 To initialize a new project with one of these templates:
 
 ```bash
-nix flake init -t "github:gawakawa/flake-templates#flake-parts"
+nix flake init -t "github:gawakawa/flake-templates#<template-name>"
 ```
 
-## Available Templates
+<details>
+<summary>Available Templates</summary>
 
 ### flake-parts
 
@@ -91,6 +92,8 @@ Lean theorem prover template with elan, treefmt (nixfmt), and mcp-servers-nix (n
 ```bash
 nix flake init -t "github:gawakawa/flake-templates#lean"
 ```
+
+</details>
 
 ## Development
 
