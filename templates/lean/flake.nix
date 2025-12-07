@@ -36,6 +36,7 @@
 
           mcpConfig = inputs.mcp-servers-nix.lib.mkConfig pkgs {
             programs = {
+              fetch.enable = true;
               nixos.enable = true;
             };
             settings.servers = {
