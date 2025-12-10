@@ -68,6 +68,10 @@
                 excludes = [ "node_modules/*" ];
               };
             };
+            settings.formatter.deno.options = [
+              "--config"
+              "deno.json"
+            ];
           };
         };
     };
