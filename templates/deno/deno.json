@@ -1,0 +1,7 @@
+{
+  "tasks": {
+    "test": "deno test",
+    "lint": "deno lint",
+    "check": "deno check"
+  }
+}

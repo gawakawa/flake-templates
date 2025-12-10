@@ -26,10 +26,10 @@ jobs:
         run: nix profile add .#ci
 
       - name: Lint check
-        run: deno lint
+        run: deno task lint
 
       - name: Type check
-        run: deno check
+        run: deno task check
 
       - name: Run tests
-        run: deno test
+        run: deno task test
