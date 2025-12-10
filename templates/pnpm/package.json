@@ -6,8 +6,9 @@
 	"main": "index.js",
 	"scripts": {
 		"lint": "biome lint",
+		"tlint": "oxlint --type-aware",
 		"test": "vitest run",
-		"type-check": "tsgo --noEmit"
+		"type-check": "oxlint --type-aware --type-check"
 	},
 	"keywords": [],
 	"author": "",
@@ -15,10 +16,8 @@
 	"packageManager": "pnpm@10.19.0",
 	"devDependencies": {
 		"@biomejs/biome": "2.2.7",
-		"typescript": "^5.9.3",
+		"oxlint": "^1.32.0",
+		"oxlint-tsgolint": "^0.8.4",
 		"vitest": "^4.0.1"
-	},
-	"dependencies": {
-		"@typescript/native-preview": "7.0.0-dev.20251023.1"
 	}
 }

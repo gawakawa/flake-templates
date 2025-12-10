@@ -27,11 +27,8 @@ jobs:
           nix profile add .#ci
           pnpm install
 
-      - name: Lint check
-        run: pnpm lint
-
-      - name: Type check
-        run: pnpm type-check
+      - name: Lint and type check
+        run: pnpm tlint
 
       - name: Run tests
         run: pnpm test
