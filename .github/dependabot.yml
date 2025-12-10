@@ -1,0 +1,41 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/templates/pnpm"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default: 7
+      semver-major: 30
+      semver-minor: 7
+      semver-patch: 3
+
+  - package-ecosystem: "uv"
+    directory: "/templates/python"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default: 7
+      semver-major: 30
+      semver-minor: 7
+      semver-patch: 3
+
+  - package-ecosystem: "gomod"
+    directory: "/templates/go"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default: 7
+      semver-major: 30
+      semver-minor: 7
+      semver-patch: 3
+
+  - package-ecosystem: "cargo"
+    directory: "/templates/rustup"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default: 7
+      semver-major: 30
+      semver-minor: 7
+      semver-patch: 3
