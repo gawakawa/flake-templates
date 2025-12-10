@@ -5,10 +5,8 @@
 	"type": "module",
 	"main": "index.js",
 	"scripts": {
-		"lint": "biome lint",
-		"tlint": "oxlint --type-aware",
-		"test": "vitest run",
-		"type-check": "oxlint --type-aware --type-check"
+		"lint": "oxlint --type-aware",
+		"test": "vitest run"
 	},
 	"keywords": [],
 	"author": "",
