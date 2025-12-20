@@ -102,6 +102,7 @@
               };
               purs-tidy = {
                 enable = true;
+                package = ps-tools.for-0_15.purs-tidy;
                 includes = [ "*.purs" ];
               };
             };
