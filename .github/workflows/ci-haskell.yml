@@ -36,7 +36,7 @@ jobs:
 
       - name: Close PR if GHC not cached
         if: github.event_name == 'pull_request' && steps.iog-cache.outputs.cached == 'false'
-        run: gh pr close ${{ github.event.pull_request.number }} --comment "GHC not cached in IOG"
+        run: gh pr close ${{ github.event.pull_request.number }} --delete-branch --comment "GHC not cached in IOG"
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
