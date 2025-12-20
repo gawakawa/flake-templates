@@ -67,8 +67,21 @@ jobs:
           pr-title: ${{ inputs.pr-title-prefix }}⬆️ Update flake.lock
           branch: ${{ steps.branch.outputs.name }}
 
+      - name: Check cache and handle PR (haskell)
+        if: ${{ steps.update.outputs.pull-request-number && inputs.path == 'templates/haskell' }}
+        working-directory: ${{ inputs.path }}
+        run: |
+          ghc_path=$(nix build --dry-run '.#devShells.x86_64-linux.default' --accept-flake-config 2>&1 | grep -oE '/nix/store/[a-z0-9]+-ghc-[0-9]+\.[0-9]+\.[0-9]+$' | head -1)
+          if [ -n "$ghc_path" ] && nix path-info --store https://cache.iog.io "$ghc_path" 2>/dev/null; then
+            gh pr merge --auto --merge ${{ steps.update.outputs.pull-request-number }}
+          else
+            gh pr close ${{ steps.update.outputs.pull-request-number }} --comment "GHC not cached in IOG"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
       - name: Enable auto-merge
-        if: ${{ steps.update.outputs.pull-request-number }}
+        if: ${{ steps.update.outputs.pull-request-number && inputs.path != 'templates/haskell' }}
         run: gh pr merge --auto --merge ${{ steps.update.outputs.pull-request-number }}
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
