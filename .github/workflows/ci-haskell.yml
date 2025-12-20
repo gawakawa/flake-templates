@@ -1,0 +1,51 @@
+name: "CI (haskell)"
+
+on:
+  workflow_call:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ secrets.GH_TOKEN }}
+
+      - uses: cachix/cachix-action@v15
+        with:
+          name: gawakawa
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+      - name: Check IOG cache
+        id: iog-cache
+        if: github.event_name == 'pull_request'
+        working-directory: templates/haskell
+        run: |
+          ghc_path=$(nix build --dry-run '.#devShells.x86_64-linux.default' --accept-flake-config 2>&1 | grep -oE '/nix/store/[a-z0-9]+-ghc-[0-9]+\.[0-9]+\.[0-9]+$' | head -1)
+          if [ -n "$ghc_path" ] && nix path-info --store https://cache.iog.io "$ghc_path" 2>/dev/null; then
+            echo "cached=true" >> $GITHUB_OUTPUT
+          else
+            echo "cached=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Close PR if GHC not cached
+        if: github.event_name == 'pull_request' && steps.iog-cache.outputs.cached == 'false'
+        run: gh pr close ${{ github.event.pull_request.number }} --comment "GHC not cached in IOG"
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Flake check
+        if: github.event_name != 'pull_request' || steps.iog-cache.outputs.cached == 'true'
+        working-directory: templates/haskell
+        run: nix flake check --accept-flake-config
+
+      - name: Test devShell
+        if: github.event_name != 'pull_request' || steps.iog-cache.outputs.cached == 'true'
+        working-directory: templates/haskell
+        run: nix develop --accept-flake-config -c echo "DevShell works"
