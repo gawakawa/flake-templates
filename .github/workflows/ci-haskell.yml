@@ -27,11 +27,11 @@ jobs:
         if: github.event_name == 'pull_request'
         working-directory: templates/haskell
         run: |
-          ghc_path=$(nix build --dry-run '.#devShells.x86_64-linux.default' --accept-flake-config 2>&1 | grep -oE '/nix/store/[a-z0-9]+-ghc-[0-9]+\.[0-9]+\.[0-9]+$' | head -1)
-          if [ -n "$ghc_path" ] && nix path-info --store https://cache.iog.io "$ghc_path" 2>/dev/null; then
-            echo "cached=true" >> $GITHUB_OUTPUT
-          else
+          ghc_drv=$(nix build --dry-run '.#devShells.x86_64-linux.default' --accept-flake-config 2>&1 | grep -oE '/nix/store/[a-z0-9]+-ghc-[0-9]+\.[0-9]+\.[0-9]+\.drv' | head -1)
+          if [ -n "$ghc_drv" ]; then
             echo "cached=false" >> $GITHUB_OUTPUT
+          else
+            echo "cached=true" >> $GITHUB_OUTPUT
           fi
 
       - name: Close PR if GHC not cached
