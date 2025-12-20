@@ -28,6 +28,7 @@ jobs:
     timeout-minutes: 5
     outputs:
       templates: ${{ steps.set-templates.outputs.templates }}
+      haskell: ${{ steps.filter.outputs.haskell == 'true' || steps.filter.outputs.root == 'true' }}
     steps:
       - uses: actions/checkout@v5
         with:
@@ -95,34 +96,24 @@ jobs:
         working-directory: templates/${{ matrix.template }}
         run: nix flake check
 
-      - name: Check ${{ matrix.template }} template (with flake config)
-        if: matrix.template == 'haskell'
-        working-directory: templates/${{ matrix.template }}
-        run: nix flake check --accept-flake-config
-
       - name: Test devShell for ${{ matrix.template }} template
         if: matrix.template != 'haskell'
         working-directory: templates/${{ matrix.template }}
         run: nix develop -c echo "DevShell works"
 
-      - name: Test devShell for ${{ matrix.template }} template (with flake config)
-        if: matrix.template == 'haskell'
-        working-directory: templates/${{ matrix.template }}
-        run: nix develop --accept-flake-config -c echo "DevShell works"
+  test-haskell:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.haskell == 'true'
+    uses: ./.github/workflows/ci-haskell.yml
+    secrets: inherit
 
   ci-success:
-    runs-on: ubuntu-latest
-    needs: [tests, test-templates]
+    needs: [tests, test-templates, test-haskell]
     if: always()
+    runs-on: ubuntu-latest
     steps:
-      - name: Check all jobs succeeded
-        run: |
-          if [[ "${{ needs.tests.result }}" != "success" ]]; then
-            echo "tests job failed"
-            exit 1
-          fi
-          if [[ "${{ needs.test-templates.result }}" != "success" ]] && [[ "${{ needs.test-templates.result }}" != "skipped" ]]; then
-            echo "test-templates job failed"
-            exit 1
-          fi
-          echo "All jobs succeeded"
+      - run: exit 1
+        if: |
+          needs.tests.result != 'success' ||
+          (needs.test-templates.result != 'success' && needs.test-templates.result != 'skipped') ||
+          (needs.test-haskell.result != 'success' && needs.test-haskell.result != 'skipped')
