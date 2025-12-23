@@ -2,6 +2,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     purs-nix.url = "github:purs-nix/purs-nix";
+    ps-tools.follows = "purs-nix/ps-tools";
     flake-parts.url = "github:hercules-ci/flake-parts";
     treefmt-nix.url = "github:numtide/treefmt-nix";
     mcp-servers-nix = {
@@ -31,7 +32,7 @@
 
           purs-nix = inputs.purs-nix { inherit system; };
 
-          ps-tools = inputs.purs-nix.inputs.ps-tools.legacyPackages.${system};
+          ps-tools = inputs.ps-tools.legacyPackages.${system};
 
           ps = purs-nix.purs {
             dependencies = [

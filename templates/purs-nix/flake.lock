@@ -260,6 +260,10 @@
         "flake-parts": "flake-parts",
         "mcp-servers-nix": "mcp-servers-nix",
         "nixpkgs": "nixpkgs",
+        "ps-tools": [
+          "purs-nix",
+          "ps-tools"
+        ],
         "purs-nix": "purs-nix",
         "treefmt-nix": "treefmt-nix"
       }
