@@ -27,16 +27,26 @@ jobs:
         if: github.event_name == 'pull_request'
         working-directory: templates/haskell
         run: |
-          ghc_drv=$(nix build --dry-run '.#devShells.x86_64-linux.default' --accept-flake-config 2>&1 | grep -oE '/nix/store/[a-z0-9]+-ghc-[0-9]+\.[0-9]+\.[0-9]+\.drv' | head -1)
-          if [ -n "$ghc_drv" ]; then
-            echo "cached=false" >> $GITHUB_OUTPUT
-          else
-            echo "cached=true" >> $GITHUB_OUTPUT
-          fi
+          dry_run_output=$(nix build --dry-run '.#devShells.x86_64-linux.default' --accept-flake-config 2>&1)
 
-      - name: Close PR if GHC not cached
+          patterns=(
+            'ghc-[0-9]+\.[0-9]+\.[0-9]+\.drv'
+            'haskell-language-server-exe-haskell-language-server-[0-9.]+\.drv'
+          )
+
+          cached=true
+          for pattern in "${patterns[@]}"; do
+            if echo "$dry_run_output" | grep -qE "/nix/store/[a-z0-9]+-$pattern"; then
+              cached=false
+              break
+            fi
+          done
+
+          echo "cached=$cached" >> $GITHUB_OUTPUT
+
+      - name: Close PR if GHC or HLS not cached in IOG
         if: github.event_name == 'pull_request' && steps.iog-cache.outputs.cached == 'false'
-        run: gh pr close ${{ github.event.pull_request.number }} --delete-branch --comment "GHC not cached in IOG"
+        run: gh pr close ${{ github.event.pull_request.number }} --delete-branch --comment "GHC or HLS not cached in IOG"
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
