@@ -25,7 +25,7 @@
         let
           ciPackages = with pkgs; [
             pnpm
-            nodejs_22
+            nodejs_24
           ];
 
           devPackages =
