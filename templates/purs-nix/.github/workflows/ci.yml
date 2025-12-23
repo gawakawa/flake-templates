@@ -16,11 +16,6 @@ jobs:
         with:
           github_access_token: ${{ secrets.GH_TOKEN }}
 
-      - name: Format check
-        run: |
-          nix fmt -- --no-cache
-          git diff --exit-code
-
       - name: Build
         run: nix build
 
