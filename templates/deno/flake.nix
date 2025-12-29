@@ -95,7 +95,8 @@
                   nativeBuildInputs = [ pkgs.deno ];
                 }
                 ''
-                  deno lint $src
+                  cd $src
+                  deno task lint
                   mkdir "$out"
                 '';
 
@@ -106,7 +107,8 @@
                   nativeBuildInputs = [ pkgs.deno ];
                 }
                 ''
-                  deno check $src/**/*.ts
+                  cd $src
+                  deno task check
                   mkdir "$out"
                 '';
           };
