@@ -89,16 +89,6 @@
                   mkdir "$out"
                 '';
 
-            oxlint =
-              pkgs.runCommandLocal "oxlint"
-                {
-                  src = ./.;
-                  nativeBuildInputs = [ pkgs.oxlint ];
-                }
-                ''
-                  oxlint $src
-                  mkdir "$out"
-                '';
           };
 
           treefmt = {
