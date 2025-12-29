@@ -78,6 +78,13 @@
                 enable = true;
                 includes = [ "*.nix" ];
               };
+              actionlint = {
+                enable = true;
+                includes = [
+                  ".github/workflows/*.yml"
+                  ".github/workflows/*.yaml"
+                ];
+              };
             };
           };
         };
