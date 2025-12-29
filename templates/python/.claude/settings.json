@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cd ${CLAUDE_PROJECT_DIR} && nix fmt && uv run ruff check"
+            "command": "cd ${CLAUDE_PROJECT_DIR} && nix flake check"
           }
         ]
       }
