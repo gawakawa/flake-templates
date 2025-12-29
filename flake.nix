@@ -108,6 +108,15 @@
                   ".github/workflows/*.yaml"
                 ];
               };
+              shellcheck = {
+                enable = true;
+                includes = [
+                  "*.sh"
+                  "*.bash"
+                  ".envrc"
+                  ".envrc.*"
+                ];
+              };
             };
           };
         };

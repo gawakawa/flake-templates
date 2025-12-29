@@ -67,6 +67,15 @@
                 ".github/workflows/*.yaml"
               ];
             };
+            shellcheck = {
+              enable = true;
+              includes = [
+                "*.sh"
+                "*.bash"
+                ".envrc"
+                ".envrc.*"
+              ];
+            };
           };
         };
         mcpConfig = mcp-servers-nix.lib.mkConfig pkgs {
