@@ -42,7 +42,7 @@ jobs:
             fi
           done
 
-          echo "cached=$cached" >> $GITHUB_OUTPUT
+          echo "cached=$cached" >> "$GITHUB_OUTPUT"
 
       - name: Close PR if GHC or HLS not cached in IOG
         if: github.event_name == 'pull_request' && steps.iog-cache.outputs.cached == 'false'
