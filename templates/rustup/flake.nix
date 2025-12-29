@@ -75,6 +75,13 @@
                 enable = true;
                 includes = [ "*.rs" ];
               };
+              actionlint = {
+                enable = true;
+                includes = [
+                  ".github/workflows/*.yml"
+                  ".github/workflows/*.yaml"
+                ];
+              };
             };
           };
         };
