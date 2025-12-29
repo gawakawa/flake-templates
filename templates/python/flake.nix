@@ -92,8 +92,8 @@
                 includes = [
                   "*.sh"
                   "*.bash"
-                  ".envrc"
-                  ".envrc.*"
+                  "*.envrc"
+                  "*.envrc.*"
                 ];
               };
             };
