@@ -19,7 +19,6 @@
       perSystem =
         {
           pkgs,
-          system,
           ...
         }:
         let
@@ -60,6 +59,14 @@
           treefmt = {
             programs = {
               nixfmt = {
+                enable = true;
+                includes = [ "*.nix" ];
+              };
+              statix = {
+                enable = true;
+                includes = [ "*.nix" ];
+              };
+              deadnix = {
                 enable = true;
                 includes = [ "*.nix" ];
               };

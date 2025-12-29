@@ -19,7 +19,6 @@
       perSystem =
         {
           pkgs,
-          system,
           ...
         }:
         let
@@ -74,6 +73,14 @@
                 includes = [ "*.go" ];
               };
               nixfmt = {
+                enable = true;
+                includes = [ "*.nix" ];
+              };
+              statix = {
+                enable = true;
+                includes = [ "*.nix" ];
+              };
+              deadnix = {
                 enable = true;
                 includes = [ "*.nix" ];
               };

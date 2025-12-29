@@ -4,7 +4,6 @@
     nixpkgs.follows = "haskellNix/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     treefmt-nix.url = "github:numtide/treefmt-nix";
-    systems.url = "github:nix-systems/default";
     mcp-servers-nix.url = "github:natsukium/mcp-servers-nix";
   };
 
@@ -15,7 +14,6 @@
       flake-utils,
       haskellNix,
       treefmt-nix,
-      systems,
       mcp-servers-nix,
     }:
     let
@@ -28,7 +26,7 @@
       let
         overlays = [
           haskellNix.overlay
-          (final: prev: {
+          (final: _prev: {
             hixProject = final.haskell-nix.hix.project {
               src = ./.;
               evalSystem = "x86_64-linux";
@@ -51,6 +49,14 @@
               includes = [ "*.hs" ];
             };
             nixfmt = {
+              enable = true;
+              includes = [ "*.nix" ];
+            };
+            statix = {
+              enable = true;
+              includes = [ "*.nix" ];
+            };
+            deadnix = {
               enable = true;
               includes = [ "*.nix" ];
             };

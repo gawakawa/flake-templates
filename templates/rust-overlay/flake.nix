@@ -84,6 +84,14 @@
                 enable = true;
                 includes = [ "*.nix" ];
               };
+              statix = {
+                enable = true;
+                includes = [ "*.nix" ];
+              };
+              deadnix = {
+                enable = true;
+                includes = [ "*.nix" ];
+              };
               rustfmt = {
                 enable = true;
                 includes = [ "*.rs" ];
