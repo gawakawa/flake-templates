@@ -60,13 +60,23 @@
 
           treefmt = {
             programs = {
-              gofmt.enable = true;
-              goimports.enable = true;
+              gofmt = {
+                enable = true;
+                includes = [ "*.go" ];
+              };
+              goimports = {
+                enable = true;
+                includes = [ "*.go" ];
+              };
               golines = {
                 enable = true;
                 maxLength = 70;
+                includes = [ "*.go" ];
               };
-              nixfmt.enable = true;
+              nixfmt = {
+                enable = true;
+                includes = [ "*.nix" ];
+              };
             };
           };
         };

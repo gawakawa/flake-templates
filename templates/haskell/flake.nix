@@ -42,9 +42,18 @@
         flake = pkgs.hixProject.flake { };
         treefmtEval = treefmt-nix.lib.evalModule pkgs {
           programs = {
-            cabal-fmt.enable = true;
-            fourmolu.enable = true;
-            nixfmt.enable = true;
+            cabal-fmt = {
+              enable = true;
+              includes = [ "*.cabal" ];
+            };
+            fourmolu = {
+              enable = true;
+              includes = [ "*.hs" ];
+            };
+            nixfmt = {
+              enable = true;
+              includes = [ "*.nix" ];
+            };
           };
         };
         mcpConfig = mcp-servers-nix.lib.mkConfig pkgs {

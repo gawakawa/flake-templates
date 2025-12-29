@@ -80,8 +80,14 @@
 
           treefmt = {
             programs = {
-              nixfmt.enable = true;
-              rustfmt.enable = true;
+              nixfmt = {
+                enable = true;
+                includes = [ "*.nix" ];
+              };
+              rustfmt = {
+                enable = true;
+                includes = [ "*.rs" ];
+              };
             };
           };
         };

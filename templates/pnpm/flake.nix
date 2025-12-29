@@ -61,8 +61,19 @@
 
           treefmt = {
             programs = {
-              nixfmt.enable = true;
-              biome.enable = true;
+              nixfmt = {
+                enable = true;
+                includes = [ "*.nix" ];
+              };
+              biome = {
+                enable = true;
+                includes = [
+                  "*.ts"
+                  "*.tsx"
+                  "*.js"
+                  "*.jsx"
+                ];
+              };
             };
           };
         };

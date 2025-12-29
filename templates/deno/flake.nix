@@ -60,9 +60,20 @@
 
           treefmt = {
             programs = {
-              nixfmt.enable = true;
+              nixfmt = {
+                enable = true;
+                includes = [ "*.nix" ];
+              };
               deno = {
                 enable = true;
+                includes = [
+                  "*.ts"
+                  "*.tsx"
+                  "*.js"
+                  "*.jsx"
+                  "*.json"
+                  "*.md"
+                ];
                 excludes = [ "node_modules/*" ];
               };
             };

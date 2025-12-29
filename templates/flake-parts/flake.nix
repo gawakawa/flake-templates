@@ -59,7 +59,10 @@
 
           treefmt = {
             programs = {
-              nixfmt.enable = true;
+              nixfmt = {
+                enable = true;
+                includes = [ "*.nix" ];
+              };
             };
           };
         };

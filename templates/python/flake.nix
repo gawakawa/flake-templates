@@ -61,9 +61,18 @@
 
           treefmt = {
             programs = {
-              nixfmt.enable = true;
-              ruff-format.enable = true;
-              ruff-check.enable = true;
+              nixfmt = {
+                enable = true;
+                includes = [ "*.nix" ];
+              };
+              ruff-format = {
+                enable = true;
+                includes = [ "*.py" ];
+              };
+              ruff-check = {
+                enable = true;
+                includes = [ "*.py" ];
+              };
             };
           };
         };
