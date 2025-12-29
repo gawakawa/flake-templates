@@ -80,6 +80,13 @@
                 enable = true;
                 includes = [ "*.py" ];
               };
+              actionlint = {
+                enable = true;
+                includes = [
+                  ".github/workflows/*.yml"
+                  ".github/workflows/*.yaml"
+                ];
+              };
             };
           };
         };
