@@ -83,6 +83,13 @@
                 ];
                 excludes = [ "node_modules/*" ];
               };
+              actionlint = {
+                enable = true;
+                includes = [
+                  ".github/workflows/*.yml"
+                  ".github/workflows/*.yaml"
+                ];
+              };
             };
             settings.formatter.deno.options = [
               "--config"
