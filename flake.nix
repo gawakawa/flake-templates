@@ -92,7 +92,8 @@
                   nativeBuildInputs = [ pkgs.statix ];
                 }
                 ''
-                  statix check $src
+                  cd $src
+                  statix check .
                   mkdir "$out"
                 '';
 
@@ -103,7 +104,8 @@
                   nativeBuildInputs = [ pkgs.deadnix ];
                 }
                 ''
-                  deadnix --fail $src
+                  cd $src
+                  deadnix --fail .
                   mkdir "$out"
                 '';
 
@@ -114,7 +116,8 @@
                   nativeBuildInputs = [ pkgs.actionlint ];
                 }
                 ''
-                  actionlint $src/.github/workflows/*.yml
+                  cd $src
+                  actionlint .github/workflows/*.yml
                   mkdir "$out"
                 '';
           };
