@@ -98,6 +98,17 @@
                   deno lint $src
                   mkdir "$out"
                 '';
+
+            deno-check =
+              pkgs.runCommandLocal "deno-check"
+                {
+                  src = ./.;
+                  nativeBuildInputs = [ pkgs.deno ];
+                }
+                ''
+                  deno check $src/**/*.ts
+                  mkdir "$out"
+                '';
           };
 
           treefmt = {
