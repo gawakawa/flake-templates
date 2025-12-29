@@ -112,6 +112,13 @@
                 package = ps-tools.for-0_15.purs-tidy;
                 includes = [ "*.purs" ];
               };
+              actionlint = {
+                enable = true;
+                includes = [
+                  ".github/workflows/*.yml"
+                  ".github/workflows/*.yaml"
+                ];
+              };
             };
           };
         };
