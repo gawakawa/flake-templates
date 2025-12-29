@@ -17,11 +17,7 @@
       imports = [ inputs.treefmt-nix.flakeModule ];
 
       perSystem =
-        {
-          pkgs,
-          system,
-          ...
-        }:
+        { pkgs, ... }:
         let
           ciPackages = with pkgs; [
             python312
@@ -59,6 +55,52 @@
             '';
           };
 
+          checks = {
+            statix =
+              pkgs.runCommandLocal "statix"
+                {
+                  src = ./.;
+                  nativeBuildInputs = [ pkgs.statix ];
+                }
+                ''
+                  statix check $src
+                  mkdir "$out"
+                '';
+
+            deadnix =
+              pkgs.runCommandLocal "deadnix"
+                {
+                  src = ./.;
+                  nativeBuildInputs = [ pkgs.deadnix ];
+                }
+                ''
+                  deadnix --fail $src
+                  mkdir "$out"
+                '';
+
+            actionlint =
+              pkgs.runCommandLocal "actionlint"
+                {
+                  src = ./.;
+                  nativeBuildInputs = [ pkgs.actionlint ];
+                }
+                ''
+                  actionlint $src/.github/workflows/*.yml
+                  mkdir "$out"
+                '';
+
+            ruff =
+              pkgs.runCommandLocal "ruff"
+                {
+                  src = ./.;
+                  nativeBuildInputs = [ pkgs.ruff ];
+                }
+                ''
+                  ruff check $src
+                  mkdir "$out"
+                '';
+          };
+
           treefmt = {
             programs = {
               nixfmt = {
@@ -66,10 +108,6 @@
                 includes = [ "*.nix" ];
               };
               ruff-format = {
-                enable = true;
-                includes = [ "*.py" ];
-              };
-              ruff-check = {
                 enable = true;
                 includes = [ "*.py" ];
               };

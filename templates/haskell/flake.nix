@@ -15,8 +15,8 @@
       flake-utils,
       haskellNix,
       treefmt-nix,
-      systems,
       mcp-servers-nix,
+      ...
     }:
     let
       supportedSystems = [
@@ -28,7 +28,7 @@
       let
         overlays = [
           haskellNix.overlay
-          (final: prev: {
+          (final: _: {
             hixProject = final.haskell-nix.hix.project {
               src = ./.;
               evalSystem = "x86_64-linux";
@@ -84,6 +84,39 @@
 
         checks = {
           formatting = treefmtEval.config.build.check self;
+
+          statix =
+            pkgs.runCommandLocal "statix"
+              {
+                src = self;
+                nativeBuildInputs = [ pkgs.statix ];
+              }
+              ''
+                statix check $src
+                mkdir "$out"
+              '';
+
+          deadnix =
+            pkgs.runCommandLocal "deadnix"
+              {
+                src = self;
+                nativeBuildInputs = [ pkgs.deadnix ];
+              }
+              ''
+                deadnix --fail $src
+                mkdir "$out"
+              '';
+
+          actionlint =
+            pkgs.runCommandLocal "actionlint"
+              {
+                src = self;
+                nativeBuildInputs = [ pkgs.actionlint ];
+              }
+              ''
+                actionlint $src/.github/workflows/*.yml
+                mkdir "$out"
+              '';
         };
       }
     );

@@ -23,7 +23,6 @@
       perSystem =
         {
           config,
-          pkgs,
           system,
           ...
         }:
@@ -78,6 +77,39 @@
 
           checks = {
             tests = ps.test.check { };
+
+            statix =
+              pkgs.runCommandLocal "statix"
+                {
+                  src = ./.;
+                  nativeBuildInputs = [ pkgs.statix ];
+                }
+                ''
+                  statix check $src
+                  mkdir "$out"
+                '';
+
+            deadnix =
+              pkgs.runCommandLocal "deadnix"
+                {
+                  src = ./.;
+                  nativeBuildInputs = [ pkgs.deadnix ];
+                }
+                ''
+                  deadnix --fail $src
+                  mkdir "$out"
+                '';
+
+            actionlint =
+              pkgs.runCommandLocal "actionlint"
+                {
+                  src = ./.;
+                  nativeBuildInputs = [ pkgs.actionlint ];
+                }
+                ''
+                  actionlint $src/.github/workflows/*.yml
+                  mkdir "$out"
+                '';
           };
 
           devShells.default = pkgs.mkShell {

@@ -17,11 +17,7 @@
       imports = [ inputs.treefmt-nix.flakeModule ];
 
       perSystem =
-        {
-          pkgs,
-          system,
-          ...
-        }:
+        { pkgs, ... }:
         let
           ciPackages = with pkgs; [
             elan
@@ -63,6 +59,41 @@
               cat ${mcpConfig} > .mcp.json
               echo "Generated .mcp.json"
             '';
+          };
+
+          checks = {
+            statix =
+              pkgs.runCommandLocal "statix"
+                {
+                  src = ./.;
+                  nativeBuildInputs = [ pkgs.statix ];
+                }
+                ''
+                  statix check $src
+                  mkdir "$out"
+                '';
+
+            deadnix =
+              pkgs.runCommandLocal "deadnix"
+                {
+                  src = ./.;
+                  nativeBuildInputs = [ pkgs.deadnix ];
+                }
+                ''
+                  deadnix --fail $src
+                  mkdir "$out"
+                '';
+
+            actionlint =
+              pkgs.runCommandLocal "actionlint"
+                {
+                  src = ./.;
+                  nativeBuildInputs = [ pkgs.actionlint ];
+                }
+                ''
+                  actionlint $src/.github/workflows/*.yml
+                  mkdir "$out"
+                '';
           };
 
           treefmt = {
