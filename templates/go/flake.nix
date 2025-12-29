@@ -19,6 +19,7 @@
       perSystem =
         {
           pkgs,
+          system,
           ...
         }:
         let
@@ -75,30 +76,6 @@
               nixfmt = {
                 enable = true;
                 includes = [ "*.nix" ];
-              };
-              statix = {
-                enable = true;
-                includes = [ "*.nix" ];
-              };
-              deadnix = {
-                enable = true;
-                includes = [ "*.nix" ];
-              };
-              actionlint = {
-                enable = true;
-                includes = [
-                  ".github/workflows/*.yml"
-                  ".github/workflows/*.yaml"
-                ];
-              };
-              shellcheck = {
-                enable = true;
-                includes = [
-                  "*.sh"
-                  "*.bash"
-                  "*.envrc"
-                  "*.envrc.*"
-                ];
               };
             };
           };

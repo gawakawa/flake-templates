@@ -51,11 +51,11 @@ jobs:
         run: |
           path="${{ inputs.path || '.' }}"
           if [ "$path" = "." ]; then
-            echo "name=update_flake_lock_action" >> "$GITHUB_OUTPUT"
+            echo "name=update_flake_lock_action" >> $GITHUB_OUTPUT
           else
             # Replace slashes with underscores for branch name
             branch_suffix=$(echo "$path" | sed 's/\//_/g')
-            echo "name=update_flake_lock_action_${branch_suffix}" >> "$GITHUB_OUTPUT"
+            echo "name=update_flake_lock_action_${branch_suffix}" >> $GITHUB_OUTPUT
           fi
 
       - name: Update flake.lock

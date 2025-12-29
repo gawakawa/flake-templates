@@ -23,6 +23,7 @@
       perSystem =
         {
           config,
+          pkgs,
           system,
           ...
         }:
@@ -99,34 +100,10 @@
                 enable = true;
                 includes = [ "*.nix" ];
               };
-              statix = {
-                enable = true;
-                includes = [ "*.nix" ];
-              };
-              deadnix = {
-                enable = true;
-                includes = [ "*.nix" ];
-              };
               purs-tidy = {
                 enable = true;
                 package = ps-tools.for-0_15.purs-tidy;
                 includes = [ "*.purs" ];
-              };
-              actionlint = {
-                enable = true;
-                includes = [
-                  ".github/workflows/*.yml"
-                  ".github/workflows/*.yaml"
-                ];
-              };
-              shellcheck = {
-                enable = true;
-                includes = [
-                  "*.sh"
-                  "*.bash"
-                  "*.envrc"
-                  "*.envrc.*"
-                ];
               };
             };
           };

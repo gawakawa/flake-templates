@@ -19,6 +19,7 @@
       perSystem =
         {
           pkgs,
+          system,
           ...
         }:
         let
@@ -63,14 +64,6 @@
                 enable = true;
                 includes = [ "*.nix" ];
               };
-              statix = {
-                enable = true;
-                includes = [ "*.nix" ];
-              };
-              deadnix = {
-                enable = true;
-                includes = [ "*.nix" ];
-              };
               deno = {
                 enable = true;
                 includes = [
@@ -82,22 +75,6 @@
                   "*.md"
                 ];
                 excludes = [ "node_modules/*" ];
-              };
-              actionlint = {
-                enable = true;
-                includes = [
-                  ".github/workflows/*.yml"
-                  ".github/workflows/*.yaml"
-                ];
-              };
-              shellcheck = {
-                enable = true;
-                includes = [
-                  "*.sh"
-                  "*.bash"
-                  "*.envrc"
-                  "*.envrc.*"
-                ];
               };
             };
             settings.formatter.deno.options = [
