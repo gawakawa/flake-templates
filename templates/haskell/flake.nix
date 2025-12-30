@@ -6,6 +6,8 @@
     treefmt-nix.url = "github:numtide/treefmt-nix";
     systems.url = "github:nix-systems/default";
     mcp-servers-nix.url = "github:natsukium/mcp-servers-nix";
+    git-hooks-nix.url = "github:cachix/git-hooks.nix";
+    git-hooks-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -16,6 +18,7 @@
       haskellNix,
       treefmt-nix,
       mcp-servers-nix,
+      git-hooks-nix,
       ...
     }:
     let
@@ -56,6 +59,18 @@
             };
           };
         };
+        pre-commit-check = git-hooks-nix.lib.${system}.run {
+          src = self;
+          hooks = {
+            treefmt = {
+              enable = true;
+              package = treefmtEval.config.build.wrapper;
+            };
+            statix.enable = true;
+            deadnix.enable = true;
+            actionlint.enable = true;
+          };
+        };
         mcpConfig = mcp-servers-nix.lib.mkConfig pkgs {
           programs = {
             nixos.enable = true;
@@ -73,7 +88,9 @@
         devShells = flake.devShells // {
           default = pkgs.mkShell {
             inputsFrom = [ flake.devShells.default ];
+            buildInputs = pre-commit-check.enabledPackages;
             shellHook = ''
+              ${pre-commit-check.shellHook}
               cat ${mcpConfig} > .mcp.json
               echo "Generated .mcp.json"
             '';
@@ -83,43 +100,7 @@
         formatter = treefmtEval.config.build.wrapper;
 
         checks = {
-          formatting = treefmtEval.config.build.check self;
-
-          statix =
-            pkgs.runCommandLocal "statix"
-              {
-                src = self;
-                nativeBuildInputs = [ pkgs.statix ];
-              }
-              ''
-                cd $src
-                statix check .
-                mkdir "$out"
-              '';
-
-          deadnix =
-            pkgs.runCommandLocal "deadnix"
-              {
-                src = self;
-                nativeBuildInputs = [ pkgs.deadnix ];
-              }
-              ''
-                cd $src
-                deadnix --fail .
-                mkdir "$out"
-              '';
-
-          actionlint =
-            pkgs.runCommandLocal "actionlint"
-              {
-                src = self;
-                nativeBuildInputs = [ pkgs.actionlint ];
-              }
-              ''
-                cd $src
-                actionlint .github/workflows/*.yml
-                mkdir "$out"
-              '';
+          pre-commit = pre-commit-check;
         };
       }
     );
