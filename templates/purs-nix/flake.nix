@@ -83,7 +83,10 @@
           };
 
           pre-commit.settings.hooks = {
-            treefmt.enable = true;
+            treefmt = {
+              enable = true;
+              excludes = [ ".*\\.purs$" ]; # purs-tidy の mtime 問題を回避
+            };
             statix.enable = true;
             deadnix.enable = true;
             actionlint.enable = true;
