@@ -27,4 +27,5 @@ dist-ssr
 .direnv
 .mcp.json
 result
+.pre-commit-config.yaml
 

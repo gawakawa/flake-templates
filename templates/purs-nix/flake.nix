@@ -9,6 +9,8 @@
       url = "github:natsukium/mcp-servers-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    git-hooks-nix.url = "github:cachix/git-hooks.nix";
+    git-hooks-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -18,7 +20,10 @@
         "x86_64-linux"
       ];
 
-      imports = [ inputs.treefmt-nix.flakeModule ];
+      imports = [
+        inputs.treefmt-nix.flakeModule
+        inputs.git-hooks-nix.flakeModule
+      ];
 
       perSystem =
         {
@@ -75,44 +80,15 @@
             program = "${config.packages.default}/bin/hello";
           };
 
+          pre-commit.settings.hooks = {
+            treefmt.enable = true;
+            statix.enable = true;
+            deadnix.enable = true;
+            actionlint.enable = true;
+          };
+
           checks = {
             tests = ps.test.check { };
-
-            statix =
-              pkgs.runCommandLocal "statix"
-                {
-                  src = ./.;
-                  nativeBuildInputs = [ pkgs.statix ];
-                }
-                ''
-                  cd $src
-                  statix check .
-                  mkdir "$out"
-                '';
-
-            deadnix =
-              pkgs.runCommandLocal "deadnix"
-                {
-                  src = ./.;
-                  nativeBuildInputs = [ pkgs.deadnix ];
-                }
-                ''
-                  cd $src
-                  deadnix --fail .
-                  mkdir "$out"
-                '';
-
-            actionlint =
-              pkgs.runCommandLocal "actionlint"
-                {
-                  src = ./.;
-                  nativeBuildInputs = [ pkgs.actionlint ];
-                }
-                ''
-                  cd $src
-                  actionlint .github/workflows/*.yml
-                  mkdir "$out"
-                '';
           };
 
           devShells.default = pkgs.mkShell {
@@ -122,8 +98,10 @@
               purs-nix.esbuild
               purs-nix.purescript
               ps-tools.for-0_15.purescript-language-server
-            ];
+            ]
+            ++ config.pre-commit.settings.enabledPackages;
             shellHook = ''
+              ${config.pre-commit.shellHook}
               cat ${mcpConfig} > .mcp.json
               echo "Generated .mcp.json"
             '';

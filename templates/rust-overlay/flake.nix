@@ -4,6 +4,8 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     treefmt-nix.url = "github:numtide/treefmt-nix";
     mcp-servers-nix.url = "github:natsukium/mcp-servers-nix";
+    git-hooks-nix.url = "github:cachix/git-hooks.nix";
+    git-hooks-nix.inputs.nixpkgs.follows = "nixpkgs";
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -18,10 +20,14 @@
         "aarch64-darwin"
       ];
 
-      imports = [ inputs.treefmt-nix.flakeModule ];
+      imports = [
+        inputs.treefmt-nix.flakeModule
+        inputs.git-hooks-nix.flakeModule
+      ];
 
       perSystem =
         {
+          config,
           pkgs,
           system,
           ...
@@ -65,56 +71,27 @@
             mcp-config = mcpConfig;
           };
 
+          pre-commit.settings.hooks = {
+            treefmt.enable = true;
+            statix.enable = true;
+            deadnix.enable = true;
+            actionlint.enable = true;
+          };
+
           devShells.default =
             with pkgs;
             mkShell {
               buildInputs = [
                 rust-bin.stable.latest.default
-              ];
+              ]
+              ++ config.pre-commit.settings.enabledPackages;
 
               shellHook = ''
+                ${config.pre-commit.shellHook}
                 cat ${mcpConfig} > .mcp.json
                 echo "Generated .mcp.json"
               '';
             };
-
-          checks = {
-            statix =
-              pkgs.runCommandLocal "statix"
-                {
-                  src = ./.;
-                  nativeBuildInputs = [ pkgs.statix ];
-                }
-                ''
-                  cd $src
-                  statix check .
-                  mkdir "$out"
-                '';
-
-            deadnix =
-              pkgs.runCommandLocal "deadnix"
-                {
-                  src = ./.;
-                  nativeBuildInputs = [ pkgs.deadnix ];
-                }
-                ''
-                  cd $src
-                  deadnix --fail .
-                  mkdir "$out"
-                '';
-
-            actionlint =
-              pkgs.runCommandLocal "actionlint"
-                {
-                  src = ./.;
-                  nativeBuildInputs = [ pkgs.actionlint ];
-                }
-                ''
-                  cd $src
-                  actionlint .github/workflows/*.yml
-                  mkdir "$out"
-                '';
-          };
 
           treefmt = {
             programs = {
