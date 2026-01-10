@@ -15,9 +15,9 @@ jobs:
     steps:
       - name: List open PRs
         id: list-prs
-        run: echo "prs=$(gh pr list --state open --json number -q '.[].number')" >> "$GITHUB_OUTPUT"
+        run: echo "prs=$(gh pr list --repo "${{ github.repository }}" --state open --json number -q '[.[].number] | join(" ")')" >> "$GITHUB_OUTPUT"
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Update PR branches
         run: |
@@ -25,4 +25,4 @@ jobs:
             gh pr update-branch "$pr" --repo "${{ github.repository }}" || true
           done
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
