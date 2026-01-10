@@ -24,7 +24,12 @@
       ];
 
       perSystem =
-        { config, pkgs, ... }:
+        {
+          config,
+          pkgs,
+          system,
+          ...
+        }:
         let
           ciPackages = with pkgs; [
           ];
@@ -36,11 +41,9 @@
               # Additional development tools can be added here
             ]);
 
-          mcpConfig = inputs.mcp-servers-nix.lib.mkConfig pkgs {
-            programs = {
-              nixos.enable = true;
-            };
-          };
+          mcpConfig = inputs.mcp-servers-nix.lib.mkConfig (import inputs.mcp-servers-nix.inputs.nixpkgs {
+            inherit system;
+          }) { programs.nixos.enable = true; };
         in
         {
           packages = {

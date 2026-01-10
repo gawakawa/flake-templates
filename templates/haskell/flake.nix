@@ -73,11 +73,9 @@
             actionlint.enable = true;
           };
         };
-        mcpConfig = mcp-servers-nix.lib.mkConfig pkgs {
-          programs = {
-            nixos.enable = true;
-          };
-        };
+        mcpConfig = mcp-servers-nix.lib.mkConfig (import mcp-servers-nix.inputs.nixpkgs {
+          inherit system;
+        }) { programs.nixos.enable = true; };
       in
       flake
       // {
