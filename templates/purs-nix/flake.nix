@@ -118,11 +118,10 @@
                 enable = true;
                 includes = [ "*.nix" ];
               };
-              purs-tidy = {
-                enable = true;
-                package = ps-tools.for-0_15.purs-tidy;
-                includes = [ "*.purs" ];
-              };
+            };
+            settings.formatter.purs-tidy = {
+              command = ps-tools.for-0_15.purs-tidy;
+              includes = [ "*.purs" ];
             };
           };
         };
