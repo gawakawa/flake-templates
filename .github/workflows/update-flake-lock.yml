@@ -3,27 +3,31 @@ name: "Update Flake Lock"
 on:
   workflow_dispatch:
     inputs:
-      path:
-        description: 'Working directory path'
+      path-to-flake-dir:
+        description: "Path to the flake directory"
         required: false
-        default: '.'
         type: string
-      pr-title-prefix:
-        description: 'PR title prefix'
+      pr-title:
+        description: "PR title"
         required: false
-        default: ''
+        type: string
+      branch:
+        description: "Branch name"
+        required: false
         type: string
   workflow_call:
     inputs:
-      path:
-        description: 'Working directory path'
+      path-to-flake-dir:
+        description: "Path to the flake directory"
         required: false
-        default: '.'
         type: string
-      pr-title-prefix:
-        description: 'PR title prefix'
+      pr-title:
+        description: "PR title"
         required: false
-        default: ''
+        type: string
+      branch:
+        description: "Branch name"
+        required: false
         type: string
     secrets:
       GH_TOKEN:
@@ -31,44 +35,17 @@ on:
   schedule:
     - cron: '0 15 * * 5' # Run every Saturday at 00:00 JST (Friday 15:00 UTC)
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   update-flake-lock:
-    permissions:
-      contents: write
-      pull-requests: write
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-
-      - name: Install Nix
-        uses: cachix/install-nix-action@v31
-        with:
-          github_access_token: ${{ secrets.GH_TOKEN }}
-
-      - name: Generate branch name
-        id: branch
-        run: |
-          path="${{ inputs.path || '.' }}"
-          if [ "$path" = "." ]; then
-            echo "name=update_flake_lock_action" >> "$GITHUB_OUTPUT"
-          else
-            # Replace slashes with underscores for branch name
-            branch_suffix=$(echo "$path" | sed 's/\//_/g')
-            echo "name=update_flake_lock_action_${branch_suffix}" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Update flake.lock
-        id: update
-        uses: DeterminateSystems/update-flake-lock@main
-        with:
-          token: ${{ secrets.GH_TOKEN }}
-          path-to-flake-dir: ${{ inputs.path || '.' }}
-          pr-title: ${{ inputs.pr-title-prefix }}⬆️ Update flake.lock
-          branch: ${{ steps.branch.outputs.name }}
-
-      - name: Enable auto-merge
-        if: ${{ steps.update.outputs.pull-request-number }}
-        run: gh pr merge --auto --merge ${{ steps.update.outputs.pull-request-number }}
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+    uses: gawakawa/.github/.github/workflows/update-flake-lock.yml@main
+    with:
+      auto-merge: true
+      path-to-flake-dir: ${{ inputs.path-to-flake-dir }}
+      pr-title: ${{ inputs.pr-title }}
+      branch: ${{ inputs.branch }}
+    secrets:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
