@@ -10,7 +10,7 @@
 /.spago
 main.js
 
-/.direnv/
-/result
-/.mcp.json
-/.pre-commit-config.yaml
+.direnv
+result
+.mcp.json
+.pre-commit-config.yaml

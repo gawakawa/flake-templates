@@ -1,6 +1,6 @@
 .lake/
 build/
-result/
-.direnv/
+result
+.direnv
 .mcp.json
 .pre-commit-config.yaml
