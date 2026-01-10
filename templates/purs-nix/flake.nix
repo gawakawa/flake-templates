@@ -58,16 +58,16 @@
               })
               {
                 programs.nixos.enable = true;
-                settings.servers = {
-                  pursuit = {
-                    command = "nix";
-                    args = [
-                      "run"
-                      "github:gawakawa/pursuit-mcp"
-                      "--"
-                    ];
-                  };
-                };
+                # settings.servers = {
+                #   pursuit = {
+                #     command = "nix";
+                #     args = [
+                #       "run"
+                #       "github:gawakawa/pursuit-mcp"
+                #       "--"
+                #     ];
+                #   };
+                # };
               };
         in
         {
