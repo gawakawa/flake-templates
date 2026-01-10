@@ -24,7 +24,12 @@
       ];
 
       perSystem =
-        { config, pkgs, ... }:
+        {
+          config,
+          pkgs,
+          system,
+          ...
+        }:
         let
           ciPackages = with pkgs; [
             elan
@@ -38,17 +43,20 @@
               ripgrep
             ]);
 
-          mcpConfig = inputs.mcp-servers-nix.lib.mkConfig pkgs {
-            programs = {
-              nixos.enable = true;
-            };
-            settings.servers = {
-              lean-lsp = {
-                command = "${pkgs.lib.getExe' pkgs.uv "uvx"}";
-                args = [ "lean-lsp-mcp" ];
+          mcpConfig =
+            inputs.mcp-servers-nix.lib.mkConfig
+              (import inputs.mcp-servers-nix.inputs.nixpkgs {
+                inherit system;
+              })
+              {
+                programs.nixos.enable = true;
+                settings.servers = {
+                  lean-lsp = {
+                    command = "${pkgs.lib.getExe' pkgs.uv "uvx"}";
+                    args = [ "lean-lsp-mcp" ];
+                  };
+                };
               };
-            };
-          };
         in
         {
           packages = {
