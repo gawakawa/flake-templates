@@ -11,6 +11,6 @@
 main.js
 
 /.direnv/
-/result/
+/result
 /.mcp.json
 /.pre-commit-config.yaml
