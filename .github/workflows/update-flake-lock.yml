@@ -15,6 +15,7 @@ on:
         description: "Branch name"
         required: false
         type: string
+        default: "update-flake-lock"
   workflow_call:
     inputs:
       path-to-flake-dir:
@@ -29,6 +30,7 @@ on:
         description: "Branch name"
         required: false
         type: string
+        default: "update-flake-lock"
     secrets:
       GH_TOKEN:
         required: true
