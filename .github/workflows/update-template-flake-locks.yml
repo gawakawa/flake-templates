@@ -34,6 +34,6 @@ jobs:
     with:
       path-to-flake-dir: templates/${{ matrix.template }}
       pr-title: "[${{ matrix.template }}] ⬆️ Update flake.lock"
-      branch: update_flake_lock_action_templates_${{ matrix.template }}
+      branch: update-flake-lock/${{ matrix.template }}
     secrets:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
