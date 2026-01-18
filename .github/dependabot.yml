@@ -73,6 +73,16 @@ updates:
     cooldown:
       default-days: 7
 
+  - package-ecosystem: "cargo"
+    directory: "/templates/rust-overlay"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 7
+      semver-major-days: 30
+      semver-minor-days: 7
+      semver-patch-days: 3
+
   - package-ecosystem: "github-actions"
     directory: "/templates/rust-overlay"
     schedule:
@@ -80,8 +90,35 @@ updates:
     cooldown:
       default-days: 7
 
+  - package-ecosystem: "cargo"
+    directory: "/templates/rustup"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 7
+      semver-major-days: 30
+      semver-minor-days: 7
+      semver-patch-days: 3
+
   - package-ecosystem: "github-actions"
     directory: "/templates/rustup"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 7
+
+  - package-ecosystem: "cargo"
+    directory: "/templates/crane"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 7
+      semver-major-days: 30
+      semver-minor-days: 7
+      semver-patch-days: 3
+
+  - package-ecosystem: "github-actions"
+    directory: "/templates/crane"
     schedule:
       interval: "weekly"
     cooldown:
