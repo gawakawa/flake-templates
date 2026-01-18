@@ -37,6 +37,14 @@ Rust development template with rust-overlay, treefmt (nixfmt + rustfmt), and mcp
 nix flake init -t "github:gawakawa/flake-templates#rust-overlay"
 ```
 
+### crane
+
+Rust development template with crane, treefmt (nixfmt + rustfmt), and mcp-servers-nix (nixos). Includes comprehensive checks: clippy, doc, fmt, audit, deny, and nextest.
+
+```bash
+nix flake init -t "github:gawakawa/flake-templates#crane"
+```
+
 ### purs-nix
 
 PureScript development template with purs-nix, treefmt (nixfmt + purs-tidy), and mcp-servers-nix (nixos + pursuit).

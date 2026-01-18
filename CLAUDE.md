@@ -20,6 +20,7 @@ Each template is self-contained in its own directory under `templates/` with a c
 - **flake-parts**: Basic modular flake template with treefmt-nix and mcp-servers-nix integration
 - **rustup**: Rust development template using rustup with treefmt (nixfmt + rustfmt) and mcp-servers-nix (serena + nixos)
 - **rust-overlay**: Rust development template using rust-overlay with treefmt (nixfmt + rustfmt) and mcp-servers-nix (serena + nixos)
+- **crane**: Rust development template using crane with treefmt (nixfmt + rustfmt) and mcp-servers-nix (nixos). Includes comprehensive checks (clippy, doc, fmt, audit, deny, nextest)
 - **purs-nix**: PureScript development template using purs-nix with treefmt (nixfmt + purs-tidy) and mcp-servers-nix (nixos + pursuit)
 - **python**: Python development template using uv with treefmt (nixfmt + ruff) and mcp-servers-nix (serena + nixos)
 - **deno**: Deno development template with treefmt (nixfmt + deno) and mcp-servers-nix (serena + nixos)

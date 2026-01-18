@@ -39,6 +39,10 @@
             path = ./templates/rust-overlay;
             description = "Rust template, using rust-overlay";
           };
+          crane = {
+            path = ./templates/crane;
+            description = "Rust template, using crane";
+          };
           purs-nix = {
             path = ./templates/purs-nix;
             description = "PureScript template, using purs-nix";
