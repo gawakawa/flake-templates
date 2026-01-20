@@ -75,6 +75,10 @@
             path = ./templates/idris2;
             description = "Idris2 template";
           };
+          pack = {
+            path = ./templates/pack;
+            description = "Idris2 template, using pack";
+          };
         };
       };
 

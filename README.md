@@ -109,6 +109,14 @@ Idris2 development template with buildIdris, treefmt (nixfmt), and mcp-servers-n
 nix flake init -t "github:gawakawa/flake-templates#idris2"
 ```
 
+### pack
+
+Idris2 development template with pack (package manager), treefmt (nixfmt), and mcp-servers-nix (nixos).
+
+```bash
+nix flake init -t "github:gawakawa/flake-templates#pack"
+```
+
 </details>
 
 ## Development
