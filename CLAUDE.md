@@ -28,6 +28,7 @@ Each template is self-contained in its own directory under `templates/` with a c
 - **haskell**: Haskell development template using haskell.nix and hix
 - **go**: Go development template with treefmt (nixfmt + gofmt + goimports + golines) and mcp-servers-nix (serena + nixos)
 - **lean**: Lean theorem prover template using elan with treefmt (nixfmt) and mcp-servers-nix (nixos + lean-lsp)
+- **idris2**: Idris2 development template using buildIdris with treefmt (nixfmt) and mcp-servers-nix (nixos)
 
 ### Key Integration Points
 

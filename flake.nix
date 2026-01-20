@@ -71,6 +71,10 @@
             path = ./templates/lean;
             description = "Lean theorem prover template, using elan";
           };
+          idris2 = {
+            path = ./templates/idris2;
+            description = "Idris2 template";
+          };
         };
       };
 
@@ -93,7 +97,12 @@
 
           pre-commit.settings.hooks = {
             treefmt.enable = true;
-            statix.enable = true;
+            # Workaround: git-hooks.nix generates `--ignore ""` when ignore = [],
+            # causing statix to fail. Override entry to avoid this bug.
+            statix = {
+              enable = true;
+              entry = "${pkgs.statix}/bin/statix check --format errfmt";
+            };
             deadnix.enable = true;
             actionlint.enable = true;
           };

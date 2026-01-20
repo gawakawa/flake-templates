@@ -101,6 +101,14 @@ Lean theorem prover template with elan, treefmt (nixfmt), and mcp-servers-nix (n
 nix flake init -t "github:gawakawa/flake-templates#lean"
 ```
 
+### idris2
+
+Idris2 development template with buildIdris, treefmt (nixfmt), and mcp-servers-nix (nixos).
+
+```bash
+nix flake init -t "github:gawakawa/flake-templates#idris2"
+```
+
 </details>
 
 ## Development
