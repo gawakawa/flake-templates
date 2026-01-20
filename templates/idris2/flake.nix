@@ -42,7 +42,6 @@
             with pkgs;
             [
               idris2Packages.idris2Lsp
-              idris2Packages.pack
             ]
             ++ config.pre-commit.settings.enabledPackages;
 
