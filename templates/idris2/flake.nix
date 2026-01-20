@@ -31,13 +31,20 @@
           ...
         }:
         let
-          ciPackages = with pkgs; [
-            idris2
-            idris2Packages.idris2Lsp
-            idris2Packages.pack
-          ];
+          # Define the package using buildIdris (nixpkgs recommended)
+          helloPkg = pkgs.idris2Packages.buildIdris {
+            ipkgName = "hello";
+            src = ./.;
+            idrisLibraries = [ ];
+          };
 
-          devPackages = ciPackages ++ config.pre-commit.settings.enabledPackages;
+          devTools =
+            with pkgs;
+            [
+              idris2Packages.idris2Lsp
+              idris2Packages.pack
+            ]
+            ++ config.pre-commit.settings.enabledPackages;
 
           mcpConfig = inputs.mcp-servers-nix.lib.mkConfig (import inputs.mcp-servers-nix.inputs.nixpkgs {
             inherit system;
@@ -45,9 +52,11 @@
         in
         {
           packages = {
+            default = helloPkg.executable;
+
             ci = pkgs.buildEnv {
               name = "ci";
-              paths = ciPackages;
+              paths = [ helloPkg.executable ];
             };
 
             mcp-config = mcpConfig;
@@ -61,26 +70,20 @@
           };
 
           devShells.default = pkgs.mkShell {
-            buildInputs = devPackages;
+            # Inherit build environment from the package (recommended pattern)
+            inputsFrom = [ helloPkg.executable ];
+            packages = devTools;
 
             shellHook = ''
               ${config.pre-commit.shellHook}
               cat ${mcpConfig} > .mcp.json
               echo "Generated .mcp.json"
-
-              # Enable global package management
-              export IDRIS2_PREFIX="$HOME/.idris2"
-              export IDRIS2_PACKAGE_PATH="''${IDRIS2_PACKAGE_PATH:+$IDRIS2_PACKAGE_PATH:}$HOME/.idris2"
             '';
           };
 
-          treefmt = {
-            programs = {
-              nixfmt = {
-                enable = true;
-                includes = [ "*.nix" ];
-              };
-            };
+          treefmt.programs.nixfmt = {
+            enable = true;
+            includes = [ "*.nix" ];
           };
         };
     };
