@@ -34,7 +34,7 @@
           devPackages =
             config.pre-commit.settings.enabledPackages
             ++ (with pkgs; [
-              terraform
+              opentofu
             ]);
 
           mcpConfig = inputs.mcp-servers-nix.lib.mkConfig (import inputs.mcp-servers-nix.inputs.nixpkgs {
@@ -53,6 +53,12 @@
             actionlint.enable = true;
             tflint.enable = true;
             terraform-validate.enable = true;
+            terraform-docs = {
+              enable = true;
+              entry = "${pkgs.terraform-docs}/bin/terraform-docs markdown table --output-file README.md --output-mode inject .";
+              files = "\\.tf$";
+              pass_filenames = false;
+            };
           };
 
           devShells.default = pkgs.mkShell {
