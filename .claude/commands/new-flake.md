@@ -1,1 +1,1 @@
-Update README.md, CLAUDE.md, and flake.nix for the newly added flake.
+Update README.md, CLAUDE.md, flake.nix, and .github/dependabot.yml for the newly added flake.
