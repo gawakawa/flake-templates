@@ -79,6 +79,10 @@
             path = ./templates/pack;
             description = "Idris2 template, using pack";
           };
+          terraform = {
+            path = ./templates/terraform;
+            description = "Terraform template";
+          };
         };
       };
 

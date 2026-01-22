@@ -117,6 +117,14 @@ Idris2 development template with pack (package manager), treefmt (nixfmt), and m
 nix flake init -t "github:gawakawa/flake-templates#pack"
 ```
 
+### terraform
+
+Terraform development template with treefmt (nixfmt + terraform fmt) and mcp-servers-nix (nixos).
+
+```bash
+nix flake init -t "github:gawakawa/flake-templates#terraform"
+```
+
 </details>
 
 ## Development
