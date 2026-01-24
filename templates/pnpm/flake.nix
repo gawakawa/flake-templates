@@ -62,6 +62,13 @@
             statix.enable = true;
             deadnix.enable = true;
             actionlint.enable = true;
+            oxlint = {
+              enable = true;
+              name = "oxlint";
+              entry = "${pkgs.oxlint}/bin/oxlint --type-aware";
+              files = "\\.(ts|tsx|js|jsx)$";
+              pass_filenames = false;
+            };
           };
 
           devShells.default = pkgs.mkShell {
