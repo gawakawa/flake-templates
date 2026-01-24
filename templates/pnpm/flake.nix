@@ -80,7 +80,7 @@
                 enable = true;
                 includes = [ "*.nix" ];
               };
-              biome = {
+              oxfmt = {
                 enable = true;
                 includes = [
                   "*.ts"

@@ -24,7 +24,7 @@ Each template is self-contained in its own directory under `templates/` with a c
 - **purs-nix**: PureScript development template using purs-nix with treefmt (nixfmt + purs-tidy) and mcp-servers-nix (nixos + pursuit)
 - **python**: Python development template using uv with treefmt (nixfmt + ruff) and mcp-servers-nix (serena + nixos)
 - **deno**: Deno development template with treefmt (nixfmt + deno) and mcp-servers-nix (serena + nixos)
-- **pnpm**: Node.js development template using pnpm with treefmt (nixfmt + biome) and mcp-servers-nix (serena + nixos)
+- **pnpm**: Node.js development template using pnpm with treefmt (nixfmt + oxfmt) and mcp-servers-nix (serena + nixos)
 - **haskell**: Haskell development template using haskell.nix and hix
 - **go**: Go development template with treefmt (nixfmt + gofmt + goimports + golines) and mcp-servers-nix (serena + nixos)
 - **lean**: Lean theorem prover template using elan with treefmt (nixfmt) and mcp-servers-nix (nixos + lean-lsp)
