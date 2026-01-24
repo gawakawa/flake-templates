@@ -5,7 +5,6 @@
     flake-utils.url = "github:numtide/flake-utils";
     treefmt-nix.url = "github:numtide/treefmt-nix";
     systems.url = "github:nix-systems/default";
-    mcp-servers-nix.url = "github:natsukium/mcp-servers-nix";
     git-hooks-nix = {
       url = "github:cachix/git-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -19,7 +18,6 @@
       flake-utils,
       haskellNix,
       treefmt-nix,
-      mcp-servers-nix,
       git-hooks-nix,
       ...
     }:
@@ -73,9 +71,6 @@
             actionlint.enable = true;
           };
         };
-        mcpConfig = mcp-servers-nix.lib.mkConfig (import mcp-servers-nix.inputs.nixpkgs {
-          inherit system;
-        }) { programs.nixos.enable = true; };
       in
       flake
       // {
@@ -91,8 +86,6 @@
             buildInputs = pre-commit-check.enabledPackages;
             shellHook = ''
               ${pre-commit-check.shellHook}
-              cat ${mcpConfig} > .mcp.json
-              echo "Generated .mcp.json"
             '';
           };
         };

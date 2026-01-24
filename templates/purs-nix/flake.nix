@@ -5,7 +5,6 @@
     ps-tools.follows = "purs-nix/ps-tools";
     flake-parts.url = "github:hercules-ci/flake-parts";
     treefmt-nix.url = "github:numtide/treefmt-nix";
-    mcp-servers-nix.url = "github:natsukium/mcp-servers-nix";
     git-hooks-nix = {
       url = "github:cachix/git-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -51,24 +50,6 @@
             dir = ./.;
           };
 
-          mcpConfig =
-            inputs.mcp-servers-nix.lib.mkConfig
-              (import inputs.mcp-servers-nix.inputs.nixpkgs {
-                inherit system;
-              })
-              {
-                programs.nixos.enable = true;
-                # settings.servers = {
-                #   pursuit = {
-                #     command = "nix";
-                #     args = [
-                #       "run"
-                #       "github:gawakawa/pursuit-mcp"
-                #       "--"
-                #     ];
-                #   };
-                # };
-              };
         in
         {
           packages = with ps; {
@@ -107,8 +88,6 @@
             ++ config.pre-commit.settings.enabledPackages;
             shellHook = ''
               ${config.pre-commit.shellHook}
-              cat ${mcpConfig} > .mcp.json
-              echo "Generated .mcp.json"
             '';
           };
 

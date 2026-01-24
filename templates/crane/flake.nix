@@ -3,7 +3,6 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
     treefmt-nix.url = "github:numtide/treefmt-nix";
-    mcp-servers-nix.url = "github:natsukium/mcp-servers-nix";
     git-hooks-nix = {
       url = "github:cachix/git-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -32,15 +31,10 @@
         {
           config,
           pkgs,
-          system,
           self',
           ...
         }:
         let
-          mcpConfig = inputs.mcp-servers-nix.lib.mkConfig (import inputs.mcp-servers-nix.inputs.nixpkgs {
-            inherit system;
-          }) { programs.nixos.enable = true; };
-
           craneLib = inputs.crane.mkLib pkgs;
           src = craneLib.cleanCargoSource ./.;
 
@@ -143,7 +137,6 @@
 
           packages = {
             default = my-crate;
-            mcp-config = mcpConfig;
           };
 
           apps.default = {
@@ -170,8 +163,6 @@
 
             shellHook = ''
               ${config.pre-commit.shellHook}
-              cat ${mcpConfig} > .mcp.json
-              echo "Generated .mcp.json"
             '';
           };
 

@@ -3,7 +3,6 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
     treefmt-nix.url = "github:numtide/treefmt-nix";
-    mcp-servers-nix.url = "github:natsukium/mcp-servers-nix";
     git-hooks-nix = {
       url = "github:cachix/git-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -27,7 +26,6 @@
         {
           config,
           pkgs,
-          system,
           ...
         }:
         let
@@ -37,14 +35,8 @@
               opentofu
             ]);
 
-          mcpConfig = inputs.mcp-servers-nix.lib.mkConfig (import inputs.mcp-servers-nix.inputs.nixpkgs {
-            inherit system;
-          }) { programs.nixos.enable = true; };
         in
         {
-          packages = {
-            mcp-config = mcpConfig;
-          };
 
           pre-commit.settings.hooks = {
             treefmt.enable = true;
@@ -66,8 +58,6 @@
 
             shellHook = ''
               ${config.pre-commit.shellHook}
-              cat ${mcpConfig} > .mcp.json
-              echo "Generated .mcp.json"
             '';
           };
 

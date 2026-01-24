@@ -49,7 +49,6 @@
                 inherit system;
               })
               {
-                programs.nixos.enable = true;
                 settings.servers = {
                   lean-lsp = {
                     command = "${pkgs.lib.getExe' pkgs.uv "uvx"}";
