@@ -66,14 +66,7 @@
             ty = {
               enable = true;
               name = "ty";
-              entry = "${pkgs.uv}/bin/uv run ty check";
-              files = "\\.py$";
-              pass_filenames = false;
-            };
-            pytest = {
-              enable = true;
-              name = "pytest";
-              entry = "${pkgs.uv}/bin/uv run pytest";
+              entry = "${pkgs.ty}/bin/ty check";
               files = "\\.py$";
               pass_filenames = false;
             };
@@ -104,7 +97,4 @@
         };
     };
 
-  nixConfig = {
-    sandbox = "false";
-  };
 }
