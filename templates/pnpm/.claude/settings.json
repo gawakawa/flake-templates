@@ -1,4 +1,9 @@
 {
+	"permissions": {
+		"ask": [
+			"Edit(./package.json)"
+		]
+	},
 	"hooks": {
 		"PostToolUse": [
 			{

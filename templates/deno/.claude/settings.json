@@ -1,4 +1,9 @@
 {
+  "permissions": {
+    "ask": [
+      "Edit(./deno.json)"
+    ]
+  },
   "hooks": {
     "PostToolUse": [
       {
