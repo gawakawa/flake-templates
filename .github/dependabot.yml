@@ -18,56 +18,56 @@ updates:
       default-days: 7
 
   - package-ecosystem: "github-actions"
-    directory: "/templates/deno"
+    directory: "/templates/deno/.github/workflows"
     schedule:
       interval: "weekly"
     cooldown:
       default-days: 7
 
   - package-ecosystem: "github-actions"
-    directory: "/templates/flake-parts"
+    directory: "/templates/flake-parts/.github/workflows"
     schedule:
       interval: "weekly"
     cooldown:
       default-days: 7
 
   - package-ecosystem: "github-actions"
-    directory: "/templates/go"
+    directory: "/templates/go/.github/workflows"
     schedule:
       interval: "weekly"
     cooldown:
       default-days: 7
 
   - package-ecosystem: "github-actions"
-    directory: "/templates/haskell"
+    directory: "/templates/haskell/.github/workflows"
     schedule:
       interval: "weekly"
     cooldown:
       default-days: 7
 
   - package-ecosystem: "github-actions"
-    directory: "/templates/lean"
+    directory: "/templates/lean/.github/workflows"
     schedule:
       interval: "weekly"
     cooldown:
       default-days: 7
 
   - package-ecosystem: "github-actions"
-    directory: "/templates/pnpm"
+    directory: "/templates/pnpm/.github/workflows"
     schedule:
       interval: "weekly"
     cooldown:
       default-days: 7
 
   - package-ecosystem: "github-actions"
-    directory: "/templates/purs-nix"
+    directory: "/templates/purs-nix/.github/workflows"
     schedule:
       interval: "weekly"
     cooldown:
       default-days: 7
 
   - package-ecosystem: "github-actions"
-    directory: "/templates/python"
+    directory: "/templates/python/.github/workflows"
     schedule:
       interval: "weekly"
     cooldown:
@@ -84,7 +84,7 @@ updates:
       semver-patch-days: 3
 
   - package-ecosystem: "github-actions"
-    directory: "/templates/rust-overlay"
+    directory: "/templates/rust-overlay/.github/workflows"
     schedule:
       interval: "weekly"
     cooldown:
@@ -101,7 +101,7 @@ updates:
       semver-patch-days: 3
 
   - package-ecosystem: "github-actions"
-    directory: "/templates/rustup"
+    directory: "/templates/rustup/.github/workflows"
     schedule:
       interval: "weekly"
     cooldown:
@@ -118,14 +118,14 @@ updates:
       semver-patch-days: 3
 
   - package-ecosystem: "github-actions"
-    directory: "/templates/crane"
+    directory: "/templates/crane/.github/workflows"
     schedule:
       interval: "weekly"
     cooldown:
       default-days: 7
 
   - package-ecosystem: "github-actions"
-    directory: "/templates/terraform"
+    directory: "/templates/terraform/.github/workflows"
     schedule:
       interval: "weekly"
     cooldown:
