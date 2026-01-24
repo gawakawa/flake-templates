@@ -30,8 +30,9 @@ jobs:
       matrix:
         template: ${{ fromJSON(needs.list-templates.outputs.templates) }}
       fail-fast: false # Continue even if one template fails
-    uses: ./.github/workflows/update-flake-lock.yml
+    uses: gawakawa/.github/.github/workflows/update-flake-lock.yml@main
     with:
+      auto-merge: true
       path-to-flake-dir: templates/${{ matrix.template }}
       pr-title: "[${{ matrix.template }}] ⬆️ Update flake.lock"
       branch: update-flake-lock/${{ matrix.template }}

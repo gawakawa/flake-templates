@@ -2,38 +2,6 @@ name: "Update Flake Lock"
 
 on:
   workflow_dispatch:
-    inputs:
-      path-to-flake-dir:
-        description: "Path to the flake directory"
-        required: false
-        type: string
-      pr-title:
-        description: "PR title"
-        required: false
-        type: string
-      branch:
-        description: "Branch name"
-        required: false
-        type: string
-        default: "update-flake-lock"
-  workflow_call:
-    inputs:
-      path-to-flake-dir:
-        description: "Path to the flake directory"
-        required: false
-        type: string
-      pr-title:
-        description: "PR title"
-        required: false
-        type: string
-      branch:
-        description: "Branch name"
-        required: false
-        type: string
-        default: "update-flake-lock"
-    secrets:
-      GH_TOKEN:
-        required: true
   schedule:
     - cron: '0 15 * * 5' # Run every Saturday at 00:00 JST (Friday 15:00 UTC)
 
@@ -46,8 +14,6 @@ jobs:
     uses: gawakawa/.github/.github/workflows/update-flake-lock.yml@main
     with:
       auto-merge: true
-      path-to-flake-dir: ${{ inputs.path-to-flake-dir }}
-      pr-title: ${{ inputs.pr-title }}
-      branch: ${{ inputs.branch }}
+      branch: "update-flake-lock"
     secrets:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
