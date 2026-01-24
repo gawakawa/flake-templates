@@ -63,6 +63,13 @@
             deadnix.enable = true;
             actionlint.enable = true;
             ruff.enable = true;
+            ty = {
+              enable = true;
+              name = "ty";
+              entry = "${pkgs.ty}/bin/ty check";
+              files = "\\.py$";
+              pass_filenames = false;
+            };
           };
 
           devShells.default = pkgs.mkShell {

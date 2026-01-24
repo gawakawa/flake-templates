@@ -35,6 +35,9 @@ jobs:
       - name: Lint check
         run: uv run ruff check
 
+      - name: Type check
+        run: uv run ty check
+
       - name: Build project
         run: uv build
 
