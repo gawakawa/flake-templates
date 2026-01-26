@@ -25,5 +25,11 @@ jobs:
             extra-substituters = https://cache.iog.io
             extra-trusted-public-keys = hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
 
+      - name: Setup Cachix
+        uses: cachix/cachix-action@v16
+        with:
+          name: gawakawa
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
       - name: Flake check
         run: nix flake check --print-build-logs --accept-flake-config
