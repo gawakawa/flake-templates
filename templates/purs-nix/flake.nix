@@ -83,7 +83,6 @@
               (ps.command { })
               purs-nix.esbuild
               purs-nix.purescript
-              ps-tools.for-0_15.purescript-language-server
             ]
             ++ config.pre-commit.settings.enabledPackages;
             shellHook = ''
