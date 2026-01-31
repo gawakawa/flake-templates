@@ -1,9 +1,9 @@
 name: "Update Flake Lock"
 
 on:
-  workflow_dispatch: # Allow manual trigger
+  workflow_dispatch:
   schedule:
-    - cron: "0 15 * * 5" # Run every Saturday at 00:00 JST (Friday 15:00 UTC)
+    - cron: "0 15 * * 5" # Every Saturday 00:00 JST
 
 permissions:
   contents: write
@@ -11,9 +11,6 @@ permissions:
 
 jobs:
   update-flake-lock:
-    uses: gawakawa/.github/.github/workflows/update-flake-lock.yml@main
-    with:
-      auto-merge: true
-      branch: "update-flake-lock"
+    uses: gawakawa/flake-templates/.github/workflows/update-flake-lock-haskell.yml@main
     secrets:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}

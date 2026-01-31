@@ -1,0 +1,63 @@
+name: "Update Flake Lock (haskell.nix delayed)"
+
+on:
+  workflow_call:
+    secrets:
+      GH_TOKEN:
+        required: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-flake-lock:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ secrets.GH_TOKEN }}
+
+      - name: Get haskell.nix revision from 2 weeks ago
+        id: get-rev
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          target_date=$(date -d '14 days ago' --iso-8601)
+          rev=$(gh api "repos/input-output-hk/haskell.nix/commits?until=${target_date}T23:59:59Z&per_page=1" \
+            --jq '.[0].sha')
+          echo "Using haskell.nix revision: $rev (from around $target_date)"
+          echo "rev=$rev" >> "$GITHUB_OUTPUT"
+          echo "date=$target_date" >> "$GITHUB_OUTPUT"
+
+      - name: Update flake.lock with delayed haskell.nix
+        working-directory: templates/haskell
+        run: |
+          nix flake lock \
+            --override-input haskellNix "github:input-output-hk/haskell.nix/${{ steps.get-rev.outputs.rev }}"
+
+      - name: Create Pull Request
+        id: create-pr
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          branch: update-flake-lock/haskell
+          title: "[haskell] ⬆️ Update flake.lock"
+          commit-message: "[haskell] ⬆️ Update flake.lock (haskell.nix from ${{ steps.get-rev.outputs.date }})"
+          body: |
+            Automated flake.lock update using haskell.nix from 2 weeks ago.
+
+            This delay ensures GHC and HLS are cached in IOG Hydra.
+
+            - haskell.nix revision: `${{ steps.get-rev.outputs.rev }}`
+            - Target date: ${{ steps.get-rev.outputs.date }}
+          delete-branch: true
+
+      - name: Enable auto-merge
+        if: steps.create-pr.outputs.pull-request-number
+        run: gh pr merge --auto --merge ${{ steps.create-pr.outputs.pull-request-number }}
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
