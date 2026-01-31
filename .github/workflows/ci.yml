@@ -116,6 +116,7 @@ jobs:
     needs: [tests, test-templates, test-haskell]
     if: always()
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - run: exit 1
         if: |

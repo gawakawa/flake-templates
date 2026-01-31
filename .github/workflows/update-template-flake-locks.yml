@@ -8,6 +8,7 @@ on:
 jobs:
   list-templates:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     outputs:
       templates: ${{ steps.set-templates.outputs.templates }}
     steps:
