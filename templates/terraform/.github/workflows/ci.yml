@@ -13,6 +13,7 @@ concurrency:
 jobs:
   tests:
     name: Build and Test
+    timeout-minutes: 20
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
