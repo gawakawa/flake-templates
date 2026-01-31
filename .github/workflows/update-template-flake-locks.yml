@@ -30,8 +30,6 @@ jobs:
     strategy:
       matrix:
         template: ${{ fromJSON(needs.list-templates.outputs.templates) }}
-        exclude:
-          - template: haskell
       fail-fast: false # Continue even if one template fails
     uses: gawakawa/.github/.github/workflows/update-flake-lock.yml@main
     with:
@@ -39,15 +37,5 @@ jobs:
       path-to-flake-dir: templates/${{ matrix.template }}
       pr-title: "[${{ matrix.template }}] ⬆️ Update flake.lock"
       branch: update-flake-lock/${{ matrix.template }}
-    secrets:
-      GH_TOKEN: ${{ secrets.GH_TOKEN }}
-
-  update-haskell-flake-lock:
-    needs: list-templates
-    if: contains(fromJSON(needs.list-templates.outputs.templates), 'haskell')
-    permissions:
-      contents: write
-      pull-requests: write
-    uses: ./.github/workflows/update-flake-lock-haskell.yml
     secrets:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
