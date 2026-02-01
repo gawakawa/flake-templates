@@ -76,12 +76,12 @@ jobs:
     if: needs.detect-changes.outputs.templates != '[]'
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, self-hosted]
         template: ${{ fromJSON(needs.detect-changes.outputs.templates) }}
         exclude:
-          - os: macos-latest
+          - os: self-hosted
             template: purs-nix
-          - os: macos-latest
+          - os: self-hosted
             template: haskell
     runs-on: ${{ matrix.os }}
     steps:
