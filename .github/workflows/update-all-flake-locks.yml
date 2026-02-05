@@ -1,0 +1,51 @@
+name: "Update All Flake Locks"
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 15 * * 5' # Friday 15:00 UTC (Saturday 00:00 JST)
+
+jobs:
+  update-flake-locks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ secrets.GH_TOKEN }}
+
+      - name: List templates
+        id: list-templates
+        uses: ./.github/actions/list-templates
+
+      - name: Build flakes list
+        id: list-flakes
+        run: |
+          {
+            echo "flakes<<EOF"
+            echo "./"
+            echo "${{ steps.list-templates.outputs.templates }}" \
+              | jq -r '.[] | "templates/\(.)/"'
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Update flake.lock files
+        id: update
+        uses: fym998/update-flake-lock@multi-flake
+        with:
+          flakes: ${{ steps.list-flakes.outputs.flakes }}
+          pr-title: "⬆️ Update all flake.lock files"
+          pr-labels: dependencies
+          branch: update-flake-lock/all
+          token: ${{ secrets.GH_TOKEN }}
+
+      - name: Enable auto-merge
+        if: steps.update.outputs.pull-request-number != ''
+        run: gh pr merge --auto --squash ${{ steps.update.outputs.pull-request-number }}
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
