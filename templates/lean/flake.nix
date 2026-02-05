@@ -13,92 +13,10 @@
   outputs =
     inputs:
     inputs.flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = [
-        "x86_64-linux"
-        "aarch64-darwin"
-      ];
-
       imports = [
         inputs.treefmt-nix.flakeModule
         inputs.git-hooks-nix.flakeModule
+        ./flakes
       ];
-
-      perSystem =
-        {
-          config,
-          pkgs,
-          system,
-          ...
-        }:
-        let
-          ciPackages = with pkgs; [
-            elan
-          ];
-
-          devPackages =
-            ciPackages
-            ++ config.pre-commit.settings.enabledPackages
-            ++ (with pkgs; [
-              uv
-              ripgrep
-            ]);
-
-          mcpConfig =
-            inputs.mcp-servers-nix.lib.mkConfig
-              (import inputs.mcp-servers-nix.inputs.nixpkgs {
-                inherit system;
-              })
-              {
-                settings.servers = {
-                  lean-lsp = {
-                    command = "${pkgs.lib.getExe' pkgs.uv "uvx"}";
-                    args = [ "lean-lsp-mcp" ];
-                  };
-                };
-              };
-        in
-        {
-          packages = {
-            ci = pkgs.buildEnv {
-              name = "ci";
-              paths = ciPackages;
-            };
-
-            mcp-config = mcpConfig;
-          };
-
-          pre-commit.settings.hooks = {
-            treefmt.enable = true;
-            statix.enable = true;
-            deadnix.enable = true;
-            actionlint.enable = true;
-            workflow-timeout = {
-              enable = true;
-              name = "Check workflow timeout-minutes";
-              package = pkgs.check-jsonschema;
-              entry = "${pkgs.check-jsonschema}/bin/check-jsonschema --builtin-schema github-workflows-require-timeout";
-              files = "\\.github/workflows/.*\\.ya?ml$";
-            };
-          };
-
-          devShells.default = pkgs.mkShell {
-            buildInputs = devPackages;
-
-            shellHook = ''
-              ${config.pre-commit.shellHook}
-              cat ${mcpConfig} > .mcp.json
-              echo "Generated .mcp.json"
-            '';
-          };
-
-          treefmt = {
-            programs = {
-              nixfmt = {
-                enable = true;
-                includes = [ "*.nix" ];
-              };
-            };
-          };
-        };
     };
 }

@@ -12,77 +12,10 @@
   outputs =
     inputs:
     inputs.flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = [
-        "x86_64-linux"
-        "aarch64-darwin"
-      ];
-
       imports = [
         inputs.treefmt-nix.flakeModule
         inputs.git-hooks-nix.flakeModule
+        ./flakes
       ];
-
-      perSystem =
-        {
-          config,
-          pkgs,
-          ...
-        }:
-        let
-          devPackages =
-            config.pre-commit.settings.enabledPackages
-            ++ (with pkgs; [
-              opentofu
-            ]);
-
-        in
-        {
-
-          pre-commit.settings.hooks = {
-            treefmt.enable = true;
-            statix.enable = true;
-            deadnix.enable = true;
-            actionlint.enable = true;
-            tflint.enable = true;
-            terraform-validate.enable = true;
-            terraform-docs = {
-              enable = true;
-              entry = "${pkgs.terraform-docs}/bin/terraform-docs markdown table --output-file README.md --output-mode inject .";
-              files = "\\.tf$";
-              pass_filenames = false;
-            };
-            workflow-timeout = {
-              enable = true;
-              name = "Check workflow timeout-minutes";
-              package = pkgs.check-jsonschema;
-              entry = "${pkgs.check-jsonschema}/bin/check-jsonschema --builtin-schema github-workflows-require-timeout";
-              files = "\\.github/workflows/.*\\.ya?ml$";
-            };
-          };
-
-          devShells.default = pkgs.mkShell {
-            buildInputs = devPackages;
-
-            shellHook = ''
-              ${config.pre-commit.shellHook}
-            '';
-          };
-
-          treefmt = {
-            programs = {
-              terraform = {
-                enable = true;
-                includes = [
-                  "*.tf"
-                  "*.tfvars"
-                ];
-              };
-              nixfmt = {
-                enable = true;
-                includes = [ "*.nix" ];
-              };
-            };
-          };
-        };
     };
 }

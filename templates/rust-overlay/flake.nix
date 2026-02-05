@@ -16,93 +16,10 @@
   outputs =
     inputs:
     inputs.flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = [
-        "x86_64-linux"
-        "aarch64-darwin"
-      ];
-
       imports = [
         inputs.treefmt-nix.flakeModule
         inputs.git-hooks-nix.flakeModule
+        ./flakes
       ];
-
-      perSystem =
-        {
-          config,
-          pkgs,
-          system,
-          ...
-        }:
-        {
-          _module.args.pkgs = import inputs.nixpkgs {
-            inherit system;
-            overlays = [
-              inputs.rust-overlay.overlays.default
-            ];
-          };
-
-          packages = {
-            default = pkgs.rustPlatform.buildRustPackage {
-              pname = "";
-              version = "0.1.0";
-
-              src = ./.;
-
-              cargoLock = {
-                lockFile = ./Cargo.lock;
-              };
-
-              nativeBuildInputs = [ ];
-
-              buildInputs = [ ];
-
-              meta = {
-                description = "";
-                license = pkgs.lib.licenses.mit;
-              };
-            };
-
-          };
-
-          pre-commit.settings.hooks = {
-            treefmt.enable = true;
-            statix.enable = true;
-            deadnix.enable = true;
-            actionlint.enable = true;
-            workflow-timeout = {
-              enable = true;
-              name = "Check workflow timeout-minutes";
-              package = pkgs.check-jsonschema;
-              entry = "${pkgs.check-jsonschema}/bin/check-jsonschema --builtin-schema github-workflows-require-timeout";
-              files = "\\.github/workflows/.*\\.ya?ml$";
-            };
-          };
-
-          devShells.default =
-            with pkgs;
-            mkShell {
-              buildInputs = [
-                rust-bin.stable.latest.default
-              ]
-              ++ config.pre-commit.settings.enabledPackages;
-
-              shellHook = ''
-                ${config.pre-commit.shellHook}
-              '';
-            };
-
-          treefmt = {
-            programs = {
-              nixfmt = {
-                enable = true;
-                includes = [ "*.nix" ];
-              };
-              rustfmt = {
-                enable = true;
-                includes = [ "*.rs" ];
-              };
-            };
-          };
-        };
     };
 }
