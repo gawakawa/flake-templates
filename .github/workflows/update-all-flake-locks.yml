@@ -36,7 +36,7 @@ jobs:
 
       - name: Update flake.lock files
         id: update
-        uses: fym998/update-flake-lock@multi-flake
+        uses: gawakawa/update-flake-lock@multi-flake
         with:
           flakes: ${{ steps.list-flakes.outputs.flakes }}
           pr-title: "⬆️ Update all flake.lock files"
