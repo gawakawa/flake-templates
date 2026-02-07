@@ -2,9 +2,8 @@
   inputs = {
     haskellNix.url = "github:input-output-hk/haskell.nix";
     nixpkgs.follows = "haskellNix/nixpkgs-unstable";
-    flake-utils.url = "github:numtide/flake-utils";
+    flake-parts.url = "github:hercules-ci/flake-parts";
     treefmt-nix.url = "github:numtide/treefmt-nix";
-    systems.url = "github:nix-systems/default";
     git-hooks-nix = {
       url = "github:cachix/git-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -12,98 +11,14 @@
   };
 
   outputs =
-    {
-      self,
-      nixpkgs,
-      flake-utils,
-      haskellNix,
-      treefmt-nix,
-      git-hooks-nix,
-      ...
-    }:
-    let
-      supportedSystems = [
-        "x86_64-linux"
+    inputs:
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
+      imports = [
+        inputs.treefmt-nix.flakeModule
+        inputs.git-hooks-nix.flakeModule
+        ./flakes
       ];
-    in
-    flake-utils.lib.eachSystem supportedSystems (
-      system:
-      let
-        overlays = [
-          haskellNix.overlay
-          (final: _: {
-            hixProject = final.haskell-nix.hix.project {
-              src = ./.;
-              evalSystem = "x86_64-linux";
-            };
-          })
-        ];
-        pkgs = import nixpkgs {
-          inherit system overlays;
-          inherit (haskellNix) config;
-        };
-        flake = pkgs.hixProject.flake { };
-        treefmtEval = treefmt-nix.lib.evalModule pkgs {
-          programs = {
-            cabal-fmt = {
-              enable = true;
-              includes = [ "*.cabal" ];
-            };
-            fourmolu = {
-              enable = true;
-              includes = [ "*.hs" ];
-            };
-            nixfmt = {
-              enable = true;
-              includes = [ "*.nix" ];
-            };
-          };
-        };
-        pre-commit-check = git-hooks-nix.lib.${system}.run {
-          src = self;
-          hooks = {
-            treefmt = {
-              enable = true;
-              package = treefmtEval.config.build.wrapper;
-            };
-            statix.enable = true;
-            deadnix.enable = true;
-            actionlint.enable = true;
-            workflow-timeout = {
-              enable = true;
-              name = "Check workflow timeout-minutes";
-              package = pkgs.check-jsonschema;
-              entry = "${pkgs.check-jsonschema}/bin/check-jsonschema --builtin-schema github-workflows-require-timeout";
-              files = "\\.github/workflows/.*\\.ya?ml$";
-            };
-          };
-        };
-      in
-      flake
-      // {
-        legacyPackages = pkgs;
-
-        packages = flake.packages // {
-          default = flake.packages."hello:exe:hello";
-        };
-
-        devShells = flake.devShells // {
-          default = pkgs.mkShell {
-            inputsFrom = [ flake.devShells.default ];
-            buildInputs = pre-commit-check.enabledPackages;
-            shellHook = ''
-              ${pre-commit-check.shellHook}
-            '';
-          };
-        };
-
-        formatter = treefmtEval.config.build.wrapper;
-
-        checks = {
-          pre-commit = pre-commit-check;
-        };
-      }
-    );
+    };
 
   nixConfig = {
     extra-substituters = [ "https://cache.iog.io" ];
