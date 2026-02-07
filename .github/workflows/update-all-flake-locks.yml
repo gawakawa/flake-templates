@@ -30,7 +30,7 @@ jobs:
             echo "flakes<<EOF"
             echo "./"
             echo '${{ steps.list-templates.outputs.templates }}' \
-              | jq -r '.[] | "./templates/\(.)/"'
+              | jq -r '.[] | select(. != "haskell") | "./templates/\(.)/"'
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
 
