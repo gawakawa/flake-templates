@@ -37,6 +37,7 @@ jobs:
           fi
 
           commit="${flake_ref##*/}"
+          commit="${commit%%\?*}"
           echo "commit=$commit" >> "$GITHUB_OUTPUT"
 
       - name: Check if update needed
@@ -70,7 +71,7 @@ jobs:
 
           cached=true
           for pattern in "${patterns[@]}"; do
-            if echo "$dry_run_output" | grep -qE "/nix/store/[a-z0-9]+-$pattern"; then
+            if grep -qE "/nix/store/[a-z0-9]+-$pattern" <<< "$dry_run_output"; then
               cached=false
               break
             fi
