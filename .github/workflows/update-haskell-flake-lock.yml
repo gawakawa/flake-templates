@@ -1,0 +1,106 @@
+name: "Update Haskell Flake Lock"
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 12 * * 5' # Friday 12:00 UTC (21:00 JST)
+
+jobs:
+  update-haskell-flake-lock:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ secrets.GH_TOKEN }}
+
+      - uses: cachix/cachix-action@v16
+        with:
+          name: gawakawa
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+      - name: Get latest Hydra evaluation
+        id: hydra
+        run: |
+          flake_ref=$(curl -sf -H 'Accept: application/json' \
+            'https://ci.zw3rk.com/jobset/input-output-hk-haskell-nix/master/evals' \
+            | jq -r '.evals[0].flake')
+
+          if [[ -z "$flake_ref" || "$flake_ref" == "null" ]]; then
+            echo "Failed to get Hydra evaluation"
+            exit 1
+          fi
+
+          commit="${flake_ref##*/}"
+          echo "commit=$commit" >> "$GITHUB_OUTPUT"
+
+      - name: Check if update needed
+        id: check
+        run: |
+          current=$(jq -r '.nodes.haskellNix.locked.rev' templates/haskell/flake.lock)
+          if [[ "${{ steps.hydra.outputs.commit }}" == "$current" ]]; then
+            echo "needed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "needed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Update flake.lock
+        if: steps.check.outputs.needed == 'true'
+        working-directory: templates/haskell
+        run: |
+          nix flake lock --override-input haskellNix \
+            "github:input-output-hk/haskell.nix/${{ steps.hydra.outputs.commit }}"
+
+      - name: Check IOG cache
+        id: iog-cache
+        if: steps.check.outputs.needed == 'true'
+        working-directory: templates/haskell
+        run: |
+          dry_run_output=$(nix build --dry-run '.#devShells.x86_64-linux.default' --accept-flake-config 2>&1)
+
+          patterns=(
+            'ghc-[0-9]+\.[0-9]+\.[0-9]+\.drv'
+            'haskell-language-server-exe-haskell-language-server-[0-9.]+\.drv'
+          )
+
+          cached=true
+          for pattern in "${patterns[@]}"; do
+            if echo "$dry_run_output" | grep -qE "/nix/store/[a-z0-9]+-$pattern"; then
+              cached=false
+              break
+            fi
+          done
+
+          echo "cached=$cached" >> "$GITHUB_OUTPUT"
+
+      - name: Create PR
+        id: pr
+        if: steps.check.outputs.needed == 'true' && steps.iog-cache.outputs.cached == 'true'
+        run: |
+          branch="update-flake-lock/haskell"
+          git checkout -b "$branch"
+          git add templates/haskell/flake.lock
+          git commit -m "⬆️ Update haskell flake.lock"
+          git push -f origin "$branch"
+
+          gh pr create \
+            --title "⬆️ Update haskell flake.lock" \
+            --body "Update haskellNix to \`${{ steps.hydra.outputs.commit }}\` (Hydra-evaluated)" \
+            --label dependencies \
+            --head "$branch" 2>/dev/null || true
+
+          pr_number=$(gh pr view "$branch" --json number -q .number)
+          echo "number=$pr_number" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Enable auto-merge
+        if: steps.pr.outputs.number != ''
+        run: gh pr merge --auto --squash ${{ steps.pr.outputs.number }}
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
