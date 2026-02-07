@@ -61,6 +61,8 @@ jobs:
         id: pr
         if: steps.check.outputs.needed == 'true'
         run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           branch="update-flake-lock/haskell"
           git checkout -b "$branch"
           git add templates/haskell/flake.lock
