@@ -17,21 +17,7 @@ Each template is self-contained in its own directory under `templates/` with a c
 
 ### Available Templates
 
-- **flake-parts**: Basic modular flake template with treefmt-nix integration
-- **rustup**: Rust development template using rustup with treefmt (nixfmt + rustfmt)
-- **rust-overlay**: Rust development template using rust-overlay with treefmt (nixfmt + rustfmt)
-- **crane**: Rust development template using crane with treefmt (nixfmt + rustfmt). Includes comprehensive checks (clippy, doc, fmt, audit, deny, nextest)
-- **crane-workspace**: Rust workspace development template using crane with treefmt (nixfmt + rustfmt). Demonstrates building multiple crates (CLI + library) in a Cargo workspace with comprehensive checks
-- **purs-nix**: PureScript development template using purs-nix with treefmt (nixfmt + purs-tidy) and mcp-servers-nix (pursuit)
-- **python**: Python development template using uv with treefmt (nixfmt + ruff)
-- **deno**: Deno development template with treefmt (nixfmt + deno)
-- **pnpm**: Node.js development template using pnpm with treefmt (nixfmt + oxfmt)
-- **haskell**: Haskell development template using haskell.nix and hix
-- **go**: Go development template with treefmt (nixfmt + gofmt + goimports + golines)
-- **lean**: Lean theorem prover template using elan with treefmt (nixfmt) and mcp-servers-nix (lean-lsp)
-- **idris2**: Idris2 development template using buildIdris with treefmt (nixfmt)
-- **pack**: Idris2 development template using pack with treefmt (nixfmt)
-- **terraform**: Terraform development template with treefmt (nixfmt + terraform fmt)
+Templates are defined in `flakes/templates.nix` and stored under `templates/`. See `README.md` for descriptions of each template.
 
 ### Key Integration Points
 
@@ -45,8 +31,7 @@ Templates follow a consistent pattern:
 - `ciPackages` list for CI environment dependencies
 - `devPackages` extends `ciPackages` with additional development tools
 - `packages.ci` builds an environment from `ciPackages`
-- `packages.mcp-config` generates MCP configuration
-- `devShells.default` with `shellHook` that auto-generates `.mcp.json`
+- `devShells.default` with development shell configuration
 - `treefmt` configuration for code formatting
 
 ## Common Commands
