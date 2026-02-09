@@ -45,6 +45,14 @@ Rust development template with crane, treefmt (nixfmt + rustfmt), and mcp-server
 nix flake init -t "github:gawakawa/flake-templates#crane"
 ```
 
+### crane-workspace
+
+Rust workspace development template with crane, treefmt (nixfmt + rustfmt), and comprehensive checks. Demonstrates building multiple crates (CLI + library) in a Cargo workspace.
+
+```bash
+nix flake init -t "github:gawakawa/flake-templates#crane-workspace"
+```
+
 ### purs-nix
 
 PureScript development template with purs-nix, treefmt (nixfmt + purs-tidy), and mcp-servers-nix (nixos + pursuit).

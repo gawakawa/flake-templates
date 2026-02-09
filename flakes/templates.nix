@@ -17,6 +17,10 @@ _: {
         path = ../templates/crane;
         description = "Rust template, using crane";
       };
+      crane-workspace = {
+        path = ../templates/crane-workspace;
+        description = "Rust workspace template, using crane";
+      };
       purs-nix = {
         path = ../templates/purs-nix;
         description = "PureScript template, using purs-nix";
