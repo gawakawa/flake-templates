@@ -1,0 +1,8 @@
+[package]
+name = "my-cli"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+my-lib = { path = "../my-lib" }
