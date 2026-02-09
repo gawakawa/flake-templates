@@ -17,21 +17,21 @@ Each template is self-contained in its own directory under `templates/` with a c
 
 ### Available Templates
 
-- **flake-parts**: Basic modular flake template with treefmt-nix and mcp-servers-nix integration
-- **rustup**: Rust development template using rustup with treefmt (nixfmt + rustfmt) and mcp-servers-nix (serena + nixos)
-- **rust-overlay**: Rust development template using rust-overlay with treefmt (nixfmt + rustfmt) and mcp-servers-nix (serena + nixos)
-- **crane**: Rust development template using crane with treefmt (nixfmt + rustfmt) and mcp-servers-nix (nixos). Includes comprehensive checks (clippy, doc, fmt, audit, deny, nextest)
+- **flake-parts**: Basic modular flake template with treefmt-nix integration
+- **rustup**: Rust development template using rustup with treefmt (nixfmt + rustfmt)
+- **rust-overlay**: Rust development template using rust-overlay with treefmt (nixfmt + rustfmt)
+- **crane**: Rust development template using crane with treefmt (nixfmt + rustfmt). Includes comprehensive checks (clippy, doc, fmt, audit, deny, nextest)
 - **crane-workspace**: Rust workspace development template using crane with treefmt (nixfmt + rustfmt). Demonstrates building multiple crates (CLI + library) in a Cargo workspace with comprehensive checks
-- **purs-nix**: PureScript development template using purs-nix with treefmt (nixfmt + purs-tidy) and mcp-servers-nix (nixos + pursuit)
-- **python**: Python development template using uv with treefmt (nixfmt + ruff) and mcp-servers-nix (serena + nixos)
-- **deno**: Deno development template with treefmt (nixfmt + deno) and mcp-servers-nix (serena + nixos)
-- **pnpm**: Node.js development template using pnpm with treefmt (nixfmt + oxfmt) and mcp-servers-nix (serena + nixos)
+- **purs-nix**: PureScript development template using purs-nix with treefmt (nixfmt + purs-tidy) and mcp-servers-nix (pursuit)
+- **python**: Python development template using uv with treefmt (nixfmt + ruff)
+- **deno**: Deno development template with treefmt (nixfmt + deno)
+- **pnpm**: Node.js development template using pnpm with treefmt (nixfmt + oxfmt)
 - **haskell**: Haskell development template using haskell.nix and hix
-- **go**: Go development template with treefmt (nixfmt + gofmt + goimports + golines) and mcp-servers-nix (serena + nixos)
-- **lean**: Lean theorem prover template using elan with treefmt (nixfmt) and mcp-servers-nix (nixos + lean-lsp)
-- **idris2**: Idris2 development template using buildIdris with treefmt (nixfmt) and mcp-servers-nix (nixos)
-- **pack**: Idris2 development template using pack with treefmt (nixfmt) and mcp-servers-nix (nixos)
-- **terraform**: Terraform development template with treefmt (nixfmt + terraform fmt) and mcp-servers-nix (nixos)
+- **go**: Go development template with treefmt (nixfmt + gofmt + goimports + golines)
+- **lean**: Lean theorem prover template using elan with treefmt (nixfmt) and mcp-servers-nix (lean-lsp)
+- **idris2**: Idris2 development template using buildIdris with treefmt (nixfmt)
+- **pack**: Idris2 development template using pack with treefmt (nixfmt)
+- **terraform**: Terraform development template with treefmt (nixfmt + terraform fmt)
 
 ### Key Integration Points
 

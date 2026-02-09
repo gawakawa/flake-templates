@@ -15,7 +15,7 @@ nix flake init -t "github:gawakawa/flake-templates#<template-name>"
 
 ### flake-parts
 
-Modular flake template with flake-parts, treefmt-nix, and mcp-servers-nix integration.
+Modular flake template with flake-parts and treefmt-nix integration.
 
 ```bash
 nix flake init -t "github:gawakawa/flake-templates#flake-parts"
@@ -23,7 +23,7 @@ nix flake init -t "github:gawakawa/flake-templates#flake-parts"
 
 ### rustup
 
-Rust development template with rustup, treefmt (nixfmt + rustfmt), and mcp-servers-nix (serena + nixos).
+Rust development template with rustup and treefmt (nixfmt + rustfmt).
 
 ```bash
 nix flake init -t "github:gawakawa/flake-templates#rustup"
@@ -31,7 +31,7 @@ nix flake init -t "github:gawakawa/flake-templates#rustup"
 
 ### rust-overlay
 
-Rust development template with rust-overlay, treefmt (nixfmt + rustfmt), and mcp-servers-nix (serena + nixos).
+Rust development template with rust-overlay and treefmt (nixfmt + rustfmt).
 
 ```bash
 nix flake init -t "github:gawakawa/flake-templates#rust-overlay"
@@ -39,7 +39,7 @@ nix flake init -t "github:gawakawa/flake-templates#rust-overlay"
 
 ### crane
 
-Rust development template with crane, treefmt (nixfmt + rustfmt), and mcp-servers-nix (nixos). Includes comprehensive checks: clippy, doc, fmt, audit, deny, and nextest.
+Rust development template with crane and treefmt (nixfmt + rustfmt). Includes comprehensive checks: clippy, doc, fmt, audit, deny, and nextest.
 
 ```bash
 nix flake init -t "github:gawakawa/flake-templates#crane"
@@ -55,7 +55,7 @@ nix flake init -t "github:gawakawa/flake-templates#crane-workspace"
 
 ### purs-nix
 
-PureScript development template with purs-nix, treefmt (nixfmt + purs-tidy), and mcp-servers-nix (nixos + pursuit).
+PureScript development template with purs-nix, treefmt (nixfmt + purs-tidy), and mcp-servers-nix (pursuit).
 
 ```bash
 nix flake init -t "github:gawakawa/flake-templates#purs-nix"
@@ -63,7 +63,7 @@ nix flake init -t "github:gawakawa/flake-templates#purs-nix"
 
 ### python
 
-Python development template with uv, treefmt (nixfmt + ruff), and mcp-servers-nix (serena + nixos).
+Python development template with uv and treefmt (nixfmt + ruff).
 
 ```bash
 nix flake init -t "github:gawakawa/flake-templates#python"
@@ -71,7 +71,7 @@ nix flake init -t "github:gawakawa/flake-templates#python"
 
 ### deno
 
-Deno development template with treefmt (nixfmt + deno) and mcp-servers-nix (serena + nixos).
+Deno development template with treefmt (nixfmt + deno).
 
 ```bash
 nix flake init -t "github:gawakawa/flake-templates#deno"
@@ -79,7 +79,7 @@ nix flake init -t "github:gawakawa/flake-templates#deno"
 
 ### pnpm
 
-Node.js development template with pnpm, treefmt (nixfmt + oxfmt), and mcp-servers-nix (serena + nixos).
+Node.js development template with pnpm and treefmt (nixfmt + oxfmt).
 
 ```bash
 nix flake init -t "github:gawakawa/flake-templates#pnpm"
@@ -95,7 +95,7 @@ nix flake init -t "github:gawakawa/flake-templates#haskell"
 
 ### go
 
-Go development template with treefmt (nixfmt + gofmt + goimports + golines) and mcp-servers-nix (serena + nixos).
+Go development template with treefmt (nixfmt + gofmt + goimports + golines).
 
 ```bash
 nix flake init -t "github:gawakawa/flake-templates#go"
@@ -103,7 +103,7 @@ nix flake init -t "github:gawakawa/flake-templates#go"
 
 ### lean
 
-Lean theorem prover template with elan, treefmt (nixfmt), and mcp-servers-nix (nixos + lean-lsp).
+Lean theorem prover template with elan, treefmt (nixfmt), and mcp-servers-nix (lean-lsp).
 
 ```bash
 nix flake init -t "github:gawakawa/flake-templates#lean"
@@ -111,7 +111,7 @@ nix flake init -t "github:gawakawa/flake-templates#lean"
 
 ### idris2
 
-Idris2 development template with buildIdris, treefmt (nixfmt), and mcp-servers-nix (nixos).
+Idris2 development template with buildIdris and treefmt (nixfmt).
 
 ```bash
 nix flake init -t "github:gawakawa/flake-templates#idris2"
@@ -119,7 +119,7 @@ nix flake init -t "github:gawakawa/flake-templates#idris2"
 
 ### pack
 
-Idris2 development template with pack (package manager), treefmt (nixfmt), and mcp-servers-nix (nixos).
+Idris2 development template with pack (package manager) and treefmt (nixfmt).
 
 ```bash
 nix flake init -t "github:gawakawa/flake-templates#pack"
@@ -127,7 +127,7 @@ nix flake init -t "github:gawakawa/flake-templates#pack"
 
 ### terraform
 
-Terraform development template with treefmt (nixfmt + terraform fmt) and mcp-servers-nix (nixos).
+Terraform development template with treefmt (nixfmt + terraform fmt).
 
 ```bash
 nix flake init -t "github:gawakawa/flake-templates#terraform"
