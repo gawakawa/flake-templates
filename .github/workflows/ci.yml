@@ -16,48 +16,8 @@ permissions:
 
 jobs:
   detect-changes:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    outputs:
-      templates: ${{ steps.set-templates.outputs.templates }}
-      haskell: ${{ steps.filter.outputs.haskell == 'true' || steps.filter.outputs.root == 'true' }}
-      root: ${{ steps.filter.outputs.root }}
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-
-      - uses: cachix/install-nix-action@v31
-        with:
-          github_access_token: ${{ secrets.GH_TOKEN }}
-
-      - name: List all templates
-        id: list-templates
-        uses: ./.github/actions/list-templates
-
-      - name: Generate filters
-        run: |
-          {
-            echo "root:"
-            echo "  - 'flake.nix'"
-            echo "  - 'flake.lock'"
-            echo "  - 'flakes/**'"
-            echo '${{ steps.list-templates.outputs.templates }}' | jq -r '.[] | "\(.):\n  - \"templates/\(.)/**\""'
-          } > filters.yml
-
-      - uses: dorny/paths-filter@v3
-        id: filter
-        with:
-          filters: filters.yml
-
-      - name: Set templates to test
-        id: set-templates
-        run: |
-          if [[ "${{ steps.filter.outputs.root }}" == "true" ]]; then
-            printf 'templates=%s\n' '${{ steps.list-templates.outputs.templates }}' >> "$GITHUB_OUTPUT"
-          else
-            printf 'templates=%s\n' '${{ steps.filter.outputs.changes }}' >> "$GITHUB_OUTPUT"
-          fi
+    uses: ./.github/workflows/detect-changes.yml
+    secrets: inherit
 
   check-root-flake:
     needs: detect-changes
