@@ -118,8 +118,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - run: exit 1
-        if: |
-          needs.tests.result != 'success' ||
-          (needs.test-templates.result != 'success' && needs.test-templates.result != 'skipped') ||
-          (needs.test-haskell.result != 'success' && needs.test-haskell.result != 'skipped')
+      - name: Verify all checks passed
+        run: exit 1
+        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
