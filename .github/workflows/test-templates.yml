@@ -36,8 +36,8 @@ jobs:
 
       - name: Check ${{ matrix.template }} template
         working-directory: templates/${{ matrix.template }}
-        run: nix flake check ${{ matrix.template == 'haskell' && '--accept-flake-config' || '' }}
+        run: nix flake check --accept-flake-config
 
       - name: Test devShell for ${{ matrix.template }} template
         working-directory: templates/${{ matrix.template }}
-        run: nix develop ${{ matrix.template == 'haskell' && '--accept-flake-config' || '' }} -c echo "DevShell works"
+        run: nix develop --accept-flake-config -c echo "DevShell works"
