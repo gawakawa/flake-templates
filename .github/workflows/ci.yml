@@ -21,6 +21,7 @@ jobs:
     outputs:
       templates: ${{ steps.set-templates.outputs.templates }}
       haskell: ${{ steps.filter.outputs.haskell == 'true' || steps.filter.outputs.root == 'true' }}
+      root: ${{ steps.filter.outputs.root }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -40,6 +41,7 @@ jobs:
             echo "root:"
             echo "  - 'flake.nix'"
             echo "  - 'flake.lock'"
+            echo "  - 'flakes/**'"
             echo '${{ steps.list-templates.outputs.templates }}' | jq -r '.[] | "\(.):\n  - \"templates/\(.)/**\""'
           } > filters.yml
 
@@ -58,6 +60,8 @@ jobs:
           fi
 
   check-root-flake:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.root == 'true'
     uses: ./.github/workflows/check-root-flake.yml
     secrets: inherit
 
