@@ -1,0 +1,45 @@
+name: "test-templates"
+
+on:
+  workflow_call:
+    inputs:
+      templates:
+        required: true
+        type: string
+
+jobs:
+  test-templates:
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    strategy:
+      matrix:
+        os: [ubuntu-latest, self-hosted]
+        template: ${{ fromJSON(inputs.templates) }}
+        exclude:
+          - os: self-hosted
+            template: purs-nix
+          - os: self-hosted
+            template: haskell
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ secrets.GH_TOKEN }}
+
+      - uses: cachix/cachix-action@v16
+        with:
+          name: gawakawa
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+      - name: Check ${{ matrix.template }} template
+        if: matrix.template != 'haskell'
+        working-directory: templates/${{ matrix.template }}
+        run: nix flake check
+
+      - name: Test devShell for ${{ matrix.template }} template
+        if: matrix.template != 'haskell'
+        working-directory: templates/${{ matrix.template }}
+        run: nix develop -c echo "DevShell works"

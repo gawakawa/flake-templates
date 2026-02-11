@@ -1,10 +1,10 @@
-name: "CI (haskell)"
+name: "test-haskell-template"
 
 on:
   workflow_call:
 
 jobs:
-  test:
+  test-haskell-template:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     permissions:

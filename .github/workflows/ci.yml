@@ -72,51 +72,23 @@ jobs:
 
   test-templates:
     needs: detect-changes
-    timeout-minutes: 10
     if: needs.detect-changes.outputs.templates != '[]'
-    strategy:
-      matrix:
-        os: [ubuntu-latest, self-hosted]
-        template: ${{ fromJSON(needs.detect-changes.outputs.templates) }}
-        exclude:
-          - os: self-hosted
-            template: purs-nix
-          - os: self-hosted
-            template: haskell
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v6
+    uses: ./.github/workflows/test-templates.yml
+    with:
+      templates: ${{ needs.detect-changes.outputs.templates }}
+    secrets: inherit
 
-      - uses: cachix/install-nix-action@v31
-        with:
-          github_access_token: ${{ secrets.GH_TOKEN }}
-
-      - uses: cachix/cachix-action@v16
-        with:
-          name: gawakawa
-          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-
-      - name: Check ${{ matrix.template }} template
-        if: matrix.template != 'haskell'
-        working-directory: templates/${{ matrix.template }}
-        run: nix flake check
-
-      - name: Test devShell for ${{ matrix.template }} template
-        if: matrix.template != 'haskell'
-        working-directory: templates/${{ matrix.template }}
-        run: nix develop -c echo "DevShell works"
-
-  test-haskell:
+  test-haskell-template:
     needs: detect-changes
     if: needs.detect-changes.outputs.haskell == 'true'
-    uses: ./.github/workflows/ci-haskell.yml
+    uses: ./.github/workflows/test-haskell-template.yml
     secrets: inherit
 
   ci-success:
-    needs: [tests, test-templates, test-haskell]
+    needs: [tests, test-templates, test-haskell-template]
     if: always()
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 1
     steps:
       - name: Verify all checks passed
         run: exit 1
