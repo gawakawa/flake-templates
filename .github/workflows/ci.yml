@@ -15,19 +15,6 @@ permissions:
   pull-requests: write
 
 jobs:
-  tests:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - uses: actions/checkout@v6
-
-      - uses: cachix/install-nix-action@v31
-        with:
-          github_access_token: ${{ secrets.GH_TOKEN }}
-
-      - name: Flake check
-        run: nix flake check
-
   detect-changes:
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -70,6 +57,10 @@ jobs:
             printf 'templates=%s\n' '${{ steps.filter.outputs.changes }}' >> "$GITHUB_OUTPUT"
           fi
 
+  check-root-flake:
+    uses: ./.github/workflows/check-root-flake.yml
+    secrets: inherit
+
   test-templates:
     needs: detect-changes
     if: needs.detect-changes.outputs.templates != '[]'
@@ -85,7 +76,7 @@ jobs:
     secrets: inherit
 
   ci-success:
-    needs: [tests, test-templates, test-haskell-template]
+    needs: [check-root-flake, test-templates, test-haskell-template]
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 1
