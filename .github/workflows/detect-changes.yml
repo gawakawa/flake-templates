@@ -5,8 +5,6 @@ on:
     outputs:
       templates:
         value: ${{ jobs.detect-changes.outputs.templates }}
-      haskell:
-        value: ${{ jobs.detect-changes.outputs.haskell }}
       root:
         value: ${{ jobs.detect-changes.outputs.root }}
 
@@ -16,7 +14,6 @@ jobs:
     timeout-minutes: 5
     outputs:
       templates: ${{ steps.set-templates.outputs.templates }}
-      haskell: ${{ steps.filter.outputs.haskell == 'true' || steps.filter.outputs.root == 'true' }}
       root: ${{ steps.filter.outputs.root }}
     steps:
       - uses: actions/checkout@v6

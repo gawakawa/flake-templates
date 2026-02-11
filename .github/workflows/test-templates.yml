@@ -9,7 +9,7 @@ on:
 
 jobs:
   test-templates:
-    timeout-minutes: 10
+    timeout-minutes: ${{ matrix.template == 'haskell' && 60 || 10 }}
     permissions:
       contents: read
     strategy:
@@ -35,11 +35,9 @@ jobs:
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: Check ${{ matrix.template }} template
-        if: matrix.template != 'haskell'
         working-directory: templates/${{ matrix.template }}
-        run: nix flake check
+        run: nix flake check ${{ matrix.template == 'haskell' && '--accept-flake-config' || '' }}
 
       - name: Test devShell for ${{ matrix.template }} template
-        if: matrix.template != 'haskell'
         working-directory: templates/${{ matrix.template }}
-        run: nix develop -c echo "DevShell works"
+        run: nix develop ${{ matrix.template == 'haskell' && '--accept-flake-config' || '' }} -c echo "DevShell works"

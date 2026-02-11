@@ -33,14 +33,8 @@ jobs:
       templates: ${{ needs.detect-changes.outputs.templates }}
     secrets: inherit
 
-  test-haskell-template:
-    needs: detect-changes
-    if: needs.detect-changes.outputs.haskell == 'true'
-    uses: ./.github/workflows/test-haskell-template.yml
-    secrets: inherit
-
   ci-success:
-    needs: [check-root-flake, test-templates, test-haskell-template]
+    needs: [check-root-flake, test-templates]
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 1
