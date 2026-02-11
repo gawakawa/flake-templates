@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  ci:
+  tests:
     name: CI
     timeout-minutes: 10
     runs-on: ubuntu-latest
@@ -44,3 +44,13 @@ jobs:
 
       - name: Run tests
         run: deno task test
+
+  ci-success:
+    needs: [tests]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    steps:
+      - name: Verify all checks passed
+        run: exit 1
+        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')

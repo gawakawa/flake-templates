@@ -37,3 +37,13 @@ jobs:
 
       - name: Flake check
         run: nix flake check
+
+  ci-success:
+    needs: [tests]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    steps:
+      - name: Verify all checks passed
+        run: exit 1
+        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
