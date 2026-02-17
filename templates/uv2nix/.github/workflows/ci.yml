@@ -34,7 +34,10 @@ jobs:
         run: nix flake check
 
       - name: Test
-        run: nix develop -c pytest
+        run: nix shell .#ci -c uv run pytest
+
+      - name: Build
+        run: nix build
 
   ci-success:
     needs: [tests]

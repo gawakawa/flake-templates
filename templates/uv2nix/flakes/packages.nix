@@ -18,9 +18,12 @@
         uv
       ];
 
-      packages.ci = pkgs.buildEnv {
-        name = "ci";
-        paths = config.ciPackages;
+      packages = {
+        ci = pkgs.buildEnv {
+          name = "ci";
+          paths = config.ciPackages;
+        };
+        default = config.prodVirtualenv;
       };
     };
 }
