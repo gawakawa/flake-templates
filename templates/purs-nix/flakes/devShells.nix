@@ -5,19 +5,26 @@ _: {
       pkgs,
       ps,
       purs-nix,
+      mcpConfig,
       ...
     }:
-    {
-      devShells.default = pkgs.mkShell {
-        buildInputs = [
-          pkgs.nodejs
+    let
+      devPackages =
+        config.ciPackages
+        ++ config.pre-commit.settings.enabledPackages
+        ++ [
           (ps.command { })
           purs-nix.esbuild
           purs-nix.purescript
-        ]
-        ++ config.pre-commit.settings.enabledPackages;
+        ];
+    in
+    {
+      devShells.default = pkgs.mkShell {
+        buildInputs = devPackages;
         shellHook = ''
           ${config.pre-commit.shellHook}
+          cat ${mcpConfig} > .mcp.json
+          echo "Generated .mcp.json"
         '';
       };
     };
