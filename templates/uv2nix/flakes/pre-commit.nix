@@ -1,6 +1,6 @@
 _: {
   perSystem =
-    { pkgs, ... }:
+    { config, pkgs, ... }:
     {
       pre-commit.settings.hooks = {
         treefmt.enable = true;
@@ -11,7 +11,7 @@ _: {
         ty = {
           enable = true;
           name = "ty";
-          entry = "${pkgs.ty}/bin/ty check";
+          entry = "${pkgs.ty}/bin/ty check --python ${config.devVirtualenv}/bin/python";
           files = "\\.py$";
           pass_filenames = false;
         };
