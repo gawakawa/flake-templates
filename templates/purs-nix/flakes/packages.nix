@@ -36,7 +36,6 @@
         inputs.mcp-servers-nix.lib.mkConfig
           (import inputs.mcp-servers-nix.inputs.nixpkgs { inherit system; })
           {
-            programs.nixos.enable = true;
             settings.servers = {
               pursuit-mcp = {
                 command = "nix";
