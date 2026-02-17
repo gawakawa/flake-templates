@@ -69,6 +69,14 @@ Python development template with uv and treefmt (nixfmt + ruff).
 nix flake init -t "github:gawakawa/flake-templates#python"
 ```
 
+### uv2nix
+
+Python development template with uv2nix for fully Nix-managed Python dependencies and treefmt (nixfmt + ruff).
+
+```bash
+nix flake init -t "github:gawakawa/flake-templates#uv2nix"
+```
+
 ### deno
 
 Deno development template with treefmt (nixfmt + deno).

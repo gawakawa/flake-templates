@@ -29,6 +29,10 @@ _: {
         path = ../templates/python;
         description = "Python template, using uv";
       };
+      uv2nix = {
+        path = ../templates/uv2nix;
+        description = "Python template, using uv2nix";
+      };
       deno = {
         path = ../templates/deno;
         description = "Deno template";
