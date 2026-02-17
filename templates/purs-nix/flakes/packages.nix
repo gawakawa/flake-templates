@@ -9,7 +9,7 @@
 
       ps = purs-nix.purs {
         dependencies = [
-          "console"
+          "ursi.debug"
           "effect"
           "prelude"
         ];
