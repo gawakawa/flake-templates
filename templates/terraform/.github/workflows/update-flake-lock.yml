@@ -14,6 +14,7 @@ jobs:
     uses: gawakawa/.github/.github/workflows/update-flake-lock.yml@main
     with:
       auto-merge: true
+      pr-title: "⬆️ Update flake.lock"
       branch: "update-flake-lock"
     secrets:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
