@@ -36,8 +36,12 @@ jobs:
             exit 1
           fi
 
-          commit="${flake_ref##*/}"
-          commit="${commit%%\?*}"
+          if [[ "$flake_ref" =~ github:[^/]+/[^/]+/([a-f0-9]{40}) ]]; then
+            commit="${BASH_REMATCH[1]}"
+          else
+            echo "Failed to extract commit SHA from: $flake_ref"
+            exit 1
+          fi
           echo "commit=$commit" >> "$GITHUB_OUTPUT"
 
       - name: Check if update needed
