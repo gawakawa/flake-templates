@@ -16,11 +16,11 @@ jobs:
       templates: ${{ steps.set-templates.outputs.templates }}
       root: ${{ steps.filter.outputs.root }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           fetch-depth: 0
 
-      - uses: cachix/install-nix-action@v31
+      - uses: cachix/install-nix-action@bec50b45a8bb06017c42af46702a3f502adcfa9e # v31
         with:
           github_access_token: ${{ secrets.GH_TOKEN }}
 
@@ -38,7 +38,7 @@ jobs:
             echo '${{ steps.list-templates.outputs.templates }}' | jq -r '.[] | "\(.):\n  - \"templates/\(.)/**\""'
           } > filters.yml
 
-      - uses: dorny/paths-filter@v3
+      - uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3
         id: filter
         with:
           filters: filters.yml
