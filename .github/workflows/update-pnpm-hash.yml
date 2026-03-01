@@ -39,6 +39,7 @@ jobs:
 
           PLACEHOLDER="sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
           sed -i "s|hash = \"sha256-[^\"]*\"|hash = \"$PLACEHOLDER\"|" flakes/checks.nix
+          git add flakes/checks.nix
 
           echo "=== After placeholder replacement ==="
           grep 'hash = ' flakes/checks.nix
