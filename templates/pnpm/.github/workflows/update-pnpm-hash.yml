@@ -33,18 +33,40 @@ jobs:
 
       - name: Update pnpm deps hash
         run: |
-          PLACEHOLDER="sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
-          sed -i "s|hash = \"sha256-[^\"]*\"|hash = \"$PLACEHOLDER\"|" flakes/checks.nix
+          echo "=== Current hash line ==="
+          grep 'hash = ' flakes/checks.nix
 
-          HASH=$(nix flake check 2>&1 | grep 'got:' | awk '{print $2}')
+          echo "=== Building fetchPnpmDeps to get correct hash ==="
+          NIX_OUTPUT=$(nix build --no-link --impure --expr '
+            let
+              pkgs = (builtins.getFlake (toString ./.)).inputs.nixpkgs.legacyPackages.x86_64-linux;
+            in
+            pkgs.fetchPnpmDeps {
+              pname = "pnpm-project-deps";
+              version = "1.0.0";
+              src = ./.;
+              pnpm = pkgs.pnpm_10;
+              fetcherVersion = 3;
+              hash = "";
+            }
+          ' 2>&1) || true
+          echo "$NIX_OUTPUT"
+
+          echo "=== Extracting hash ==="
+          HASH=$(echo "$NIX_OUTPUT" | grep 'got:' | awk '{print $2}')
 
           if [ -z "$HASH" ]; then
-            echo "Failed to extract hash"
+            echo "Failed to extract hash from nix output"
+            echo "=== Full nix output for debugging ==="
+            echo "$NIX_OUTPUT"
             exit 1
           fi
 
           echo "New hash: $HASH"
-          sed -i "s|hash = \"$PLACEHOLDER\"|hash = \"$HASH\"|" flakes/checks.nix
+          sed -i "s|hash = \"sha256-[^\"]*\"|hash = \"$HASH\"|" flakes/checks.nix
+
+          echo "=== Final hash line ==="
+          grep 'hash = ' flakes/checks.nix
 
       - name: Check for changes
         id: changes
