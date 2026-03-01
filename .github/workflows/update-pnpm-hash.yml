@@ -44,7 +44,7 @@ jobs:
           grep 'hash = ' flakes/checks.nix
 
           echo "=== Running nix flake check ==="
-          NIX_OUTPUT=$(nix flake check 2>&1) || true
+          NIX_OUTPUT=$(nix flake check -L 2>&1) || true
           echo "$NIX_OUTPUT"
 
           echo "=== Extracting hash ==="
