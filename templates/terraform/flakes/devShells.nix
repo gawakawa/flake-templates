@@ -6,6 +6,7 @@ _: {
         config.pre-commit.settings.enabledPackages
         ++ (with pkgs; [
           opentofu
+          terraform-docs
         ]);
     in
     {
