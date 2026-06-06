@@ -14,12 +14,12 @@ jobs:
       contents: read
     strategy:
       matrix:
-        os: [ubuntu-latest, self-hosted]
+        os: [ubuntu-latest, macos-latest]
         template: ${{ fromJSON(inputs.templates) }}
         exclude:
-          - os: self-hosted
+          - os: macos-latest
             template: purs-nix
-          - os: self-hosted
+          - os: macos-latest
             template: haskell
     runs-on: ${{ matrix.os }}
     steps:
