@@ -13,13 +13,19 @@ jobs:
       contents: write
       pull-requests: write
     steps:
+      - uses: actions/create-github-app-token@df432ceedc7162793a3e0540a622d9ef9a9b7da1 # v2
+        id: app-token
+        with:
+          app-id: ${{ secrets.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_PRIVATE_KEY }}
+
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           persist-credentials: false
 
       - uses: cachix/install-nix-action@bec50b45a8bb06017c42af46702a3f502adcfa9e # v31
         with:
-          github_access_token: ${{ secrets.GH_TOKEN }}
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: List templates
         id: list-templates
@@ -44,10 +50,10 @@ jobs:
           pr-title: "⬆️ Update all flake.lock files"
           pr-labels: dependencies
           branch: update-flake-lock/all
-          token: ${{ secrets.GH_TOKEN }}
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: Enable auto-merge
         if: steps.update.outputs.pull-request-number != ''
         run: gh pr merge --auto --squash ${{ steps.update.outputs.pull-request-number }}
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
