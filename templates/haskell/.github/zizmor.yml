@@ -1,4 +1,8 @@
 rules:
+  # haskellNix pins an older zizmor (1.23.1) that flags this; newer zizmor doesn't.
+  secrets-outside-env:
+    ignore:
+      - ci.yml
   unpinned-uses:
     config:
       policies:
