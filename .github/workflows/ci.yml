@@ -12,18 +12,15 @@ concurrency:
 
 permissions:
   contents: read
-  pull-requests: write
 
 jobs:
   detect-changes:
     uses: ./.github/workflows/detect-changes.yml
-    secrets: inherit
 
   check-root-flake:
     needs: detect-changes
     if: needs.detect-changes.outputs.root == 'true'
     uses: ./.github/workflows/check-root-flake.yml
-    secrets: inherit
 
   test-templates:
     needs: detect-changes
@@ -31,7 +28,8 @@ jobs:
     uses: ./.github/workflows/test-templates.yml
     with:
       templates: ${{ needs.detect-changes.outputs.templates }}
-    secrets: inherit
+    secrets:
+      CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
   ci-success:
     needs: [check-root-flake, test-templates]

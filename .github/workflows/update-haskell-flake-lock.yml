@@ -18,8 +18,12 @@ jobs:
         with:
           client-id: ${{ secrets.BOT_APP_ID }}
           private-key: ${{ secrets.BOT_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
 
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
 
       - uses: cachix/install-nix-action@bec50b45a8bb06017c42af46702a3f502adcfa9e # v31
         with:
@@ -54,18 +58,22 @@ jobs:
         id: check
         run: |
           current=$(jq -r '.nodes.haskellNix.locked.rev' templates/haskell/flake.lock)
-          if [[ "${{ steps.hydra.outputs.commit }}" == "$current" ]]; then
+          if [[ "$HYDRA_COMMIT" == "$current" ]]; then
             echo "needed=false" >> "$GITHUB_OUTPUT"
           else
             echo "needed=true" >> "$GITHUB_OUTPUT"
           fi
+        env:
+          HYDRA_COMMIT: ${{ steps.hydra.outputs.commit }}
 
       - name: Update flake.lock
         if: steps.check.outputs.needed == 'true'
         working-directory: templates/haskell
         run: |
           nix flake lock --override-input haskellNix \
-            "github:input-output-hk/haskell.nix/${{ steps.hydra.outputs.commit }}"
+            "github:input-output-hk/haskell.nix/$HYDRA_COMMIT"
+        env:
+          HYDRA_COMMIT: ${{ steps.hydra.outputs.commit }}
 
       - name: Create PR
         id: pr
@@ -77,11 +85,11 @@ jobs:
           git checkout -b "$branch"
           git add templates/haskell/flake.lock
           git commit -m "⬆️ Update haskell flake.lock"
-          git push -f origin "$branch"
+          git push -f "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "$branch"
 
           gh pr create \
             --title "⬆️ Update haskell flake.lock" \
-            --body "Update haskellNix to \`${{ steps.hydra.outputs.commit }}\` (Hydra-evaluated)" \
+            --body "Update haskellNix to \`${HYDRA_COMMIT}\` (Hydra-evaluated)" \
             --label dependencies \
             --head "$branch" 2>/dev/null || true
 
@@ -89,9 +97,11 @@ jobs:
           echo "number=$pr_number" >> "$GITHUB_OUTPUT"
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          HYDRA_COMMIT: ${{ steps.hydra.outputs.commit }}
 
       - name: Enable auto-merge
         if: steps.pr.outputs.number != ''
-        run: gh pr merge --auto --squash ${{ steps.pr.outputs.number }}
+        run: gh pr merge --auto --squash "$PR_NUMBER"
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          PR_NUMBER: ${{ steps.pr.outputs.number }}
