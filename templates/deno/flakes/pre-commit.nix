@@ -7,6 +7,10 @@ _: {
         statix.enable = true;
         deadnix.enable = true;
         actionlint.enable = true;
+        zizmor = {
+          enable = true;
+          args = [ "--offline" ];
+        };
         denolint.enable = true;
         workflow-timeout = {
           enable = true;
