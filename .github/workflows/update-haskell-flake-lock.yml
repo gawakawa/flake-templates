@@ -13,13 +13,19 @@ jobs:
       contents: write
       pull-requests: write
     steps:
+      - uses: actions/create-github-app-token@df432ceedc7162793a3e0540a622d9ef9a9b7da1 # v2
+        id: app-token
+        with:
+          app-id: ${{ secrets.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_PRIVATE_KEY }}
+
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - uses: cachix/install-nix-action@bec50b45a8bb06017c42af46702a3f502adcfa9e # v31
         with:
-          github_access_token: ${{ secrets.GH_TOKEN }}
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: cachix/cachix-action@1eb2ef646ac0255473d23a5907ad7b04ce94065c # v17
+      - uses: cachix/cachix-action@5f2d7c5294214f71b873db4b969586b980625e71 # v17
         with:
           name: gawakawa
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
@@ -82,10 +88,10 @@ jobs:
           pr_number=$(gh pr view "$branch" --json number -q .number)
           echo "number=$pr_number" >> "$GITHUB_OUTPUT"
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
 
       - name: Enable auto-merge
         if: steps.pr.outputs.number != ''
         run: gh pr merge --auto --squash ${{ steps.pr.outputs.number }}
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
