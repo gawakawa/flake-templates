@@ -1,21 +1,49 @@
 name: "Update pnpm deps hash"
 
 on:
-  pull_request:
-    paths:
-      - "templates/pnpm/pnpm-lock.yaml"
-      - "templates/pnpm/flake.lock"
+  # workflow_run runs in the trusted default-branch context (secrets available), even for
+  # Dependabot-triggered CI. The workflow name must match name: in ci.yml exactly.
+  workflow_run: # zizmor: ignore[dangerous-triggers]
+    workflows: ["CI"]
+    types: [completed]
 
 permissions:
   contents: write
+  pull-requests: read
 
 jobs:
   update-hash:
     name: Update fetchPnpmDeps hash
     timeout-minutes: 10
     runs-on: ubuntu-latest
+    if: >
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'failure' &&
+      github.event.workflow_run.head_repository.full_name == github.repository
     steps:
+      - name: Check pnpm lockfile changes
+        id: guard
+        env:
+          PULL_REQUESTS: ${{ toJSON(github.event.workflow_run.pull_requests) }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_NUMBER=$(echo "$PULL_REQUESTS" | jq -r '.[0].number // empty')
+          if [ -z "$PR_NUMBER" ]; then
+            echo "No associated PR found"
+            echo "relevant=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          CHANGED=$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/files" --paginate --jq '.[].filename')
+          if echo "$CHANGED" | grep -qE '^templates/pnpm/(pnpm-lock\.yaml|flake\.lock)$'; then
+            echo "PR #$PR_NUMBER touches pnpm lockfiles — will update hash"
+            echo "relevant=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "PR #$PR_NUMBER does not touch pnpm lockfiles — skipping"
+            echo "relevant=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        if: steps.guard.outputs.relevant == 'true'
         id: app-token
         with:
           client-id: ${{ secrets.BOT_APP_ID }}
@@ -23,24 +51,28 @@ jobs:
           permission-contents: write
 
       - name: Checkout code
+        if: steps.guard.outputs.relevant == 'true'
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
-          ref: ${{ github.head_ref }}
+          ref: ${{ github.event.workflow_run.head_sha }}
           token: ${{ steps.app-token.outputs.token }}
           persist-credentials: false
 
       - name: Install Nix
+        if: steps.guard.outputs.relevant == 'true'
         uses: cachix/install-nix-action@bec50b45a8bb06017c42af46702a3f502adcfa9e # v31
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Cachix
+        if: steps.guard.outputs.relevant == 'true'
         uses: cachix/cachix-action@5f2d7c5294214f71b873db4b969586b980625e71 # v17
         with:
           name: gawakawa
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: Update pnpm deps hash
+        if: steps.guard.outputs.relevant == 'true'
         working-directory: templates/pnpm
         run: |
           echo "=== Current hash line ==="
@@ -79,6 +111,7 @@ jobs:
           grep 'hash = ' flakes/checks.nix
 
       - name: Check for changes
+        if: steps.guard.outputs.relevant == 'true'
         id: changes
         run: |
           if git diff --quiet templates/pnpm/flakes/checks.nix; then
@@ -88,7 +121,7 @@ jobs:
           fi
 
       - name: Commit and push
-        if: steps.changes.outputs.changed == 'true'
+        if: steps.guard.outputs.relevant == 'true' && steps.changes.outputs.changed == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -97,4 +130,4 @@ jobs:
           git push "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:${HEAD_REF}"
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
-          HEAD_REF: ${{ github.head_ref }}
+          HEAD_REF: ${{ github.event.workflow_run.head_branch }}
