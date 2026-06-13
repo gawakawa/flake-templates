@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - "templates/pnpm/pnpm-lock.yaml"
+      - "templates/pnpm/flake.lock"
 
 permissions:
   contents: write
