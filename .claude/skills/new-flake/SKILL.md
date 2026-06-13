@@ -1,94 +1,66 @@
 ---
 name: new-flake
-description: Create a template directory, update README.md, CLAUDE.md, flakes/templates.nix, and .github/dependabot.yml, and add .github/CODEOWNERS and .github/workflows/auto-assign.yml for the newly added flake.
+description: Add a new flake template to this repo. Scaffolds templates/<name>/, registers it in flakes/templates.nix, documents it in README.md, wires up .github/dependabot.yml, and copies the standard CODEOWNERS + auto-assign workflow. Use when adding or scaffolding a new flake template.
 user-invocable: true
 ---
 
-# New Flake Template Documentation
+# New Flake Template
 
-Follow these steps when adding a new flake template:
-
-## 0. Create the template directory
-
-Create `templates/<name>/` with a complete `flake.nix` and any supporting files.
-
-## 1. flakes/templates.nix (template registration)
-
-Add to `flake.templates` in alphabetical order:
-
-```nix
-template-name = {
-  path = ./templates/template-name;
-  description = "Brief description";
-};
-```
-
-## 2. README.md (user documentation)
-
-Add to `<details>` section in alphabetical order:
-
-```markdown
-### template-name
-
-[Description with tools: treefmt (formatters) and mcp-servers-nix (servers).]
-
-\`\`\`bash
-nix flake init -t "github:gawakawa/flake-templates#template-name"
-\`\`\`
-```
-
-## 3. CLAUDE.md (developer documentation)
-
-Add to "Available Templates" section in alphabetical order:
-
-```markdown
-- **template-name**: [Language/Tool] development template with treefmt ([formatters]) and mcp-servers-nix ([servers])
-```
-
-## 4. .github/dependabot.yml
-
-Add github-actions entry (always required for templates with workflows):
-
-```yaml
-  - package-ecosystem: "github-actions"
-    directory: "/templates/template-name"
-    schedule:
-      interval: "weekly"
-    cooldown:
-      default-days: 7
-```
-
-Add language-specific entries if applicable:
-- Rust: Add `cargo` entry with semver cooldown settings
-- Node.js: Add `npm` entry with semver cooldown settings
-
-## 5. .github/CODEOWNERS
-
-Create with the following content:
+Copy this checklist and check off each step as you go:
 
 ```
-* @gawakawa
+- [ ] 1. Create templates/<name>/ with flake.nix
+- [ ] 2. Copy standard GitHub files
+- [ ] 3. Register in flakes/templates.nix
+- [ ] 4. Document in README.md
+- [ ] 5. Add dependabot entries
+- [ ] 6. Verify
 ```
 
-## 6. .github/workflows/auto-assign.yml
+## 1. Create `templates/<name>/`
 
-Requires `BOT_APP_ID` and `BOT_PRIVATE_KEY` secrets to be configured in the repository or organization settings (gawakawa-bot GitHub App).
+Model the structure on `templates/flake-parts/` (the simplest example):
 
-Create with the following content:
+- `ciPackages` — list of packages for CI
+- `devPackages` — extends `ciPackages` with dev-only tools
+- `packages.ci` — `pkgs.buildEnv` from `ciPackages`
+- `devShells.default` — `pkgs.mkShell` from `devPackages`
+- `treefmt` — at minimum `programs.nixfmt.enable = true`
 
-```yaml
-name: Auto Assign
+`mcp-servers-nix`/`mkConfig` is optional — only `lean` and `purs-nix` use it.
 
-on:
-  pull_request:
+## 2. Copy standard GitHub files
 
-permissions:
-  pull-requests: write
+```bash
+mkdir -p templates/<name>/.github/workflows
+cp .claude/skills/new-flake/assets/CODEOWNERS templates/<name>/.github/CODEOWNERS
+cp .claude/skills/new-flake/assets/auto-assign.yml templates/<name>/.github/workflows/auto-assign.yml
+```
 
-jobs:
-  auto-assign:
-    uses: gawakawa/.github/.github/workflows/auto-assign.yml@main
-    secrets:
-      BOT_APP_ID: ${{ secrets.BOT_APP_ID }}
-      BOT_PRIVATE_KEY: ${{ secrets.BOT_PRIVATE_KEY }}
+The auto-assign workflow requires `BOT_APP_ID` and `BOT_PRIVATE_KEY` secrets (gawakawa-bot GitHub App) configured at the org or repo level.
+
+## 3. Register in `flakes/templates.nix`
+
+Add the entry in alphabetical order. See [reference/registry-and-readme.md](reference/registry-and-readme.md) for the format and real examples.
+
+## 4. Document in `README.md`
+
+Add a `### <name>` entry inside the existing `<details>` block, in alphabetical order. See [reference/registry-and-readme.md](reference/registry-and-readme.md) for the format and real examples.
+
+## 5. Add dependabot entries
+
+Add to `.github/dependabot.yml`. The github-actions entry is always required (every template ships auto-assign.yml). Add language entries for Rust/Node.js/Python if applicable. See [reference/dependabot.md](reference/dependabot.md) for formats and real examples.
+
+## 6. Verify
+
+```bash
+# New files are invisible to flake eval until staged
+git add templates/<name>/
+
+# Test template initialization
+tmpdir=$(mktemp -d) && cd "$tmpdir" && nix flake init -t /path/to/repo#<name> && cd -
+
+# Formatting and flake checks
+nix fmt
+nix flake check
 ```

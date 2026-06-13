@@ -64,8 +64,8 @@ nix flake init -t "github:gawakawa/flake-templates#flake-parts" --refresh
 ## Adding New Templates
 
 Use the `new-flake` skill — it lists every file to create/update (template
-`flake.nix`, registry entry in `flakes/templates.nix`, README, CLAUDE.md,
-dependabot, CODEOWNERS, auto-assign). After applying the checklist:
+`flake.nix`, registry entry in `flakes/templates.nix`, README, dependabot,
+CODEOWNERS, auto-assign). After applying the checklist:
 
 1. Test: `nix flake init -t .#<name>` in a temp dir
 2. Ensure CI passes: formatting check, build, and flake check
