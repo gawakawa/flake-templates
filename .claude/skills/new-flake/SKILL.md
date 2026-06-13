@@ -1,12 +1,12 @@
 ---
 name: new-flake
-description: Update README.md, CLAUDE.md, flake.nix, and .github/dependabot.yml, and add .github/CODEOWNERS for the newly added flake.
+description: Update README.md, CLAUDE.md, flake.nix, and .github/dependabot.yml, and add .github/CODEOWNERS and .github/workflows/auto-assign.yml for the newly added flake.
 user-invocable: true
 ---
 
 # New Flake Template Documentation
 
-Update these 5 files when a new flake template is added:
+Update these 5 files and add 2 new GitHub files when a new flake template is added:
 
 ## 1. flake.nix (template registration)
 
@@ -64,4 +64,27 @@ Create with the following content:
 
 ```
 * @gawakawa
+```
+
+## 6. .github/workflows/auto-assign.yml
+
+Requires `BOT_APP_ID` and `BOT_PRIVATE_KEY` secrets to be configured in the repository or organization settings (gawakawa-bot GitHub App).
+
+Create with the following content:
+
+```yaml
+name: Auto Assign
+
+on:
+  pull_request:
+
+permissions:
+  pull-requests: write
+
+jobs:
+  auto-assign:
+    uses: gawakawa/.github/.github/workflows/auto-assign.yml@main
+    secrets:
+      BOT_APP_ID: ${{ secrets.BOT_APP_ID }}
+      BOT_PRIVATE_KEY: ${{ secrets.BOT_PRIVATE_KEY }}
 ```

@@ -75,6 +75,7 @@ nix flake init -t "github:gawakawa/flake-templates#flake-parts" --refresh
    };
    ```
 4. Add `.github/CODEOWNERS` with `* @gawakawa` to the template directory
-5. Test the new template with `nix flake init` in a temporary directory
-6. Ensure CI passes: formatting check, build, and flake check
-7. When modifying multiple templates, use the Task tool to execute changes in parallel
+5. Add `.github/workflows/auto-assign.yml` (copy from any existing template)
+6. Test the new template with `nix flake init` in a temporary directory
+7. Ensure CI passes: formatting check, build, and flake check
+8. When modifying multiple templates, use the Task tool to execute changes in parallel
