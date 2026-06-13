@@ -5,16 +5,13 @@ on:
     outputs:
       templates:
         value: ${{ jobs.detect-changes.outputs.templates }}
-      root:
-        value: ${{ jobs.detect-changes.outputs.root }}
 
 jobs:
   detect-changes:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
-      templates: ${{ steps.set-templates.outputs.templates }}
-      root: ${{ steps.filter.outputs.root }}
+      templates: ${{ steps.filter.outputs.changes }}
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
@@ -31,13 +28,7 @@ jobs:
 
       - name: Generate filters
         run: |
-          {
-            echo "root:"
-            echo "  - 'flake.nix'"
-            echo "  - 'flake.lock'"
-            echo "  - 'flakes/**'"
-            echo "$TEMPLATES" | jq -r '.[] | "\(.):\n  - \"templates/\(.)/**\""'
-          } > filters.yml
+          echo "$TEMPLATES" | jq -r '.[] | "\(.):\n  - \"templates/\(.)/**\""' > filters.yml
         env:
           TEMPLATES: ${{ steps.list-templates.outputs.templates }}
 
@@ -45,16 +36,3 @@ jobs:
         id: filter
         with:
           filters: filters.yml
-
-      - name: Set templates to test
-        id: set-templates
-        run: |
-          if [[ "$FILTER_ROOT" == "true" ]]; then
-            printf 'templates=%s\n' "$TEMPLATES" >> "$GITHUB_OUTPUT"
-          else
-            printf 'templates=%s\n' "$FILTER_CHANGES" >> "$GITHUB_OUTPUT"
-          fi
-        env:
-          FILTER_ROOT: ${{ steps.filter.outputs.root }}
-          TEMPLATES: ${{ steps.list-templates.outputs.templates }}
-          FILTER_CHANGES: ${{ steps.filter.outputs.changes }}

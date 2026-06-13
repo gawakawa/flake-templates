@@ -18,22 +18,16 @@ jobs:
   detect-changes:
     uses: ./.github/workflows/detect-changes.yml
 
-  check-root-flake:
+  flake-check:
     needs: detect-changes
-    if: needs.detect-changes.outputs.root == 'true'
-    uses: ./.github/workflows/check-root-flake.yml
-
-  test-templates:
-    needs: detect-changes
-    if: needs.detect-changes.outputs.templates != '[]'
-    uses: ./.github/workflows/test-templates.yml
+    uses: ./.github/workflows/flake-check.yml
     with:
       templates: ${{ needs.detect-changes.outputs.templates }}
     secrets:
       CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
   ci-success:
-    needs: [check-root-flake, test-templates]
+    needs: [flake-check]
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 1
