@@ -74,6 +74,7 @@ nix flake init -t "github:gawakawa/flake-templates#flake-parts" --refresh
      };
    };
    ```
-4. Test the new template with `nix flake init` in a temporary directory
-5. Ensure CI passes: formatting check, build, and flake check
-6. When modifying multiple templates, use the Task tool to execute changes in parallel
+4. Add `.github/CODEOWNERS` with `* @gawakawa` to the template directory
+5. Test the new template with `nix flake init` in a temporary directory
+6. Ensure CI passes: formatting check, build, and flake check
+7. When modifying multiple templates, use the Task tool to execute changes in parallel
