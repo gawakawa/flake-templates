@@ -1,14 +1,18 @@
 ---
 name: new-flake
-description: Update README.md, CLAUDE.md, flake.nix, and .github/dependabot.yml, and add .github/CODEOWNERS and .github/workflows/auto-assign.yml for the newly added flake.
+description: Create a template directory, update README.md, CLAUDE.md, flakes/templates.nix, and .github/dependabot.yml, and add .github/CODEOWNERS and .github/workflows/auto-assign.yml for the newly added flake.
 user-invocable: true
 ---
 
 # New Flake Template Documentation
 
-Update these 5 files and add 2 new GitHub files when a new flake template is added:
+Follow these steps when adding a new flake template:
 
-## 1. flake.nix (template registration)
+## 0. Create the template directory
+
+Create `templates/<name>/` with a complete `flake.nix` and any supporting files.
+
+## 1. flakes/templates.nix (template registration)
 
 Add to `flake.templates` in alphabetical order:
 

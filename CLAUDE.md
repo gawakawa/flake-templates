@@ -63,19 +63,10 @@ nix flake init -t "github:gawakawa/flake-templates#flake-parts" --refresh
 
 ## Adding New Templates
 
-1. Create a new directory with the template name under `templates/` (e.g., `templates/my-template/`)
-2. Add a complete `flake.nix` and any supporting files to that directory
-3. Register the template in the root `flake.nix` under `flake.templates`:
-   ```nix
-   templates = {
-     my-template = {
-       path = ./templates/my-template;
-       description = "Description of my template";
-     };
-   };
-   ```
-4. Add `.github/CODEOWNERS` with `* @gawakawa` to the template directory
-5. Add `.github/workflows/auto-assign.yml` (copy from any existing template)
-6. Test the new template with `nix flake init` in a temporary directory
-7. Ensure CI passes: formatting check, build, and flake check
-8. When modifying multiple templates, use the Task tool to execute changes in parallel
+Use the `new-flake` skill — it lists every file to create/update (template
+`flake.nix`, registry entry in `flakes/templates.nix`, README, CLAUDE.md,
+dependabot, CODEOWNERS, auto-assign). After applying the checklist:
+
+1. Test: `nix flake init -t .#<name>` in a temp dir
+2. Ensure CI passes: formatting check, build, and flake check
+3. When modifying multiple templates, use the Task tool to make edits in parallel
