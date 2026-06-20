@@ -35,14 +35,8 @@ jobs:
       contents: read
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
         template: ${{ fromJSON(inputs.templates) }}
-        exclude:
-          - os: macos-latest
-            template: purs-nix
-          - os: macos-latest
-            template: haskell
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
@@ -60,3 +54,31 @@ jobs:
       - name: Check ${{ matrix.template }} template
         working-directory: templates/${{ matrix.template }}
         run: nix flake check --accept-flake-config
+
+  templates-macos:
+    if: inputs.templates != '[]'
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          persist-credentials: false
+
+      - uses: cachix/install-nix-action@bec50b45a8bb06017c42af46702a3f502adcfa9e # v31
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: cachix/cachix-action@5f2d7c5294214f71b873db4b969586b980625e71 # v17
+        with:
+          name: gawakawa
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+      - name: Check templates (macOS)
+        env:
+          TEMPLATES: ${{ inputs.templates }}
+          MACOS_EXCLUDE: '["purs-nix", "haskell"]'
+        run: |
+          while IFS= read -r p; do nix flake check --accept-flake-config "$p"; done \
+            < <(jq -r --argjson exclude "$MACOS_EXCLUDE" '.[] | select(IN($exclude[]) | not) | "./templates/\(.)"' <<< "$TEMPLATES")
