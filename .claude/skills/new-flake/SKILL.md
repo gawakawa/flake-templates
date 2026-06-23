@@ -35,9 +35,13 @@ Model the structure on `templates/flake-parts/` (the simplest example):
 mkdir -p templates/<name>/.github/workflows
 cp .claude/skills/new-flake/assets/CODEOWNERS templates/<name>/.github/CODEOWNERS
 cp .claude/skills/new-flake/assets/auto-assign.yml templates/<name>/.github/workflows/auto-assign.yml
+cp .claude/skills/new-flake/assets/update-pr-branches.yml templates/<name>/.github/workflows/update-pr-branches.yml
+cp .claude/skills/new-flake/assets/update-flake-lock.yml templates/<name>/.github/workflows/update-flake-lock.yml
 ```
 
-The auto-assign workflow requires `BOT_APP_ID` and `BOT_PRIVATE_KEY` secrets (gawakawa-bot GitHub App) configured at the org or repo level.
+All three workflows (`auto-assign.yml`, `update-pr-branches.yml`, `update-flake-lock.yml`) require `BOT_APP_ID` and `BOT_PRIVATE_KEY` secrets (gawakawa-bot GitHub App) configured at the org or repo level.
+
+When writing `ci.yml`, use `secrets.GITHUB_TOKEN` (not `secrets.GH_TOKEN`) for `install-nix-action`'s `github_access_token` — it's read-only rate-limit avoidance and doesn't need a PAT or App token.
 
 ## 3. Register in `flakes/templates.nix`
 
