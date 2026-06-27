@@ -1,9 +1,9 @@
 name: "build-devshells"
 
 on:
-  workflow_dispatch:
-  schedule:
-    - cron: '0 0 1 * *' # 毎月1日 00:00 UTC (= 09:00 JST)
+  push:
+    branches:
+      - main
 
 concurrency:
   group: ${{ github.workflow }}
@@ -13,33 +13,19 @@ permissions:
   contents: read
 
 jobs:
-  list-templates:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    outputs:
-      templates: ${{ steps.list.outputs.templates }}
-    steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-        with:
-          persist-credentials: false
-
-      - uses: cachix/install-nix-action@bec50b45a8bb06017c42af46702a3f502adcfa9e # v31
-        with:
-          github_access_token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: List templates
-        id: list
-        uses: ./.github/actions/list-templates
+  detect-changes:
+    uses: ./.github/workflows/detect-changes.yml
 
   build-devshells:
-    needs: list-templates
+    needs: detect-changes
+    if: needs.detect-changes.outputs.templates != '[]'
     timeout-minutes: ${{ matrix.template == 'haskell' && 60 || 10 }}
     permissions:
       contents: read
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        template: ${{ fromJSON(needs.list-templates.outputs.templates) }}
+        template: ${{ fromJSON(needs.detect-changes.outputs.templates) }}
         exclude:
           - os: macos-latest
             template: purs-nix
