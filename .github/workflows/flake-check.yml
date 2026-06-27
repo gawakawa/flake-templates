@@ -28,7 +28,7 @@ jobs:
       - name: Flake check (root)
         run: nix flake check
 
-  templates:
+  templates-linux:
     if: inputs.templates != '[]'
     timeout-minutes: ${{ matrix.template == 'haskell' && 60 || 10 }}
     permissions:
