@@ -24,14 +24,8 @@ jobs:
       contents: read
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
         template: ${{ fromJSON(needs.detect-changes.outputs.templates) }}
-        exclude:
-          - os: macos-latest
-            template: purs-nix
-          - os: macos-latest
-            template: haskell
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
@@ -46,6 +40,35 @@ jobs:
           name: gawakawa
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
-      - name: Test devShell for ${{ matrix.template }} template
+      - name: Build devShell for ${{ matrix.template }} template
         working-directory: templates/${{ matrix.template }}
         run: nix develop --accept-flake-config -c echo "DevShell works"
+
+  build-devshells-macos:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.templates != '[]'
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - uses: cachix/install-nix-action@bec50b45a8bb06017c42af46702a3f502adcfa9e # v31
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: cachix/cachix-action@5f2d7c5294214f71b873db4b969586b980625e71 # v17
+        with:
+          name: gawakawa
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+      - name: Build devShells (macOS)
+        env:
+          TEMPLATES: ${{ needs.detect-changes.outputs.templates }}
+          MACOS_EXCLUDE: '["purs-nix", "haskell"]'
+        run: |
+          while IFS= read -r p; do nix develop --accept-flake-config "$p" -c echo "DevShell works"; done \
+            < <(jq -r --argjson exclude "$MACOS_EXCLUDE" '.[] | select(IN($exclude[]) | not) | "./templates/\(.)"' <<< "$TEMPLATES")
