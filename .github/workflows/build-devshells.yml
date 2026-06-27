@@ -16,7 +16,7 @@ jobs:
   detect-changes:
     uses: ./.github/workflows/detect-changes.yml
 
-  build-devshells:
+  build-devshells-linux:
     needs: detect-changes
     if: needs.detect-changes.outputs.templates != '[]'
     timeout-minutes: ${{ matrix.template == 'haskell' && 60 || 10 }}
