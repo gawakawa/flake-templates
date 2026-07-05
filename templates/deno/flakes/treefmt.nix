@@ -6,23 +6,26 @@ _: {
           enable = true;
           includes = [ "*.nix" ];
         };
-        deno = {
+        oxfmt = {
           enable = true;
           includes = [
             "*.ts"
             "*.tsx"
             "*.js"
             "*.jsx"
+            "*.mjs"
+            "*.cjs"
             "*.json"
+            "*.jsonc"
+            "*.json5"
             "*.md"
+            "*.mdx"
+            "*.yaml"
+            "*.yml"
           ];
           excludes = [ "node_modules/*" ];
         };
       };
-      settings.formatter.deno.options = [
-        "--config"
-        "deno.json"
-      ];
     };
   };
 }

@@ -1,20 +1,7 @@
 {
   "tasks": {
     "test": "deno test",
-    "lint": "deno lint",
+    "lint": "oxlint",
     "check": "deno check"
-  },
-  "lint": {
-    "rules": {
-      "tags": ["recommended"]
-    }
-  },
-  "fmt": {
-    "useTabs": false,
-    "lineWidth": 70,
-    "indentWidth": 2,
-    "semiColons": true,
-    "singleQuote": true,
-    "proseWrap": "preserve"
   }
 }

@@ -10,6 +10,18 @@ _: {
           enable = true;
           includes = [ "*.py" ];
         };
+        oxfmt = {
+          enable = true;
+          includes = [
+            "*.json"
+            "*.jsonc"
+            "*.json5"
+            "*.md"
+            "*.mdx"
+            "*.yaml"
+            "*.yml"
+          ];
+        };
       };
     };
   };
