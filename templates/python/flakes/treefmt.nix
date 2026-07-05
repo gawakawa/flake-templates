@@ -10,6 +10,10 @@ _: {
           enable = true;
           includes = [ "*.py" ];
         };
+        taplo = {
+          enable = true;
+          includes = [ "*.toml" ];
+        };
         oxfmt = {
           enable = true;
           includes = [
