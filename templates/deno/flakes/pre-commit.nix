@@ -14,6 +14,7 @@ _: {
         oxlint = {
           enable = true;
           name = "oxlint";
+          package = pkgs.oxlint;
           entry = "${pkgs.oxlint}/bin/oxlint";
           files = "\\.(ts|tsx|js|jsx)$";
           pass_filenames = false;
