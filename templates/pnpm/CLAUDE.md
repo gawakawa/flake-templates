@@ -1,11 +1,8 @@
 # CLAUDE.md
 
-## Commands
-
-- `nix fmt` - Format code
-- `nix flake check` - Run checks (format, lint)
-- `nix build` - Build the project
-- `pnpm test` - Run tests
+- `README.md` — Project overview and usage
+- `CONTRIBUTING.md` — Developer guide: commands and workflow
+- `docs/DESIGN.md` — Design and architecture
 
 ## Updating dependencies
 
