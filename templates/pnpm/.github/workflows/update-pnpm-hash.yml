@@ -1,9 +1,9 @@
-name: "Update pnpm deps hash"
+name: 'Update pnpm deps hash'
 
 on:
   pull_request:
     paths:
-      - "pnpm-lock.yaml"
+      - 'pnpm-lock.yaml'
 
 permissions:
   contents: write

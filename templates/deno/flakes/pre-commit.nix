@@ -11,7 +11,14 @@ _: {
           enable = true;
           args = [ "--offline" ];
         };
-        denolint.enable = true;
+        oxlint = {
+          enable = true;
+          name = "oxlint";
+          package = pkgs.oxlint;
+          entry = "${pkgs.oxlint}/bin/oxlint";
+          files = "\\.(ts|tsx|js|jsx)$";
+          pass_filenames = false;
+        };
         workflow-timeout = {
           enable = true;
           name = "Check workflow timeout-minutes";

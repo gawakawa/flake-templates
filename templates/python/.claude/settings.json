@@ -1,8 +1,6 @@
 {
   "permissions": {
-    "ask": [
-      "Edit(./pyproject.toml)"
-    ]
+    "ask": ["Edit(./pyproject.toml)"]
   },
   "hooks": {
     "PostToolUse": [

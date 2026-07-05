@@ -23,7 +23,7 @@ nix flake init -t "github:gawakawa/flake-templates#flake-parts"
 
 ### rustup
 
-Rust development template with rustup and treefmt (nixfmt + rustfmt).
+Rust development template with rustup and treefmt (nixfmt + rustfmt + oxfmt).
 
 ```bash
 nix flake init -t "github:gawakawa/flake-templates#rustup"
@@ -31,7 +31,7 @@ nix flake init -t "github:gawakawa/flake-templates#rustup"
 
 ### rust-overlay
 
-Rust development template with rust-overlay and treefmt (nixfmt + rustfmt).
+Rust development template with rust-overlay and treefmt (nixfmt + rustfmt + oxfmt + taplo).
 
 ```bash
 nix flake init -t "github:gawakawa/flake-templates#rust-overlay"
@@ -39,7 +39,7 @@ nix flake init -t "github:gawakawa/flake-templates#rust-overlay"
 
 ### crane
 
-Rust development template with crane and treefmt (nixfmt + rustfmt). Includes comprehensive checks: clippy, doc, fmt, audit, deny, and nextest.
+Rust development template with crane and treefmt (nixfmt + rustfmt + oxfmt). Includes comprehensive checks: clippy, doc, fmt, audit, deny, and nextest.
 
 ```bash
 nix flake init -t "github:gawakawa/flake-templates#crane"
@@ -47,7 +47,7 @@ nix flake init -t "github:gawakawa/flake-templates#crane"
 
 ### crane-workspace
 
-Rust workspace development template with crane, treefmt (nixfmt + rustfmt), and comprehensive checks. Demonstrates building multiple crates (CLI + library) in a Cargo workspace.
+Rust workspace development template with crane, treefmt (nixfmt + rustfmt + oxfmt), and comprehensive checks. Demonstrates building multiple crates (CLI + library) in a Cargo workspace.
 
 ```bash
 nix flake init -t "github:gawakawa/flake-templates#crane-workspace"
@@ -55,7 +55,7 @@ nix flake init -t "github:gawakawa/flake-templates#crane-workspace"
 
 ### purs-nix
 
-PureScript development template with purs-nix, treefmt (nixfmt + purs-tidy), and mcp-servers-nix (pursuit).
+PureScript development template with purs-nix, treefmt (nixfmt + purs-tidy + oxfmt), and mcp-servers-nix (pursuit).
 
 ```bash
 nix flake init -t "github:gawakawa/flake-templates#purs-nix"
@@ -63,7 +63,7 @@ nix flake init -t "github:gawakawa/flake-templates#purs-nix"
 
 ### python
 
-Python development template with uv and treefmt (nixfmt + ruff).
+Python development template with uv and treefmt (nixfmt + ruff + oxfmt + taplo).
 
 ```bash
 nix flake init -t "github:gawakawa/flake-templates#python"
@@ -71,7 +71,7 @@ nix flake init -t "github:gawakawa/flake-templates#python"
 
 ### uv2nix
 
-Python development template with uv2nix for fully Nix-managed Python dependencies and treefmt (nixfmt + ruff).
+Python development template with uv2nix for fully Nix-managed Python dependencies and treefmt (nixfmt + ruff + oxfmt + taplo).
 
 ```bash
 nix flake init -t "github:gawakawa/flake-templates#uv2nix"
@@ -79,7 +79,7 @@ nix flake init -t "github:gawakawa/flake-templates#uv2nix"
 
 ### deno
 
-Deno development template with treefmt (nixfmt + deno).
+Deno development template with treefmt (nixfmt + oxfmt) and oxlint.
 
 ```bash
 nix flake init -t "github:gawakawa/flake-templates#deno"
@@ -103,7 +103,7 @@ nix flake init -t "github:gawakawa/flake-templates#haskell"
 
 ### go
 
-Go development template with treefmt (nixfmt + gofmt + goimports + golines).
+Go development template with treefmt (nixfmt + gofmt + goimports + golines + oxfmt).
 
 ```bash
 nix flake init -t "github:gawakawa/flake-templates#go"
@@ -111,7 +111,7 @@ nix flake init -t "github:gawakawa/flake-templates#go"
 
 ### lean
 
-Lean theorem prover template with elan, treefmt (nixfmt), and mcp-servers-nix (lean-lsp).
+Lean theorem prover template with elan, treefmt (nixfmt + oxfmt), and mcp-servers-nix (lean-lsp).
 
 ```bash
 nix flake init -t "github:gawakawa/flake-templates#lean"
@@ -119,7 +119,7 @@ nix flake init -t "github:gawakawa/flake-templates#lean"
 
 ### idris2
 
-Idris2 development template with buildIdris and treefmt (nixfmt).
+Idris2 development template with buildIdris and treefmt (nixfmt + oxfmt).
 
 ```bash
 nix flake init -t "github:gawakawa/flake-templates#idris2"
@@ -127,7 +127,7 @@ nix flake init -t "github:gawakawa/flake-templates#idris2"
 
 ### pack
 
-Idris2 development template with pack (package manager) and treefmt (nixfmt).
+Idris2 development template with pack (package manager) and treefmt (nixfmt + oxfmt).
 
 ```bash
 nix flake init -t "github:gawakawa/flake-templates#pack"
@@ -135,7 +135,7 @@ nix flake init -t "github:gawakawa/flake-templates#pack"
 
 ### terraform
 
-Terraform development template with treefmt (nixfmt + terraform fmt).
+Terraform development template with treefmt (nixfmt + terraform fmt + oxfmt).
 
 ```bash
 nix flake init -t "github:gawakawa/flake-templates#terraform"

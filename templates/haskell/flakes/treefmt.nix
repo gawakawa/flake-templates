@@ -20,6 +20,18 @@ _: {
             enable = true;
             package = pkgs.nixfmt-rfc-style;
           };
+          oxfmt = {
+            enable = true;
+            includes = [
+              "*.json"
+              "*.jsonc"
+              "*.json5"
+              "*.md"
+              "*.mdx"
+              "*.yaml"
+              "*.yml"
+            ];
+          };
         };
       };
     };

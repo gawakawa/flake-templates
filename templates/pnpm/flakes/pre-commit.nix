@@ -1,6 +1,6 @@
 _: {
   perSystem =
-    { pkgs, ... }:
+    { config, pkgs, ... }:
     {
       pre-commit.settings.hooks = {
         treefmt.enable = true;
@@ -14,7 +14,13 @@ _: {
         oxlint = {
           enable = true;
           name = "oxlint";
-          entry = "${pkgs.oxlint}/bin/oxlint --type-aware";
+          extraPackages = [ pkgs.nodejs_24 ]; # tsgolint (type-aware) needs node
+          entry = toString (
+            pkgs.writeShellScript "oxlint-entry" ''
+              [ -e node_modules ] || ln -sfn ${config.packages.nodeModules} node_modules
+              exec ${pkgs.oxlint}/bin/oxlint
+            ''
+          );
           files = "\\.(ts|tsx|js|jsx)$";
           pass_filenames = false;
         };

@@ -13,7 +13,17 @@ _: {
             "*.tsx"
             "*.js"
             "*.jsx"
+            "*.mjs"
+            "*.cjs"
+            "*.json"
+            "*.jsonc"
+            "*.json5"
+            "*.md"
+            "*.mdx"
+            "*.yaml"
+            "*.yml"
           ];
+          excludes = [ "pnpm-lock.yaml" ];
         };
       };
     };
