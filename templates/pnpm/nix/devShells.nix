@@ -15,6 +15,7 @@ _: {
 
         shellHook = ''
           ${config.pre-commit.shellHook}
+          source ${config.packages.nodeModulesSetup}
         '';
       };
     };

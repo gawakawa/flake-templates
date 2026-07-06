@@ -43,9 +43,11 @@ jobs:
       - name: Update pnpm deps hash
         run: |
           echo "=== Current hash line ==="
-          grep 'hash = ' nix/checks.nix
+          grep 'hash = ' nix/node-modules.nix
 
           echo "=== Building fetchPnpmDeps to get correct hash ==="
+          # pname/version/pnpm/fetcherVersion below must stay in sync with
+          # nix/node-modules.nix (pnpm here mirrors nix/toolchain.nix's pnpmPackage).
           NIX_OUTPUT=$(nix build --no-link --impure --expr '
             let
               pkgs = (builtins.getFlake (toString ./.)).inputs.nixpkgs.legacyPackages.x86_64-linux;
@@ -72,15 +74,15 @@ jobs:
           fi
 
           echo "New hash: $HASH"
-          sed -i "s|hash = \"sha256-[^\"]*\"|hash = \"$HASH\"|" nix/checks.nix
+          sed -i "s|hash = \"sha256-[^\"]*\"|hash = \"$HASH\"|" nix/node-modules.nix
 
           echo "=== Final hash line ==="
-          grep 'hash = ' nix/checks.nix
+          grep 'hash = ' nix/node-modules.nix
 
       - name: Check for changes
         id: changes
         run: |
-          if git diff --quiet nix/checks.nix; then
+          if git diff --quiet nix/node-modules.nix; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -91,7 +93,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add nix/checks.nix
+          git add nix/node-modules.nix
           git commit -m "🔒 Update fetchPnpmDeps hash"
           git push "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:${HEAD_REF}"
         env:

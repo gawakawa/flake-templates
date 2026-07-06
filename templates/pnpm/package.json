@@ -1,12 +1,7 @@
 {
 	"name": "pnpm",
-	"version": "1.0.0",
-	"description": "",
-	"keywords": [],
 	"license": "ISC",
-	"author": "",
 	"type": "module",
-	"main": "index.js",
 	"scripts": {
 		"lint": "oxlint",
 		"test": "vitest run"
@@ -15,6 +10,5 @@
 		"oxlint": "^1.32.0",
 		"oxlint-tsgolint": "^0.23.0",
 		"vitest": "^4.0.1"
-	},
-	"packageManager": "pnpm@10.19.0"
+	}
 }
