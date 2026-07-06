@@ -1,6 +1,6 @@
 # Registry and README entry formats
 
-## flakes/templates.nix
+## nix/templates.nix
 
 Add inside the `flake.templates` attrset in **alphabetical order**:
 

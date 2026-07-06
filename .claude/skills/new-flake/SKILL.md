@@ -1,6 +1,6 @@
 ---
 name: new-flake
-description: Add a new flake template to this repo. Scaffolds templates/<name>/, registers it in flakes/templates.nix, documents it in README.md, wires up .github/dependabot.yml, and copies the standard CODEOWNERS + auto-assign workflow. Use when adding or scaffolding a new flake template.
+description: Add a new flake template to this repo. Scaffolds templates/<name>/, registers it in nix/templates.nix, documents it in README.md, wires up .github/dependabot.yml, and copies the standard CODEOWNERS + auto-assign workflow. Use when adding or scaffolding a new flake template.
 user-invocable: true
 ---
 
@@ -12,7 +12,7 @@ Copy this checklist and check off each step as you go:
 - [ ] 1. Create templates/<name>/ with flake.nix
 - [ ] 2. Add template docs (CLAUDE.md, CONTRIBUTING.md, docs/DESIGN.md, README.md)
 - [ ] 3. Copy standard GitHub files
-- [ ] 4. Register in flakes/templates.nix
+- [ ] 4. Register in nix/templates.nix
 - [ ] 5. Document in root README.md
 - [ ] 6. Add dependabot entries
 - [ ] 7. Verify
@@ -82,7 +82,7 @@ All three workflows (`auto-assign.yml`, `update-pr-branches.yml`, `update-flake-
 
 When writing `ci.yml`, use `secrets.GITHUB_TOKEN` (not `secrets.GH_TOKEN`) for `install-nix-action`'s `github_access_token` — it's read-only rate-limit avoidance and doesn't need a PAT or App token.
 
-## 4. Register in `flakes/templates.nix`
+## 4. Register in `nix/templates.nix`
 
 Add the entry in alphabetical order. See [reference/registry-and-readme.md](reference/registry-and-readme.md) for the format and real examples.
 
