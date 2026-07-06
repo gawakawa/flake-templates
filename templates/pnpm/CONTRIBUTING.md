@@ -3,6 +3,5 @@
 ## Commands
 
 - `nix fmt` - Format code
-- `nix flake check` - Run checks (format, lint)
-- `nix build` - Build the project
+- `nix flake check` - Run checks (format, lint, type-check, tests)
 - `pnpm test` - Run tests
