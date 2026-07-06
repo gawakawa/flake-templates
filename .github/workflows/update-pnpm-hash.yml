@@ -76,7 +76,7 @@ jobs:
         working-directory: templates/pnpm
         run: |
           echo "=== Current hash line ==="
-          grep 'hash = ' flakes/checks.nix
+          grep 'hash = ' nix/checks.nix
 
           echo "=== Building fetchPnpmDeps to get correct hash ==="
           NIX_OUTPUT=$(nix build --no-link --impure --expr '
@@ -105,16 +105,16 @@ jobs:
           fi
 
           echo "New hash: $HASH"
-          sed -i "s|hash = \"sha256-[^\"]*\"|hash = \"$HASH\"|" flakes/checks.nix
+          sed -i "s|hash = \"sha256-[^\"]*\"|hash = \"$HASH\"|" nix/checks.nix
 
           echo "=== Final hash line ==="
-          grep 'hash = ' flakes/checks.nix
+          grep 'hash = ' nix/checks.nix
 
       - name: Check for changes
         if: steps.guard.outputs.relevant == 'true'
         id: changes
         run: |
-          if git diff --quiet templates/pnpm/flakes/checks.nix; then
+          if git diff --quiet templates/pnpm/nix/checks.nix; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -125,7 +125,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add templates/pnpm/flakes/checks.nix
+          git add templates/pnpm/nix/checks.nix
           git commit -m "🔒 Update fetchPnpmDeps hash"
           git push "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:${HEAD_REF}"
         env:
