@@ -42,13 +42,24 @@ _: {
       # whenever a consumer also writes new entries under node_modules
       # (e.g. a tool's own cache directory).
       packages.nodeModulesSetup = pkgs.writeShellScript "node-modules-setup" ''
-        if [ ! -e node_modules ]; then
-          mkdir node_modules
-          shopt -s dotglob
-          for entry in ${nodeModules}/*; do
-            ln -s "$entry" "node_modules/''${entry##*/}"
-          done
-        fi
+        (
+          shopt -s dotglob nullglob
+
+          # node_modules must be a real directory. Clear it first if it's a
+          # symlink (dangling, or the old top-level `ln -sfn` style) or a
+          # plain file, so `[ ! -d node_modules ]` below reflects reality.
+          if [ -L node_modules ] || { [ -e node_modules ] && [ ! -d node_modules ]; }; then
+            rm -f node_modules
+          fi
+
+          if [ ! -d node_modules ]; then
+            mkdir node_modules
+            entries=(${nodeModules}/*)
+            if [ ''${#entries[@]} -gt 0 ]; then
+              ln -s -t node_modules -- "''${entries[@]}"
+            fi
+          fi
+        )
       '';
     };
 }
