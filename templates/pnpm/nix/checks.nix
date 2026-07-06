@@ -7,8 +7,8 @@ _: {
         src = ./..;
 
         nativeBuildInputs = [
-          pkgs.nodejs_24
-          pkgs.pnpm_10
+          config.nodejsPackage
+          config.pnpmPackage
         ];
 
         dontBuild = true;

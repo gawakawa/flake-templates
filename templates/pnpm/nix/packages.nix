@@ -14,9 +14,9 @@
   config.perSystem =
     { config, pkgs, ... }:
     {
-      ciPackages = with pkgs; [
-        pnpm
-        nodejs_24
+      ciPackages = [
+        config.pnpmPackage
+        config.nodejsPackage
       ];
 
       packages.ci = pkgs.buildEnv {

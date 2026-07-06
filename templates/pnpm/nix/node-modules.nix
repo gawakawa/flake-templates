@@ -1,9 +1,9 @@
 _: {
   perSystem =
-    { pkgs, ... }:
+    { config, pkgs, ... }:
     let
-      pnpm = pkgs.pnpm_10;
-      nodejs = pkgs.nodejs_24;
+      pnpm = config.pnpmPackage;
+      nodejs = config.nodejsPackage;
       src = ./..;
 
       pnpmDeps = pkgs.fetchPnpmDeps {
