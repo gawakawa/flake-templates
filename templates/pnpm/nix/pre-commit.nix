@@ -17,7 +17,7 @@ _: {
           extraPackages = [ pkgs.nodejs_24 ]; # tsgolint (type-aware) needs node
           entry = toString (
             pkgs.writeShellScript "oxlint-entry" ''
-              [ -e node_modules ] || ln -sfn ${config.packages.nodeModules} node_modules
+              source ${config.packages.nodeModulesSetup}
               exec ${pkgs.oxlint}/bin/oxlint
             ''
           );
