@@ -14,7 +14,7 @@ _: {
         oxlint = {
           enable = true;
           name = "oxlint";
-          extraPackages = [ pkgs.nodejs_24 ]; # tsgolint (type-aware) needs node
+          extraPackages = [ config.nodejsPackage ]; # tsgolint (type-aware) needs node
           entry = toString (
             pkgs.writeShellScript "oxlint-entry" ''
               source ${config.packages.nodeModulesSetup}
