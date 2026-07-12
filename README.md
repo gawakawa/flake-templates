@@ -61,6 +61,14 @@ PureScript development template with purs-nix, treefmt (nixfmt + purs-tidy + oxf
 nix flake init -t "github:gawakawa/flake-templates#purs-nix"
 ```
 
+### ocaml
+
+OCaml development template with opam-nix and treefmt (nixfmt + oxfmt).
+
+```bash
+nix flake init -t "github:gawakawa/flake-templates#ocaml"
+```
+
 ### python
 
 Python development template with uv and treefmt (nixfmt + ruff + oxfmt + taplo).
