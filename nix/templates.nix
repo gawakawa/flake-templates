@@ -25,6 +25,10 @@ _: {
         path = ../templates/purs-nix;
         description = "PureScript template, using purs-nix";
       };
+      ocaml = {
+        path = ../templates/ocaml;
+        description = "OCaml template, using opam-nix";
+      };
       python = {
         path = ../templates/python;
         description = "Python template, using uv";
