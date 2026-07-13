@@ -10,6 +10,15 @@ To initialize a new project with one of these templates:
 nix flake init -t "github:gawakawa/flake-templates#<template-name>"
 ```
 
+### CLI: init-env
+
+An interactive CLI that creates a GitHub repository and applies one of the
+templates above.
+
+```bash
+nix run "github:gawakawa/flake-templates#init-env"
+```
+
 <details>
 <summary>Available Templates</summary>
 

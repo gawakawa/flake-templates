@@ -5,5 +5,6 @@ _: {
     ./treefmt.nix
     ./pre-commit.nix
     ./devShells.nix
+    ./init-env.nix
   ];
 }
