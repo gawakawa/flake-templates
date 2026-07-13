@@ -6,6 +6,10 @@ _: {
           enable = true;
           includes = [ "*.nix" ];
         };
+        ocamlformat = {
+          enable = true;
+          configFile = ../.ocamlformat;
+        };
         oxfmt = {
           enable = true;
           includes = [

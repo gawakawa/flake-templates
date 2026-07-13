@@ -22,8 +22,6 @@
       package = "hello";
       on = inputs.opam-nix.lib.${system};
       devPackagesQuery = {
-        ocaml-lsp-server = "*";
-        ocamlformat = "*";
         utop = "*";
       };
       query = devPackagesQuery // {
