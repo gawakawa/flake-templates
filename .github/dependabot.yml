@@ -67,13 +67,6 @@ updates:
       default-days: 7
 
   - package-ecosystem: "github-actions"
-    directory: "/templates/ocaml/.github/workflows"
-    schedule:
-      interval: "weekly"
-    cooldown:
-      default-days: 7
-
-  - package-ecosystem: "github-actions"
     directory: "/templates/python/.github/workflows"
     schedule:
       interval: "weekly"
