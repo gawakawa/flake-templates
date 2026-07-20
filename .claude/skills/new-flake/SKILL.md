@@ -32,41 +32,21 @@ Model the structure on `templates/flake-parts/` (the simplest example):
 
 ## 2. Add template docs
 
-Every template carries its own `CLAUDE.md`, `CONTRIBUTING.md`, `docs/DESIGN.md`, and `README.md`. Model these on `templates/flake-parts/` (no extra sections) or `templates/lean/` (keeps an agent-facing `## MCP` note in `CLAUDE.md`).
+Every template carries its own `CLAUDE.md`, `CONTRIBUTING.md`, `docs/DESIGN.md`, and `README.md`. Copy the stubs from `assets/` and adjust as needed:
 
-`CLAUDE.md` — a minimal pointer to the other docs:
-
-```markdown
-# CLAUDE.md
-
-- `README.md` — Project overview and usage
-- `CONTRIBUTING.md` — Developer guide: commands and workflow
-- `docs/DESIGN.md` — Design and architecture
+```bash
+cp .claude/skills/new-flake/assets/README.md templates/<name>/README.md
+cp .claude/skills/new-flake/assets/CLAUDE.md templates/<name>/CLAUDE.md
+cp .claude/skills/new-flake/assets/CONTRIBUTING.md templates/<name>/CONTRIBUTING.md
+mkdir -p templates/<name>/docs
+cp .claude/skills/new-flake/assets/docs/DESIGN.md templates/<name>/docs/DESIGN.md
 ```
 
-If the template needs agent-facing notes (e.g. an MCP server to use, a dependency-update quirk), append them below the pointer as their own `##` section — see `templates/lean/CLAUDE.md` or `templates/pnpm/CLAUDE.md` for real examples. Don't put developer commands here.
+Model these on `templates/flake-parts/` (no extra sections) or `templates/lean/` (keeps an agent-facing `## MCP` note in `CLAUDE.md`).
 
-`CONTRIBUTING.md` — developer guide with the commands to build/check/test:
+`assets/CLAUDE.md` carries an `## Overview` stub, a `## Docs` pointer to the other three files, and empty `## Skills` / `## MCP` sections. If the template needs agent-facing notes (an MCP server to use, a dependency-update quirk), fill in `## MCP` in the copied `CLAUDE.md`, or append a new `##` section below it — see `templates/lean/CLAUDE.md` or `templates/pnpm/CLAUDE.md` for real examples. Don't put developer commands here.
 
-```markdown
-# Developer Guide
-
-## Commands
-
-- `nix fmt` - Format code
-- `nix flake check` - Run checks (format, lint)
-- `nix build` - Build the project
-```
-
-Add further command lines (test runner, etc.) if the template has one.
-
-`docs/DESIGN.md` — a minimal stub, just the title:
-
-```markdown
-# Design
-```
-
-`README.md` — an empty stub (leave for future content).
+Add further command lines (test runner, etc.) to the copied `CONTRIBUTING.md` if the template has one.
 
 ## 3. Copy standard GitHub files
 
@@ -84,15 +64,15 @@ When writing `ci.yml`, use `secrets.GITHUB_TOKEN` (not `secrets.GH_TOKEN`) for `
 
 ## 4. Register in `nix/templates.nix`
 
-Add the entry in alphabetical order. See [reference/registry-and-readme.md](reference/registry-and-readme.md) for the format and real examples.
+Add the entry in alphabetical order. See [references/registry-and-readme.md](references/registry-and-readme.md) for the format and real examples.
 
 ## 5. Document in root `README.md`
 
-Add a `### <name>` entry inside the existing `<details>` block, in alphabetical order. See [reference/registry-and-readme.md](reference/registry-and-readme.md) for the format and real examples.
+Add a `### <name>` entry inside the existing `<details>` block, in alphabetical order. See [references/registry-and-readme.md](references/registry-and-readme.md) for the format and real examples.
 
 ## 6. Add dependabot entries
 
-Add to `.github/dependabot.yml`. The github-actions entry is always required (every template ships auto-assign.yml). Add language entries for Rust/Node.js/Python if applicable. See [reference/dependabot.md](reference/dependabot.md) for formats and real examples.
+Add to `.github/dependabot.yml`. The github-actions entry is always required (every template ships auto-assign.yml). Add language entries for Rust/Node.js/Python if applicable. See [references/dependabot.md](references/dependabot.md) for formats and real examples.
 
 ## 7. Verify
 
