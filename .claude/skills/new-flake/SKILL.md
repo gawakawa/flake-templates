@@ -34,17 +34,25 @@ Model the structure on `templates/flake-parts/` (the simplest example):
 
 Every template carries its own `CLAUDE.md`, `CONTRIBUTING.md`, `docs/DESIGN.md`, and `README.md`. Model these on `templates/flake-parts/` (no extra sections) or `templates/lean/` (keeps an agent-facing `## MCP` note in `CLAUDE.md`).
 
-`CLAUDE.md` — a minimal pointer to the other docs:
+`CLAUDE.md` — an `## Overview` stub, a `## Docs` pointer to the other three files, and empty `## Skills` / `## MCP` sections:
 
 ```markdown
 # CLAUDE.md
 
+## Overview
+
+## Docs
+
 - `README.md` — Project overview and usage
 - `CONTRIBUTING.md` — Developer guide: commands and workflow
 - `docs/DESIGN.md` — Design and architecture
+
+## Skills
+
+## MCP
 ```
 
-If the template needs agent-facing notes (e.g. an MCP server to use, a dependency-update quirk), append them below the pointer as their own `##` section — see `templates/lean/CLAUDE.md` or `templates/pnpm/CLAUDE.md` for real examples. Don't put developer commands here.
+If the template needs agent-facing notes (an MCP server to use, a dependency-update quirk), fill in `## MCP` or append a new `##` section below it — see `templates/lean/CLAUDE.md` or `templates/pnpm/CLAUDE.md` for real examples. Don't put developer commands here.
 
 `CONTRIBUTING.md` — developer guide with the commands to build/check/test:
 
@@ -66,7 +74,21 @@ Add further command lines (test runner, etc.) if the template has one.
 # Design
 ```
 
-`README.md` — an empty stub (leave for future content).
+`README.md` — empty stub sections for future content:
+
+```markdown
+# <name>
+
+## Overview
+
+## Features
+
+## Prerequisites
+
+## Usage
+
+## Directory Structure
+```
 
 ## 3. Copy standard GitHub files
 
