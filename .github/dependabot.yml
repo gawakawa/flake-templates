@@ -51,7 +51,11 @@ updates:
       semver-patch-days: 3
 
   - package-ecosystem: "cargo"
-    directory: "/templates/rust-overlay"
+    directories:
+      - "/init-env"
+      - "/templates/crane"
+      - "/templates/crane-workspace"
+      - "/templates/rust-overlay"
     schedule:
       interval: "weekly"
     cooldown:
@@ -59,43 +63,7 @@ updates:
       semver-major-days: 30
       semver-minor-days: 7
       semver-patch-days: 3
-
-  - package-ecosystem: "cargo"
-    directory: "/templates/rustup"
-    schedule:
-      interval: "weekly"
-    cooldown:
-      default-days: 7
-      semver-major-days: 30
-      semver-minor-days: 7
-      semver-patch-days: 3
-
-  - package-ecosystem: "cargo"
-    directory: "/templates/crane"
-    schedule:
-      interval: "weekly"
-    cooldown:
-      default-days: 7
-      semver-major-days: 30
-      semver-minor-days: 7
-      semver-patch-days: 3
-
-  - package-ecosystem: "cargo"
-    directory: "/templates/crane-workspace"
-    schedule:
-      interval: "weekly"
-    cooldown:
-      default-days: 7
-      semver-major-days: 30
-      semver-minor-days: 7
-      semver-patch-days: 3
-
-  - package-ecosystem: "cargo"
-    directory: "/init-env"
-    schedule:
-      interval: "weekly"
-    cooldown:
-      default-days: 7
-      semver-major-days: 30
-      semver-minor-days: 7
-      semver-patch-days: 3
+    groups:
+      cargo:
+        patterns: ["*"]
+        group-by: "dependency-name"
