@@ -19,17 +19,14 @@ templates above.
 nix run --accept-flake-config "github:gawakawa/flake-templates#init-env"
 ```
 
-`--accept-flake-config` lets this flake's `nixConfig` register the `gawakawa`
-Cachix cache for this run, so `init-env` can be fetched as a prebuilt binary
-instead of being compiled from source (see the trusted-user caveat below).
-Without the flag you'll get a one-time confirmation prompt instead. Trusting
-this cache means trusting any store path signed by the `gawakawa` Cachix key,
-not just `init-env` — the trust isn't scoped to a single package.
+`--accept-flake-config` trusts this flake's `nixConfig`, so `init-env` is
+pulled as a prebuilt binary from the `gawakawa` Cachix cache instead of being
+compiled — this trusts the `gawakawa` key for any package, not just
+`init-env`.
 
-If you're not a
-[trusted user](https://nix.dev/manual/nix/latest/command-ref/conf-file#conf-trusted-users)
-(the default is `root` only), Nix ignores `extra-substituters` from flake
-config with a warning. Add the cache to your own `nix.conf` instead:
+Non-root users usually aren't a
+[trusted user](https://nix.dev/manual/nix/latest/command-ref/conf-file#conf-trusted-users),
+so the flag has no effect. Add this to your `nix.conf` instead:
 
 ```
 extra-substituters = https://gawakawa.cachix.org
