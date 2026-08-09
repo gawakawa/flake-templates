@@ -16,7 +16,21 @@ An interactive CLI that creates a GitHub repository and applies one of the
 templates above.
 
 ```bash
-nix run "github:gawakawa/flake-templates#init-env"
+nix run --accept-flake-config "github:gawakawa/flake-templates#init-env"
+```
+
+`--accept-flake-config` trusts this flake's `nixConfig`, so `init-env` is
+pulled as a prebuilt binary from the `gawakawa` Cachix cache instead of being
+compiled — this trusts the `gawakawa` key for any package, not just
+`init-env`.
+
+Non-root users usually aren't a
+[trusted user](https://nix.dev/manual/nix/latest/command-ref/conf-file#conf-trusted-users),
+so the flag has no effect. Add this to your `nix.conf` instead:
+
+```
+extra-substituters = https://gawakawa.cachix.org
+extra-trusted-public-keys = gawakawa.cachix.org-1:NVSPP7gCC7cr4U7eWhK3MlDGmbU5YkdHqW6+r7oz17c=
 ```
 
 <details>
