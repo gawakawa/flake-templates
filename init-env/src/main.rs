@@ -238,6 +238,7 @@ fn set_branch_rules(repo: &str) -> io::Result<()> {
         "gh",
         &[
             "api",
+            "--silent",
             "-X",
             "POST",
             &format!("repos/{repo}/rulesets"),
