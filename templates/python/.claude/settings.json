@@ -1,18 +1,5 @@
 {
   "permissions": {
     "ask": ["Edit(./pyproject.toml)"]
-  },
-  "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "cd ${CLAUDE_PROJECT_DIR} && nix flake check"
-          }
-        ]
-      }
-    ]
   }
 }
