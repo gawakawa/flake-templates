@@ -32,22 +32,6 @@
         dir = ./..;
       };
 
-      mcpConfig =
-        inputs.mcp-servers-nix.lib.mkConfig
-          (import inputs.mcp-servers-nix.inputs.nixpkgs { inherit system; })
-          {
-            settings.servers = {
-              pursuit-mcp = {
-                command = "nix";
-                args = [
-                  "run"
-                  "github:gawakawa/pursuit-mcp"
-                  "--"
-                ];
-              };
-            };
-          };
-
     in
     {
       _module.args = {
@@ -55,22 +39,18 @@
           pkgs
           ps
           purs-nix
-          mcpConfig
           ;
         ps-tools = inputs.ps-tools.legacyPackages.${system};
       };
 
-      ciPackages = with pkgs; [ nodejs ];
+      ciPackages = with pkgs; [ nodejs_24 ];
 
       packages = with ps; {
-        default = app { name = "hello"; };
-        bundle = bundle { };
-        output = output { };
+        default = output { };
         ci = pkgs.buildEnv {
           name = "ci";
           paths = config.ciPackages;
         };
-        mcp-config = mcpConfig;
       };
     };
 }

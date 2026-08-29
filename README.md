@@ -78,7 +78,7 @@ nix flake init -t "github:gawakawa/flake-templates#crane-workspace"
 
 ### purs-nix
 
-PureScript development template with purs-nix, treefmt (nixfmt + purs-tidy + oxfmt), and mcp-servers-nix (pursuit).
+PureScript development template with purs-nix, vite, and treefmt (nixfmt + purs-tidy + oxfmt).
 
 ```bash
 nix flake init -t "github:gawakawa/flake-templates#purs-nix"
