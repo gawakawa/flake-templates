@@ -1,7 +1,7 @@
 /bower_components/
 /node_modules/
 /.pulp-cache/
-/output/
+/output
 /generated-docs/
 /.psc-package/
 /.psc*
@@ -13,3 +13,4 @@ main.js
 .direnv
 result
 .pre-commit-config.yaml
+dist

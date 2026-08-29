@@ -43,12 +43,10 @@
         ps-tools = inputs.ps-tools.legacyPackages.${system};
       };
 
-      ciPackages = with pkgs; [ nodejs ];
+      ciPackages = with pkgs; [ nodejs_24 ];
 
       packages = with ps; {
-        default = app { name = "hello"; };
-        bundle = bundle { };
-        output = output { };
+        default = output { };
         ci = pkgs.buildEnv {
           name = "ci";
           paths = config.ciPackages;
