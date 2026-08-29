@@ -28,7 +28,7 @@ Model the structure on `templates/flake-parts/` (the simplest example):
 - `devShells.default` — `pkgs.mkShell` from `devPackages`
 - `treefmt` — at minimum `programs.nixfmt.enable = true`
 
-`mcp-servers-nix`/`mkConfig` is optional — only `lean` and `purs-nix` use it.
+`mcp-servers-nix`/`mkConfig` is optional — only `lean` uses it.
 
 ## 2. Add template docs
 

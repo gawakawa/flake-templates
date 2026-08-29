@@ -11,5 +11,3 @@
 ## Skills
 
 ## MCP
-
-- **pursuit-mcp**: Use when searching for PureScript functions, types, or documentation on Pursuit
