@@ -10,6 +10,7 @@ use exec::{capture, run, run_in, run_with_stdin};
 const DEFAULT_OWNER: &str = "gawakawa";
 const DEFAULT_FLAKE_TEMPLATES_REF: &str = "github:gawakawa/flake-templates";
 const SKIP_TEMPLATE: &str = "skip";
+const GITHUB_APP_URL: &str = "https://github.com/apps/gawakawa-bot";
 
 /// Flake templates ref, overridable via `INIT_ENV_FLAKE_REF` (used by the
 /// Nix wrapper to point at `inputs.self` for in-repo development).
@@ -96,7 +97,14 @@ fn main() -> io::Result<()> {
         setup_secrets,
         setup_branch_rules,
     ) {
-        Ok(dir) => outro(format!("Done! Run: cd {}", dir.display()))?,
+        Ok(dir) => {
+            if setup_secrets {
+                log::info(format!(
+                    "Grant repository access to the GitHub App: {GITHUB_APP_URL}"
+                ))?;
+            }
+            outro(format!("Done! Run: cd {}", dir.display()))?
+        }
         Err(err) => outro_cancel(format!("Failed: {err}"))?,
     }
 
