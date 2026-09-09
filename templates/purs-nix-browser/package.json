@@ -1,5 +1,5 @@
 {
-  "name": "purs-nix",
+  "name": "purs-nix-browser",
   "private": true,
   "type": "module",
   "scripts": {
