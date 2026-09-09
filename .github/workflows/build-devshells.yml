@@ -68,7 +68,7 @@ jobs:
       - name: Build devShells (macOS)
         env:
           TEMPLATES: ${{ needs.detect-changes.outputs.templates }}
-          MACOS_EXCLUDE: '["purs-nix", "haskell"]'
+          MACOS_EXCLUDE: '["purs-nix-browser", "purs-nix-node", "haskell"]'
         run: |
           while IFS= read -r p; do nix develop --accept-flake-config "$p" -c echo "DevShell works"; done \
             < <(jq -r --argjson exclude "$MACOS_EXCLUDE" '.[] | select(IN($exclude[]) | not) | "./templates/\(.)"' <<< "$TEMPLATES")

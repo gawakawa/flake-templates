@@ -11,7 +11,7 @@ updates:
       semver-patch-days: 3
 
   - package-ecosystem: "npm"
-    directory: "/templates/purs-nix"
+    directory: "/templates/purs-nix-browser"
     schedule:
       interval: "weekly"
     cooldown:
@@ -34,7 +34,8 @@ updates:
       - "/templates/ocaml/.github/workflows"
       - "/templates/pack/.github/workflows"
       - "/templates/pnpm/.github/workflows"
-      - "/templates/purs-nix/.github/workflows"
+      - "/templates/purs-nix-browser/.github/workflows"
+      - "/templates/purs-nix-node/.github/workflows"
       - "/templates/python/.github/workflows"
       - "/templates/rust-overlay/.github/workflows"
       - "/templates/rustup/.github/workflows"

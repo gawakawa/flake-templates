@@ -83,7 +83,7 @@ jobs:
       - name: Check templates (macOS)
         env:
           TEMPLATES: ${{ inputs.templates }}
-          MACOS_EXCLUDE: '["purs-nix", "haskell"]'
+          MACOS_EXCLUDE: '["purs-nix-browser", "purs-nix-node", "haskell"]'
         run: |
           while IFS= read -r p; do nix flake check --accept-flake-config "$p"; done \
             < <(jq -r --argjson exclude "$MACOS_EXCLUDE" '.[] | select(IN($exclude[]) | not) | "./templates/\(.)"' <<< "$TEMPLATES")
