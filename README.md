@@ -76,12 +76,20 @@ Rust workspace development template with crane, treefmt (nixfmt + rustfmt + oxfm
 nix flake init -t "github:gawakawa/flake-templates#crane-workspace"
 ```
 
-### purs-nix
+### purs-nix-browser
 
-PureScript development template with purs-nix, vite, and treefmt (nixfmt + purs-tidy + oxfmt).
+PureScript browser development template with purs-nix, vite, and treefmt (nixfmt + purs-tidy + oxfmt).
 
 ```bash
-nix flake init -t "github:gawakawa/flake-templates#purs-nix"
+nix flake init -t "github:gawakawa/flake-templates#purs-nix-browser"
+```
+
+### purs-nix-node
+
+PureScript Node.js development template with purs-nix and treefmt (nixfmt + purs-tidy + oxfmt). `nix run` builds and runs a Node.js executable.
+
+```bash
+nix flake init -t "github:gawakawa/flake-templates#purs-nix-node"
 ```
 
 ### ocaml

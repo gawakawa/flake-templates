@@ -1,4 +1,4 @@
-# purs-nix
+# purs-nix-node
 
 ## Overview
 

@@ -21,9 +21,13 @@ _: {
         path = ../templates/crane-workspace;
         description = "Rust workspace template, using crane";
       };
-      purs-nix = {
-        path = ../templates/purs-nix;
-        description = "PureScript template, using purs-nix";
+      purs-nix-browser = {
+        path = ../templates/purs-nix-browser;
+        description = "PureScript browser template, using purs-nix and vite";
+      };
+      purs-nix-node = {
+        path = ../templates/purs-nix-node;
+        description = "PureScript Node.js template, using purs-nix";
       };
       ocaml = {
         path = ../templates/ocaml;
