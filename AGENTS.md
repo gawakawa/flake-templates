@@ -21,7 +21,7 @@ Templates are defined in `nix/templates.nix` and stored under `templates/`. See 
 
 ### Key Integration Points
 
-- **mcp-servers-nix**: Used to generate `.mcp.json` configuration files in development shells using `inputs.mcp-servers-nix.lib.mkConfig`
+- **mcp-servers-nix**: Used to generate `.mcp.json` configuration files in development shells using `inputs.mcp-servers-nix.lib.mkConfig` (Claude Code), and `.codex/config.toml` via `flavor = "codex"` (Codex; only loaded for trusted projects)
 - **treefmt-nix**: Integrated via `flakeModule` import to provide formatting capabilities through `perSystem.treefmt`
 - **flake-parts**: The modular flake framework used both by the repository itself and the flake-parts template
 
