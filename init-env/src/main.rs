@@ -201,17 +201,57 @@ fn fetch_templates() -> io::Result<Vec<(String, String)>> {
     Ok(templates.into_iter().collect())
 }
 
-const SECRETS: &[(&str, &str)] = &[
-    ("BOT_APP_ID", "github/apps/gawakawa-bot/app-id"),
-    ("BOT_PRIVATE_KEY", "github/apps/gawakawa-bot/private-key"),
-    ("CACHIX_AUTH_TOKEN", "cachix/auth-token"),
+enum Source {
+    Pass(&'static str),
+    /// Key in a sops file; `file` is relative to `ghq root`.
+    Sops {
+        file: &'static str,
+        key: &'static str,
+    },
+}
+
+// The cachix token's source of truth is nix-config's sops file.
+const SECRETS: &[(&str, Source)] = &[
+    (
+        "BOT_APP_ID",
+        Source::Pass("github/apps/gawakawa-bot/app-id"),
+    ),
+    (
+        "BOT_PRIVATE_KEY",
+        Source::Pass("github/apps/gawakawa-bot/private-key"),
+    ),
+    (
+        "CACHIX_AUTH_TOKEN",
+        Source::Sops {
+            file: "github.com/gawakawa/nix-config/secrets/nixos.yaml",
+            key: "cachix-auth-token",
+        },
+    ),
 ];
+
+fn read_secret(source: &Source) -> io::Result<String> {
+    match source {
+        Source::Pass(path) => capture("pass", &["show", path]),
+        Source::Sops { file, key } => {
+            let file = ghq_root()?.join(file);
+            capture(
+                "sops",
+                &[
+                    "-d",
+                    "--extract",
+                    &format!("[\"{key}\"]"),
+                    &file.to_string_lossy(),
+                ],
+            )
+        }
+    }
+}
 
 fn set_secrets(repo: &str) -> io::Result<()> {
     log::step("Setting GitHub Actions secrets")?;
 
-    for (name, pass_path) in SECRETS {
-        let value = capture("pass", &["show", pass_path])?;
+    for (name, source) in SECRETS {
+        let value = read_secret(source)?;
         run_with_stdin("gh", &["secret", "set", name, "-R", repo], &value)?;
     }
 
