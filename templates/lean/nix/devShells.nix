@@ -4,6 +4,7 @@ _: {
       config,
       pkgs,
       mcpConfig,
+      codexMcpConfig,
       ...
     }:
     let
@@ -23,6 +24,9 @@ _: {
           ${config.pre-commit.shellHook}
           cat ${mcpConfig} > .mcp.json
           echo "Generated .mcp.json"
+          mkdir -p .codex
+          cat ${codexMcpConfig} > .codex/config.toml
+          echo "Generated .codex/config.toml"
         '';
       };
     };
