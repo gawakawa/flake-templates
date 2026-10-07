@@ -11,3 +11,7 @@
 ## Skills
 
 ## MCP
+
+## Dependencies
+
+Use `uv` commands instead of editing `pyproject.toml` directly.

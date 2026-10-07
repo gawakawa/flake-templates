@@ -11,3 +11,7 @@
 ## Skills
 
 ## MCP
+
+## Dependencies
+
+Use `deno` commands instead of editing `deno.json` directly.
