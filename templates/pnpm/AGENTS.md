@@ -1,4 +1,4 @@
-# CLAUDE.md
+# AGENTS.md
 
 ## Overview
 
@@ -12,4 +12,6 @@
 
 ## MCP
 
-- **lean-lsp**: Use for Lean code completion and type information
+## Updating dependencies
+
+After changing dependencies, run `nix flake check` and copy the correct hash from the `got:` line in the error output into `nix/node-modules.nix`.

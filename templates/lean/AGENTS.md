@@ -1,4 +1,4 @@
-# CLAUDE.md
+# AGENTS.md
 
 ## Overview
 
@@ -11,3 +11,5 @@
 ## Skills
 
 ## MCP
+
+- **lean-lsp**: Use for Lean code completion and type information
