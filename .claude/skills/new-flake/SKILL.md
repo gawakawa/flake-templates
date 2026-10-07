@@ -10,7 +10,7 @@ Copy this checklist and check off each step as you go:
 
 ```
 - [ ] 1. Create templates/<name>/ with flake.nix
-- [ ] 2. Add template docs (CLAUDE.md, CONTRIBUTING.md, docs/DESIGN.md, README.md)
+- [ ] 2. Add template docs (AGENTS.md, CONTRIBUTING.md, docs/DESIGN.md, README.md)
 - [ ] 3. Copy standard GitHub files
 - [ ] 4. Register in nix/templates.nix
 - [ ] 5. Document in root README.md
@@ -32,19 +32,19 @@ Model the structure on `templates/flake-parts/` (the simplest example):
 
 ## 2. Add template docs
 
-Every template carries its own `CLAUDE.md`, `CONTRIBUTING.md`, `docs/DESIGN.md`, and `README.md`. Copy the stubs from `assets/` and adjust as needed:
+Every template carries its own `AGENTS.md`, `CONTRIBUTING.md`, `docs/DESIGN.md`, and `README.md`. Copy the stubs from `assets/` and adjust as needed:
 
 ```bash
 cp .claude/skills/new-flake/assets/README.md templates/<name>/README.md
-cp .claude/skills/new-flake/assets/CLAUDE.md templates/<name>/CLAUDE.md
+cp .claude/skills/new-flake/assets/AGENTS.md templates/<name>/AGENTS.md
 cp .claude/skills/new-flake/assets/CONTRIBUTING.md templates/<name>/CONTRIBUTING.md
 mkdir -p templates/<name>/docs
 cp .claude/skills/new-flake/assets/docs/DESIGN.md templates/<name>/docs/DESIGN.md
 ```
 
-Model these on `templates/flake-parts/` (no extra sections) or `templates/lean/` (keeps an agent-facing `## MCP` note in `CLAUDE.md`).
+Model these on `templates/flake-parts/` (no extra sections) or `templates/lean/` (keeps an agent-facing `## MCP` note in `AGENTS.md`).
 
-`assets/CLAUDE.md` carries an `## Overview` stub, a `## Docs` pointer to the other three files, and empty `## Skills` / `## MCP` sections. If the template needs agent-facing notes (an MCP server to use, a dependency-update quirk), fill in `## MCP` in the copied `CLAUDE.md`, or append a new `##` section below it — see `templates/lean/CLAUDE.md` or `templates/pnpm/CLAUDE.md` for real examples. Don't put developer commands here.
+`assets/AGENTS.md` carries an `## Overview` stub, a `## Docs` pointer to the other three files, and empty `## Skills` / `## MCP` sections. If the template needs agent-facing notes (an MCP server to use, a dependency-update quirk), fill in `## MCP` in the copied `AGENTS.md`, or append a new `##` section below it — see `templates/lean/AGENTS.md` or `templates/pnpm/AGENTS.md` for real examples. Don't put developer commands here.
 
 Add further command lines (test runner, etc.) to the copied `CONTRIBUTING.md` if the template has one.
 

@@ -1,4 +1,4 @@
-# CLAUDE.md
+# AGENTS.md
 
 ## Overview
 
@@ -12,6 +12,6 @@
 
 ## MCP
 
-## Updating dependencies
+## Dependencies
 
-After changing dependencies, run `nix flake check` and copy the correct hash from the `got:` line in the error output into `nix/node-modules.nix`.
+Use `deno` commands instead of editing `deno.json` directly.
