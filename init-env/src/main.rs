@@ -210,7 +210,7 @@ enum Source {
     },
 }
 
-// The cachix token lives in nix-config's sops file; the `pass` entry is stale.
+// The cachix token's source of truth is nix-config's sops file.
 const SECRETS: &[(&str, Source)] = &[
     (
         "BOT_APP_ID",
