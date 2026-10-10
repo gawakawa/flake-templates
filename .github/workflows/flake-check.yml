@@ -35,12 +35,9 @@ jobs:
 
   templates-linux:
     if: inputs.templates != '[]'
-    timeout-minutes: ${{ matrix.template == 'haskell' && 60 || 10 }}
+    timeout-minutes: 60
     permissions:
       contents: read
-    strategy:
-      matrix:
-        template: ${{ fromJSON(inputs.templates) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -56,9 +53,12 @@ jobs:
           name: gawakawa
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
-      - name: Check ${{ matrix.template }} template
-        working-directory: templates/${{ matrix.template }}
-        run: nix flake check --accept-flake-config
+      - name: Check templates (Linux)
+        env:
+          TEMPLATES: ${{ inputs.templates }}
+        run: |
+          while IFS= read -r p; do nix flake check --accept-flake-config "$p"; done \
+            < <(jq -r '.[] | "./templates/\(.)"' <<< "$TEMPLATES")
 
   templates-macos:
     if: inputs.templates != '[]'

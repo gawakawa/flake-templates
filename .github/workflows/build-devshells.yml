@@ -19,12 +19,9 @@ jobs:
   build-devshells-linux:
     needs: detect-changes
     if: needs.detect-changes.outputs.templates != '[]'
-    timeout-minutes: ${{ matrix.template == 'haskell' && 60 || 10 }}
+    timeout-minutes: 60
     permissions:
       contents: read
-    strategy:
-      matrix:
-        template: ${{ fromJSON(needs.detect-changes.outputs.templates) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -40,9 +37,12 @@ jobs:
           name: gawakawa
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
-      - name: Build devShell for ${{ matrix.template }} template
-        working-directory: templates/${{ matrix.template }}
-        run: nix develop --accept-flake-config -c echo "DevShell works"
+      - name: Build devShells (Linux)
+        env:
+          TEMPLATES: ${{ needs.detect-changes.outputs.templates }}
+        run: |
+          while IFS= read -r p; do nix develop --accept-flake-config "$p" -c echo "DevShell works"; done \
+            < <(jq -r '.[] | "./templates/\(.)"' <<< "$TEMPLATES")
 
   build-devshells-macos:
     needs: detect-changes
