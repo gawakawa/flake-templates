@@ -3,4 +3,5 @@ build/
 result
 .direnv
 .mcp.json
+.codex/config.toml
 .pre-commit-config.yaml

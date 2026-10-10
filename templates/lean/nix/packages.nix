@@ -19,19 +19,22 @@
       ...
     }:
     let
-      mcpConfig =
-        inputs.mcp-servers-nix.lib.mkConfig
-          (import inputs.mcp-servers-nix.inputs.nixpkgs {
-            inherit system;
-          })
-          {
-            settings.servers = {
-              lean-lsp = {
-                command = "${pkgs.lib.getExe' pkgs.uv "uvx"}";
-                args = [ "lean-lsp-mcp" ];
-              };
-            };
-          };
+      mcpPkgs = import inputs.mcp-servers-nix.inputs.nixpkgs {
+        inherit system;
+      };
+      servers.lean-lsp = {
+        command = "${pkgs.lib.getExe' pkgs.uv "uvx"}";
+        args = [ "lean-lsp-mcp" ];
+      };
+      mcpConfig = inputs.mcp-servers-nix.lib.mkConfig mcpPkgs {
+        settings.servers = servers;
+      };
+      codexMcpConfig = inputs.mcp-servers-nix.lib.mkConfig mcpPkgs {
+        flavor = "codex";
+        format = "toml";
+        fileName = "config.toml";
+        settings.servers = servers;
+      };
     in
     {
       ciPackages = with pkgs; [
@@ -45,8 +48,9 @@
         };
 
         mcp-config = mcpConfig;
+        codex-mcp-config = codexMcpConfig;
       };
 
-      _module.args.mcpConfig = mcpConfig;
+      _module.args = { inherit mcpConfig codexMcpConfig; };
     };
 }
