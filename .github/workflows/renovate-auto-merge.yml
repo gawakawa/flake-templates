@@ -1,0 +1,11 @@
+name: Renovate auto-merge
+
+on: pull_request
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-merge:
+    uses: gawakawa/.github/.github/workflows/renovate-auto-merge.yml@main
