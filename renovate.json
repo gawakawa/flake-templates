@@ -1,0 +1,28 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "enabledManagers": ["github-actions", "cargo", "npm", "pep621", "deno"],
+  "schedule": ["before 6am on monday"],
+  "minimumReleaseAge": "7 days",
+  "prConcurrentLimit": 10,
+  "commitMessagePrefix": ":arrow_up:",
+  "gitIgnoredAuthors": ["279418563+gawakawa-bot[bot]@users.noreply.github.com"],
+  "packageRules": [
+    {
+      "description": "pnpm template stays on Dependabot (update-pnpm-hash.yml depends on its PRs)",
+      "matchManagers": ["npm"],
+      "matchFileNames": ["templates/pnpm/**"],
+      "enabled": false
+    },
+    {
+      "matchManagers": ["cargo", "npm", "pep621", "deno"],
+      "matchUpdateTypes": ["major"],
+      "minimumReleaseAge": "30 days"
+    },
+    {
+      "matchManagers": ["cargo", "npm", "pep621", "deno"],
+      "matchUpdateTypes": ["patch"],
+      "minimumReleaseAge": "3 days"
+    }
+  ]
+}
