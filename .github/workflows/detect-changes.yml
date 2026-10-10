@@ -24,7 +24,7 @@ jobs:
 
       - name: List all templates
         id: list-templates
-        uses: ./.github/actions/list-templates
+        uses: $/.github/actions/list-templates
 
       - name: Generate filters
         run: |
