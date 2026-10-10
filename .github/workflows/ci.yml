@@ -13,11 +13,11 @@ permissions:
 
 jobs:
   detect-changes:
-    uses: ./.github/workflows/detect-changes.yml
+    uses: $/.github/workflows/detect-changes.yml
 
   flake-check:
     needs: detect-changes
-    uses: ./.github/workflows/flake-check.yml
+    uses: $/.github/workflows/flake-check.yml
     with:
       templates: ${{ needs.detect-changes.outputs.templates }}
     secrets:

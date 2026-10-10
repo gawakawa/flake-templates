@@ -31,7 +31,7 @@ jobs:
 
       - name: List templates
         id: list-templates
-        uses: ./.github/actions/list-templates
+        uses: $/.github/actions/list-templates
 
       - name: Build flakes list
         id: list-flakes
